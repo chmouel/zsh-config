@@ -1,0 +1,157 @@
+#!/usr/bin/zsh
+# Chmouel Boudjnah <chmouel@mandrakesoft.com>
+
+confdir=$HOME/.shell/
+basehost=${HOST%%.*}
+[[ $1 == 'reloading' ]] && reload=yes
+
+autoload -U colors;colors
+
+#Local functions we want to autoload
+typeset -U fpath
+user_fun_path=($confdir/functions);
+fpath=($user_fun_path $fpath); autoload -U compinit
+for func ($user_fun_path) autoload -U $func/*(.x:t)
+
+#get environement and alias
+[[ -f $confdir/config/environement ]] && source $confdir/config/environement
+[[ -f $confdir/config/alias ]] && source $confdir/config/alias
+[[ -f $HOME/.shell/hosts/$basehost.sh ]] && source $HOME/.shell/hosts/$basehost.sh
+
+#Compinit
+[[ -z $reload ]] && compinit -i
+
+#PS1
+[[ -z $custom_prompt && -n $hostColor ]] &&
+PS1="%{$fg_bold[yellow]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[cyan]%}%3~$%{$fg_no_bold[white]%} "
+
+#Zsh: Alias 
+alias -g L="|less"
+alias so="source $HOME/.zshrc reloading && unset reload"
+alias o='popd'
+
+#Variable
+WORDCHARS=''
+HISTFILE="$HOME/.bash_history"; HISTSIZE="9000000"; SAVEHIST="9000000"
+export HISTSIZE HISTSIZE SAVEHIST
+
+#Path
+typeset -U path;path=(~/bin /usr/sbin /sbin $path)
+
+#setopt
+setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
+    APPEND_HISTORY AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD \
+    HIST_IGNORE_DUPS HIST_IGNORE_SPACE completeinword \
+    interactivecomments histverify nopromptcr \
+    alwaystoend
+
+#User-Hosts Completions
+hosts=($(
+	[[ -f $HOME/.ssh/known_hosts ]] && sed -e '/^#/d' -e 's/,.*//' -e 's/ .*//' $HOME/.ssh/known_hosts
+	[[ -f $HOME/.ssh/known_hosts2 ]] && sed -e '/^#/d' -e 's/,.*//' -e 's/ .*//' $HOME/.ssh/known_hosts2
+	))
+[[ -n $hosts ]] && zstyle ':completion:*' hosts $hosts
+
+#cache completion
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.shell/cache
+
+#Dont show CVS and lost+found in completion
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#lost+found'
+
+#Dont show some users in completion
+zstyle ':completion:*:*:*:users' ignored-patterns \
+	root daemon bin sys sync games man \
+	lp mail news uucp proxy postgres  \
+	www-data backup operator list \
+	irc gnats alias qmaild qmails \
+	qmailr qmailq qmaill qmailp \
+	sshd mysql postfix nagios \
+	spamd nobody qscand
+
+# Ignore completion functions for commands you don't have
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+#Kill
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+zstyle ':completion:*:kill:*' insert-ids single
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:processes' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# dont show two times file name on rm
+zstyle ':completion:*:rm:*' ignore-line yes
+
+
+#Auto quote URL
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
+#Cache
+zstyle ':completion:*' use-cache on
+
+#Keys
+stty -ixon #disable c-q c-s
+bindkey -e
+bindkey '\C-w' kill-region
+bindkey '^i' expand-or-complete-prefix
+bindkey -e '^[[5D' backward-word
+bindkey -e '^[[5C' forward-word
+bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
+
+#Ala emacs
+zmodload -i zsh/deltochar
+bindkey -e "^[z" zap-to-char
+
+
+# Loading stuff
+#[[ -x ${HOME}/bin/run-ssh && -z $reload ]] && source ${HOME}/bin/run-ssh
+
+#Set host and cmd path in xterm title
+function title {
+    if [[ $TERM == "screen" ]]; then
+        local h=${1%%.*}
+        # Use these two for GNU Screen:
+        print -nR $'\033k'$h$'\033'\\\
+
+        print -nR $'\033]0;'$h$'\a'
+    elif [[ $TERM == "xterm" || $TERM == "rxvt" ]]; then
+        # Use this one instead for XTerms:
+        print -nR $'\033]0;'$*$'\a'
+    fi
+}
+
+function precmd {
+    title "${(U)HOST}:$PWD"
+}
+function preexec {
+    emulate -L zsh
+    local -a cmd; cmd=(${(z)1})
+    title "${(U)HOST}:"$cmd[1]:t "$cmd[2,-1]"
+}
+
+#LS Colors in Completion
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+#on ssh-copy-id compile user-at-host
+compdef _user_at_host ssh-copy-id
+
+umask 022
+
+#Unsetting
+unset basehost confdir func user_fun_path reload
+unfunction make-it-like-bash \
+				2>/dev/null >/dev/null || :
+
+alias HW="wget --debug -O/dev/null"
+alias HHH="curl --verbose 2>&1"
+alias HH="curl --verbose -o/dev/null"
+alias HHC="curl -H 'Pragma: no-cache' --verbose -o/dev/null"
+alias H="curl -I"
+
+type -p lessfile &>/dev/null  && eval $(lessfile)

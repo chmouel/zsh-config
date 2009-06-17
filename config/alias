@@ -1,0 +1,26 @@
+#!/bin/bash
+alias b='bzip2 -9vf'
+alias z="gzip -9fv"
+alias md='mkdir -p'
+
+alias ls='ls --color=auto -F'
+alias d=ls
+alias s='cd ..'
+alias p='cd -'
+alias ll='ls -arSlh'
+alias la='ls -A'
+alias lt='ls -artl'
+
+alias df='df -h'
+alias du='du -sh'
+alias cp="cp -i"
+alias rm="rm -i"
+alias mv="mv -i"
+
+alias clean='find|egrep "(\.chmou|\.rej|\.orig|~)$"|xargs rm -vf'
+alias finrej='find|egrep ".rej$"'
+
+alias info_netbiscuit='core-cli -i -a 731979'
+alias ccl="core-cli -L L"
+alias cco="core-cli -o"
+alias myacc="python ~/Work/CoreCLI/tools/get-accounts-for-am.py|less"
