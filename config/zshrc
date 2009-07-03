@@ -127,9 +127,11 @@ function title {
 }
 
 function precmd {
+    [[ -n $NO_TITLE ]] && return
     title "${(U)HOST}:$PWD"
 }
 function preexec {
+    [[ -n $NO_TITLE ]] && return
     emulate -L zsh
     local -a cmd; cmd=(${(z)1})
     title "${(U)HOST}:"$cmd[1]:t "$cmd[2,-1]"
