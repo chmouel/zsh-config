@@ -22,7 +22,7 @@ for func ($user_fun_path) autoload -U $func/*(.x:t)
 [[ -z $reload ]] && compinit -i
 
 #PS1
-[[ -z $custom_prompt && -n $hostColor ]] &&
+[[ $TERM != "dumb" &&  -z $custom_prompt && -n $hostColor ]] &&
 PS1="%{$fg_bold[yellow]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[cyan]%}%3~$%{$fg_no_bold[white]%} "
 
 #Zsh: Alias 
@@ -116,9 +116,6 @@ bindkey -e "^[z" zap-to-char
 function title {
     if [[ $TERM == "screen" ]]; then
         local h=${1%%.*}
-        # Use these two for GNU Screen:
-        print -nR $'\033k'$h$'\033'\\\
-
         print -nR $'\033]0;'$h$'\a'
     elif [[ $TERM == "xterm" || $TERM == "rxvt" ]]; then
         # Use this one instead for XTerms:
@@ -150,10 +147,14 @@ unset basehost confdir func user_fun_path reload
 unfunction make-it-like-bash \
 				2>/dev/null >/dev/null || :
 
-alias HW="wget --debug -O/dev/null"
-alias HHH="curl --verbose 2>&1"
-alias HH="curl --verbose -o/dev/null"
-alias HHC="curl -H 'Pragma: no-cache' --verbose -o/dev/null"
-alias H="curl -I"
+if [ "$TERM" = "dumb" ]
+then
+  unsetopt zle
+  unsetopt prompt_cr
+  unsetopt prompt_subst
+  unfunction precmd
+  unfunction preexec
+  PS1='$ '
+fi
 
 type -p lessfile &>/dev/null  && eval $(lessfile)

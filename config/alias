@@ -17,10 +17,8 @@ alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
 
-alias clean='find|egrep "(\.chmou|\.rej|\.orig|~)$"|xargs rm -vf'
-alias finrej='find|egrep ".rej$"'
-
-alias info_netbiscuit='core-cli -i -a 731979'
-alias ccl="core-cli -L L"
-alias cco="core-cli -o"
-alias myacc="python ~/Work/CoreCLI/tools/get-accounts-for-am.py|less"
+alias HW="wget --debug -O/dev/null"
+alias HHH="curl --verbose 2>&1"
+alias HH="curl --verbose -o/dev/null"
+alias HHC="curl -H 'Pragma: no-cache' --verbose -o/dev/null"
+alias H="curl -I"
