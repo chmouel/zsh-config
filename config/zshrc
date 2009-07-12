@@ -1,5 +1,5 @@
 #!/usr/bin/zsh
-# Chmouel Boudjnah <chmouel@mandrakesoft.com>
+# Chmouel Boudjnah <chmouel@chmouel.com>
 
 confdir=$HOME/.shell/
 basehost=${HOST%%.*}
@@ -22,8 +22,7 @@ for func ($user_fun_path) autoload -U $func/*(.x:t)
 [[ -z $reload ]] && compinit -i
 
 #PS1
-
-if [[ $TERM != 'dumb' && -z $custom_prompt ]];then
+if [[ -z $custom_prompt ]];then
     [[ -z $hostColor ]] && hostColor=white
     [[ -z $userColor ]] && userColor=yellow
     PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[cyan]%}%3~$%{$fg_no_bold[white]%} "
@@ -59,24 +58,6 @@ hosts=($(
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.shell/cache
 
-#Dont show CVS and lost+found in completion
-zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
-zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
-zstyle ':completion:*:cd:*' ignored-patterns '(*/)#lost+found'
-
-#Dont show some users in completion
-zstyle ':completion:*:*:*:users' ignored-patterns \
-	root daemon bin sys sync games man \
-	lp mail news uucp proxy postgres  \
-	www-data backup operator list \
-	irc gnats alias qmaild qmails \
-	qmailr qmailq qmaill qmailp \
-	sshd mysql postfix nagios \
-	spamd nobody qscand
-
-# Ignore completion functions for commands you don't have
-zstyle ':completion:*:functions' ignored-patterns '_*'
-
 #Kill
 zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
 zstyle ':completion:*:*:kill:*' menu yes select
@@ -86,10 +67,6 @@ zstyle ':completion:*:kill:*' insert-ids single
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
 zstyle ':completion:*:processes' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-
-# dont show two times file name on rm
-zstyle ':completion:*:rm:*' ignore-line yes
-
 
 #Auto quote URL
 autoload -U url-quote-magic
@@ -111,42 +88,22 @@ bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
 zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
-
-# Loading stuff
-#[[ -x ${HOME}/bin/run-ssh && -z $reload ]] && source ${HOME}/bin/run-ssh
-
-#Set host and cmd path in xterm title
-function title {
-    if [[ $TERM == "screen" ]]; then
-        local h=${1%%.*}
-        print -nR $'\033]0;'$h$'\a'
-    elif [[ $TERM == "xterm" || $TERM == "rxvt" ]]; then
-        # Use this one instead for XTerms:
-        print -nR $'\033]0;'$*$'\a'
-    fi
-}
-
-function precmd {
-    [[ -n $NO_TITLE ]] && return
-    title "${(U)HOST}:$PWD"
-}
-print -nR $'\033k'${(U)HOST%%.*}$'\033'\\\
+#TITLES
+print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
+print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
 
 #LS Colors in Completion
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
-
-umask 022
 
 #Unsetting
 unset basehost confdir func user_fun_path reload hostColor userColor
 unfunction make-it-like-bash \
 				2>/dev/null >/dev/null || :
 
-if [ "$TERM" = "dumb" ]
-then
+if [[ "$TERM" = "dumb" ]];then
   unsetopt zle
   unsetopt prompt_cr
   unsetopt prompt_subst
@@ -156,3 +113,4 @@ then
 fi
 
 type -p lessfile &>/dev/null  && eval $(lessfile)
+umask 022

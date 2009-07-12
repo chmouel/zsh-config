@@ -8,7 +8,7 @@ cp -a config/ functions/ hosts/ cache/ generated/.shell/
 
 ln -s .shell/config/zshrc generated/.zshrc
 
-find generated -name '.cvsignore' -o -name '#*#' -o -name '*~' -o \( -type d -name 'CVS' \)|xargs rm -rf
+find generated -name '.cvsignore' -o -name '.git' -o -name '#*#' -o -name '*~' -o \( -type d -name 'CVS' \)|xargs rm -rf
 pushd generated
 /bin/rm -f .shell/cache/*
 tar cvjf ~/chmouel-shell-config-$date.tar.bz2 ./
