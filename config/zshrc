@@ -22,9 +22,13 @@ for func ($user_fun_path) autoload -U $func/*(.x:t)
 [[ -z $reload ]] && compinit -i
 
 #PS1
-[[ $TERM != "dumb" &&  -z $custom_prompt && -n $hostColor ]] &&
-PS1="%{$fg_bold[yellow]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[cyan]%}%3~$%{$fg_no_bold[white]%} "
 
+if [[ $TERM != 'dumb' && -z $custom_prompt ]];then
+    [[ -z $hostColor ]] && hostColor=white
+    [[ -z $userColor ]] && userColor=yellow
+    PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[cyan]%}%3~$%{$fg_no_bold[white]%} "
+fi
+    
 #Zsh: Alias 
 alias -g L="|less"
 alias so="source $HOME/.zshrc reloading && unset reload"
@@ -48,7 +52,6 @@ setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
 #User-Hosts Completions
 hosts=($(
 	[[ -f $HOME/.ssh/known_hosts ]] && sed -e '/^#/d' -e 's/,.*//' -e 's/ .*//' $HOME/.ssh/known_hosts
-	[[ -f $HOME/.ssh/known_hosts2 ]] && sed -e '/^#/d' -e 's/,.*//' -e 's/ .*//' $HOME/.ssh/known_hosts2
 	))
 [[ -n $hosts ]] && zstyle ':completion:*' hosts $hosts
 
@@ -127,12 +130,7 @@ function precmd {
     [[ -n $NO_TITLE ]] && return
     title "${(U)HOST}:$PWD"
 }
-function preexec {
-    [[ -n $NO_TITLE ]] && return
-    emulate -L zsh
-    local -a cmd; cmd=(${(z)1})
-    title "${(U)HOST}:"$cmd[1]:t "$cmd[2,-1]"
-}
+print -nR $'\033k'${(U)HOST%%.*}$'\033'\\\
 
 #LS Colors in Completion
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -143,7 +141,7 @@ compdef _user_at_host ssh-copy-id
 umask 022
 
 #Unsetting
-unset basehost confdir func user_fun_path reload
+unset basehost confdir func user_fun_path reload hostColor userColor
 unfunction make-it-like-bash \
 				2>/dev/null >/dev/null || :
 
