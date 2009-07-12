@@ -89,7 +89,7 @@ zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
 #TITLES
-print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
+[[ $TERM == "screen" ]] && print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
 print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
 
 #LS Colors in Completion
