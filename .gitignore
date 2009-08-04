@@ -1,4 +1,4 @@
-!hosts/.gitignore
 hosts/*
-!cache/.gitignore
+!hosts/.gitignore
 cache/*
+!cache/.gitignore
