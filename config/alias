@@ -22,3 +22,7 @@ alias HHH="curl --verbose 2>&1"
 alias HH="curl --verbose -o/dev/null"
 alias HHC="curl -H 'Pragma: no-cache' --verbose -o/dev/null"
 alias H="curl -I"
+
+function ustime () {
+    TZ=America/Chicago date
+}
