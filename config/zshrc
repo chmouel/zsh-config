@@ -90,7 +90,10 @@ bindkey -e "^[z" zap-to-char
 
 #TITLES
 [[ $TERM == "screen" ]] && print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
-print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
+
+if [[ $TERM != "linux" && $TERM != "dumb" ]];then
+    print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
+fi
 
 #LS Colors in Completion
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
