@@ -25,7 +25,8 @@ for func ($user_fun_path) autoload -U $func/*(.x:t)
 if [[ -z $custom_prompt ]];then
     [[ -z $hostColor ]] && hostColor=white
     [[ -z $userColor ]] && userColor=yellow
-    PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[cyan]%}%3~$%{$fg_no_bold[white]%} "
+    [[ -z $restColor ]] && restColor=cyan
+    PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
 fi
     
 #Zsh: Alias 
@@ -102,7 +103,7 @@ zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 compdef _user_at_host ssh-copy-id
 
 #Unsetting
-unset basehost confdir func user_fun_path reload hostColor userColor
+unset basehost confdir func user_fun_path reload hostColor userColor restColor
 unfunction make-it-like-bash \
 				2>/dev/null >/dev/null || :
 
