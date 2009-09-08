@@ -34,20 +34,29 @@ alias -g L="|less"
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
 
-#Variable
+#Variables
 WORDCHARS=''
-HISTFILE="$HOME/.bash_history"; HISTSIZE="9000000"; SAVEHIST="9000000"
+
+# Path
+typeset -U path
+path=(~/bin /usr/sbin /sbin $path)
+
+#History Settings
+HISTFILE="$HOME/.bash_history"
+HISTSIZE="9000000"
+SAVEHIST="9000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
-#Path
-typeset -U path;path=(~/bin /usr/sbin /sbin $path)
+setopt extended_history hist_ignore_all_dups \
+    append_history hist_ignore_dups hist_ignore_space \
+    hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
+    
+[[ -e /usr/bin/on_ac_power ]] && on_ac_power && setopt inc_append_history
 
 #setopt
 setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
-    APPEND_HISTORY AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD \
-    HIST_IGNORE_DUPS HIST_IGNORE_SPACE completeinword \
-    interactivecomments histverify nopromptcr \
-    alwaystoend
+    AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD completeinword \
+    interactivecomments nopromptcr alwaystoend
 
 export CORRECT_IGNORE="_*"
 
@@ -92,7 +101,7 @@ bindkey -e "^[z" zap-to-char
 #TITLES
 [[ $TERM == "screen" ]] && print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
 
-if [[ $TERM != "linux" && $TERM != "dumb" ]];then
+if [[ $TERM == xterm* ]];then
     print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
 fi
 
