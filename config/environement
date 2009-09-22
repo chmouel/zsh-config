@@ -1,6 +1,6 @@
 #!/bin/bash
-GREP_COLOR="01;38"
+GREP_OPTIONS="--color"
 EDITOR="vim"
 LESS="-i -r -c -m -X"
 
-export EDITOR LESS GREP_COLOR 
+export EDITOR LESS GREP_OPTIONS
