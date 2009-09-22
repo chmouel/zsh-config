@@ -10,7 +10,6 @@ autoload -U colors;colors
 #Local functions we want to autoload
 typeset -U fpath
 user_fun_path=($confdir/functions);
-zstyle ':completion:*' menu select=1 _complete _ignored _approximate
 fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(.x:t)
 
@@ -40,7 +39,7 @@ WORDCHARS=''
 
 # Path
 typeset -U path
-path=(~/bin /usr/sbin /sbin $path)
+path=($HOME/bin /usr/sbin /sbin $path)
 
 #History Settings
 HISTFILE="$HOME/.bash_history"
@@ -63,7 +62,7 @@ export CORRECT_IGNORE="_*"
 
 #cache completion
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.shell/cache
+zstyle ':completion:*' cache-path $HOME/.shell/cache
 
 #Kill
 zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
@@ -79,16 +78,9 @@ zstyle ':completion:*:processes' command 'ps -u $USER -o pid,%cpu,tty,cputime,cm
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-#Cache
-zstyle ':completion:*' use-cache on
-
 #Keys
 stty -ixon #disable c-q c-s
 bindkey -e
-bindkey '\C-w' kill-region
-bindkey '^i' expand-or-complete-prefix
-bindkey -e '^[[5D' backward-word
-bindkey -e '^[[5C' forward-word
 bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
 
 #Ala emacs
@@ -96,9 +88,9 @@ zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
 #TITLES
-[[ $TERM == "screen" ]] && print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
-
-if [[ $TERM == xterm* ]];then
+if [[ $TERM == screen* ]];then
+    print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
+elif [[ $TERM == xterm* ]];then
     print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
 fi
 
@@ -111,8 +103,6 @@ compdef _user_at_host ssh-copy-id
 
 #Unsetting
 unset basehost confdir func user_fun_path reload hostColor userColor restColor
-unfunction make-it-like-bash \
-				2>/dev/null >/dev/null || :
 
 if [[ "$TERM" = "dumb" ]];then
   unsetopt zle
@@ -122,6 +112,3 @@ if [[ "$TERM" = "dumb" ]];then
   unfunction preexec
   PS1='$ '
 fi
-
-type -p lessfile &>/dev/null  && eval $(lessfile)
-umask 022
