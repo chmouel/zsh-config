@@ -34,8 +34,10 @@ alias -g L="|less"
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
 
-#Variables
-WORDCHARS=''
+#Considers only alphanumeric as work like in bash
+autoload -U select-word-style
+select-word-style bash
+
 
 # Path
 typeset -U path
@@ -51,28 +53,22 @@ setopt extended_history hist_ignore_all_dups \
     append_history hist_ignore_dups hist_ignore_space \
     hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
     
-[[ -e /usr/bin/on_ac_power ]] && on_ac_power && setopt inc_append_history
+type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
 
 #setopt
 setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
     AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD completeinword \
     interactivecomments nopromptcr alwaystoend
 
+#Ignore stuff starting by _ for the completion.
 export CORRECT_IGNORE="_*"
 
 #cache completion
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path $HOME/.shell/cache
 
-#Kill
-zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=$color[cyan]=$color[red]"
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-zstyle ':completion:*:kill:*' insert-ids single
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:processes' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+#Completion style
+zstyle ':completion:*' special-dirs true
 
 #Auto quote URL
 autoload -U url-quote-magic
