@@ -10,6 +10,7 @@ autoload -U colors;colors
 #Local functions we want to autoload
 typeset -U fpath
 user_fun_path=($confdir/functions);
+zstyle ':completion:*' menu select=1 _complete _ignored _approximate
 fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(.x:t)
 
@@ -60,10 +61,6 @@ setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
 
 export CORRECT_IGNORE="_*"
 
-#User-Hosts Completions
-hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[^a-zA-Z0-9]*}%%\ *}%%,*})
-[[ -n $hosts ]] && zstyle ':completion:*' hosts $hosts
-
 #cache completion
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.shell/cache
@@ -106,6 +103,7 @@ if [[ $TERM == xterm* ]];then
 fi
 
 #LS Colors in Completion
+[[ -z $LS_COLORS ]] && eval $(dircolors -b)
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 #on ssh-copy-id compile user-at-host
