@@ -1,15 +1,18 @@
 #!/usr/bin/zsh
 # Chmouel Boudjnah <chmouel@chmouel.com>
 
-confdir=$HOME/.shell/
+confdir=$HOME/.shell
 basehost=${HOST%%.*}
 [[ $1 == 'reloading' ]] && reload=yes
 
 autoload -U colors;colors
 
+# We need that first
+setopt nonomatch
+
 #Local functions we want to autoload
 typeset -U fpath
-user_fun_path=($confdir/functions);
+user_fun_path=($confdir/functions $confdir/functions/hosts/${basehost});
 fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(.x:t)
 
