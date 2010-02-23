@@ -26,3 +26,6 @@ alias H="curl -I"
 function ustime () {
     TZ=America/Chicago date
 }
+
+alias vih="vim ~/.shell/hosts/${HOST%%.*}.sh"
+
