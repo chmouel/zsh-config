@@ -14,7 +14,7 @@ setopt nonomatch
 typeset -U fpath
 user_fun_path=($confdir/functions $confdir/functions/hosts/${basehost});
 fpath=($user_fun_path $fpath); autoload -U compinit
-for func ($user_fun_path) autoload -U $func/*(.x:t)
+for func ($user_fun_path) autoload -U $func/*(x:t)
 
 #get environement and alias
 [[ -f $confdir/config/environement ]] && source $confdir/config/environement
