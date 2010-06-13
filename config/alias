@@ -17,11 +17,5 @@ alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
 
-alias HW="wget --debug -O/dev/null"
-alias HHH="curl --verbose 2>&1"
-alias HH="curl --verbose -o/dev/null"
-alias HHC="curl -H 'Pragma: no-cache' --verbose -o/dev/null"
-alias H="curl -I"
-
 alias vih="vim ~/.shell/hosts/${HOST%%.*}.sh"
 
