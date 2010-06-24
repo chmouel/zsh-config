@@ -2,7 +2,7 @@
 GREP_OPTIONS="--color"
 EDITOR="vim"
 LESS="-i -r -c -m -X"
-export EDITOR LESS GREP_OPTIONS
+export EDITOR GREP_OPTIONS
 
 type -p lessfile &>/dev/null  && eval $(lessfile)
 umask 022
