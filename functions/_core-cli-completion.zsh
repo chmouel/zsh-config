@@ -1,1 +1,0 @@
-/home/chmouel/GIT/rackspace/core-cli/tools/core-cli-completion.zsh
