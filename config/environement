@@ -1,7 +1,7 @@
 #!/bin/bash
 GREP_OPTIONS="--color"
 EDITOR="vim"
-LESS="-i -r -c -m -X"
+LESS="-i"
 export EDITOR GREP_OPTIONS LESS
 
 type -p lessfile &>/dev/null  && eval $(lessfile)
