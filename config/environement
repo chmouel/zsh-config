@@ -4,5 +4,8 @@ EDITOR="vim"
 LESS="-i"
 export EDITOR GREP_OPTIONS LESS
 
+_ARCHI=$(uname)
+export _ARCHI
+
 type -p lessfile &>/dev/null  && eval $(lessfile)
 umask 022

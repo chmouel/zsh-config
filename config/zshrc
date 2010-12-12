@@ -94,8 +94,10 @@ elif [[ $TERM == xterm* ]];then
 fi
 
 #LS Colors in Completion
-[[ -z $LS_COLORS ]] && eval $(dircolors -b)
-zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
+
+type -p dircolors &>/dev/null && \
+	[[ -z $LS_COLORS ]] && eval $(dircolors -b) && \
+	zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
