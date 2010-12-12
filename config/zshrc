@@ -44,7 +44,7 @@ select-word-style bash
 
 # Path
 typeset -U path
-path=($HOME/bin /usr/sbin /sbin $path)
+path=($HOME/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
 
 #History Settings
 HISTFILE="$HOME/.bash_history"
