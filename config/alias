@@ -22,5 +22,5 @@ alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
 
-alias vih="vim ~/.shell/hosts/${HOST%%.*}.sh"
+alias vih="$EDITOR ~/.shell/hosts/${HOST%%.*}.sh"
 
