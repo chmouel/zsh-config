@@ -10,7 +10,7 @@ fi
 
 echo_it() {
     [[ -x /usr/bin/xclip ]] && echo -n $@ | xclip
-    [[ -x /usr/bin/pbpaste ]] && echo -n $@ | xclip
+    [[ -x /usr/bin/pbpaste ]] && echo -n $@ | pbpaste
     echo $@
 }
 
