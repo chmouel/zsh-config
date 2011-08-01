@@ -86,15 +86,9 @@ bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
 zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
-#TITLES
-if [[ $TERM == screen* ]];then
-    print -nR $'\033k'${(U)HOST%%.*}$'\033'\\
-elif [[ $TERM == xterm* ]];then
-    print -nR $'\033]0;'${(U)HOST%%.*}$'\a'
-fi
+source $confdir/config/termsupport.zsh
 
 #LS Colors in Completion
-
 type -p dircolors &>/dev/null && \
 	[[ -z $LS_COLORS ]] && eval $(dircolors -b) && \
 	zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
