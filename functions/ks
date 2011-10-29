@@ -1,0 +1,11 @@
+#!/bin/bash
+USER=$1
+PASSWORD=$2
+IP=$3
+
+[[ -z $IP ]] && {
+    echo "$0 username password ip"
+    exit 1
+}
+
+curl -s -d "{\"auth\": {\"passwordCredentials\": {\"username\": \"$1\", \"password\": \"$2\"}}}" -H 'Content-type: application/json' http://$3:5000/v2.0/tokens | python -m json.tool
