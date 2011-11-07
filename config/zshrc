@@ -25,7 +25,7 @@ for func ($user_fun_path) autoload -U $func/*(x:t)
 [[ -z $reload ]] && compinit -i
 
 #PS1
-if [[ -z $custom_prompt ]];then
+if [[ -z $CUSTOM_PROMPT ]];then
     [[ -z $hostColor ]] && hostColor=white
     [[ -z $userColor ]] && userColor=yellow
     [[ -z $restColor ]] && restColor=cyan
@@ -52,7 +52,7 @@ HISTSIZE="9000000"
 SAVEHIST="9000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
-setopt extended_history hist_ignore_all_dups \
+setopt sharehistory extended_history hist_ignore_all_dups \
     append_history hist_ignore_dups hist_ignore_space \
     hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
     
@@ -81,6 +81,7 @@ zle -N self-insert url-quote-magic
 stty -ixon #disable c-q c-s
 bindkey -e
 bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
+bindkey -s "^Xs" "^p^asudo ^e"
 
 #Ala emacs
 zmodload -i zsh/deltochar
