@@ -31,7 +31,7 @@ function precmd {
     if [[ -n ${CUSTOM_PROMPT} ]];then
         return
     fi
-    git ls-files --other --exclude-standard 2> /dev/null
+    git ls-files --other --exclude-standard 2> /dev/null >/dev/null
     reply=$?
     if [[ $reply == 0 ]];then
         vcs_info
