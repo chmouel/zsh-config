@@ -82,6 +82,8 @@ stty -ixon #disable c-q c-s
 bindkey -e
 bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
 bindkey -s "^Xs" "^p^asudo ^e"
+# M-# comment current line
+bindkey '^[#' pound-insert
 
 #Ala emacs
 zmodload -i zsh/deltochar
