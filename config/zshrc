@@ -52,7 +52,7 @@ HISTSIZE="9000000"
 SAVEHIST="9000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
-setopt sharehistory extended_history hist_ignore_all_dups \
+setopt extended_history hist_ignore_all_dups \
     append_history hist_ignore_dups hist_ignore_space \
     hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
     
