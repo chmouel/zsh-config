@@ -1,0 +1,14 @@
+local d=$1
+
+if [[ -z $d ]];then d=".";fi
+
+if [[ -d $d/.git ]];then 
+    d=$d/.git
+fi
+d=$(readlink -f $d)
+du -sh "$d"
+start=$(date)
+env time git --git-dir="$d" repack -afd --window=250 --depth=250
+echo started $start
+date
+du -sh "$d"
