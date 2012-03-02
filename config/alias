@@ -5,7 +5,7 @@ alias md='mkdir -p'
 
 
 if [[ ${_ARCHI} == "Darwin" ]];then
-	alias ls='ls -G'
+	alias ls='ls -G -F'
 else
 	alias ls='ls --color=auto -F'
 fi
