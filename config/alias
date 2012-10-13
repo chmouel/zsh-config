@@ -23,4 +23,5 @@ alias rm="rm -i"
 alias mv="mv -i"
 
 alias vih="$EDITOR ~/.shell/hosts/${HOST%%.*}.sh"
+alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 
