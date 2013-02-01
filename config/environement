@@ -2,7 +2,11 @@
 GREP_OPTIONS="--color"
 EDITOR="vim"
 LESS="-i"
+
 export EDITOR GREP_OPTIONS LESS
+
+export ACK_COLOR_FILENAME="bold blue"
+export ACK_COLOR_MATCH="bold red"
 
 _ARCHI=$(uname)
 export _ARCHI
