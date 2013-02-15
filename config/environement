@@ -8,6 +8,9 @@ export EDITOR GREP_OPTIONS LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
+export GREP_COLOR='37;45'
+export GREP_OPTIONS='--color=auto'
+
 _ARCHI=$(uname)
 export _ARCHI
 
