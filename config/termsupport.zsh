@@ -6,7 +6,7 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' actionformats '%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f'
 zstyle ':vcs_info:*' formats       '[%F{7}%b%f]'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:git*' formats "%{$fg[red]%}%u%{$reset_color%}[%{$fg[yellow]%}%b%{$reset_color%}]%{$reset_color%}"
+zstyle ':vcs_info:git*' formats "%{$reset_color%}%{$fg[red]%}%u%{$reset_color%}[%{$fg[magenta]%}%b%{$reset_color%}]%{$reset_color%}"
 
 #usage: title short_tab_title looooooooooooooooooooooggggggg_windows_title
 #http://www.faqs.org/docs/Linux-mini/Xterm-Title.html#ss3.1
