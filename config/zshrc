@@ -98,9 +98,13 @@ type -p dircolors &>/dev/null && \
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
+compdef _user_at_host c
+
+[[ -f $HOME/.shell/hosts/${basehost}-post.sh ]] && source $HOME/.shell/hosts/${basehost}-post.sh
 
 #Unsetting
 unset basehost confdir func user_fun_path reload hostColor userColor restColor
+
 
 if [[ "$TERM" = "dumb" ]];then
   unsetopt zle
@@ -110,3 +114,5 @@ if [[ "$TERM" = "dumb" ]];then
   unfunction preexec
   PS1='$ '
 fi
+
+
