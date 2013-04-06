@@ -46,8 +46,8 @@ _1st_arguments=(
 _arguments '*:: :->command'
 
 if (( CURRENT == 1 )); then
-  _describe -t commands "keystone help" _1st_arguments
-  return
+    _describe -t commands "keystone help" _1st_arguments
+    return
 fi
 
 local -a _command_args
@@ -164,30 +164,12 @@ case "$words[1]" in
         ;;
     help)
         _describe -t commands "keystone help" _1st_arguments
-        return
+        return 0
         ;;
-    boot)
-    _command_args=(
-      '(--falvor)'--falvor"[Flavor ID (see nova flavor-list).]" \
-      '(--image)'--image"[Image ID (see nova image-list).]" \
-      '(--num-instances)'--num-instances'[boot multi instances at a time]:' \
-      '(--meta)'--meta'[Record arbitrary key/value metadata to /meta.js on the new server. Can be specified multiple times.]:' \
-      '(--file)'--file'[Store arbitrary files from <src-path> locally to <dst-path> on the new server. You may store up to 5 files.]:' \
-      '(--key-name)'--key-name'[Key name of keypair that should be created earlier with the command keypair-add]:' \
-      '(--user-data)'--user-data'[user data file to pass to be exposed by the metadata server.]:' \
-      '(--availability-zone)'--availability-zone'[The availability zone for instance placement.]:' \
-      '(--security-groups)'--security-groups'[Comma separated list of security group names.]:' \
-      '(--block-device-mapping)'--block-device-mapping'[Block device mapping.]:' \
-      '(--hint)'--hint'[Send arbitrary key/value pairs to the scheduler for custom use.]:' \
-      '(--nic)'--nic'[Create a NIC on the server.]:' \
-      '(--config-drive)'--config-drive'[Enable config drive]:' \
-      '(--poll)'--poll'[Blocks while instance builds so progress can be reported.]:' \
-    )
-    ;;
-  esac
+esac
 
-  _arguments \
-  $_command_args \
-  '(--version)'--version'[show programs version number and exit]' \
-  '(--debug)'--debug'[Print debugging output]'\
+_arguments \
+    $_command_args \
+    '(--version)'--version'[show programs version number and exit]' \
+    '(--debug)'--debug'[Print debugging output]'\
   &&  return 0
