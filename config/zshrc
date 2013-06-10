@@ -31,8 +31,8 @@ if [[ -z $CUSTOM_PROMPT ]];then
     [[ -z $restColor ]] && restColor=cyan
     PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
 fi
-    
-#Zsh: Alias 
+
+#Zsh: Alias
 alias -g L="|less"
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
@@ -55,7 +55,7 @@ export HISTSIZE HISTSIZE SAVEHIST
 setopt extended_history hist_ignore_all_dups \
     append_history hist_ignore_dups hist_ignore_space \
     hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
-    
+
 type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
 
 #setopt
@@ -72,6 +72,9 @@ zstyle ':completion:*' cache-path $HOME/.shell/cache
 
 #Completion style
 zstyle ':completion:*' special-dirs true
+
+# Ignore completion functions for commands you don’t have
+zstyle ':completion:*:functions' ignored-patterns '_*'
 
 #Auto quote URL
 autoload -U url-quote-magic
@@ -114,5 +117,3 @@ if [[ "$TERM" = "dumb" ]];then
   unfunction preexec
   PS1='$ '
 fi
-
-
