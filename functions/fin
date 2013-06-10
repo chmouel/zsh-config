@@ -1,1 +1,14 @@
-find .|egrep -i "$1"
+# vim: zsh
+local all
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+if [[ $1 == "-a" ]];then
+    all=true
+    shift
+fi
+
+if [[ -z ${all} && -n ${branch} ]];then
+    git ls-tree -r --name-only $(git rev-parse --abbrev-ref HEAD) | egrep -i "$1"
+else
+    find .|egrep -i "$1"
+fi
