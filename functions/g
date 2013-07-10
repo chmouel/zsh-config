@@ -2,7 +2,6 @@
 local ACK
 local ARG
 
-set -x
 type -p ack-grep >/dev/null 2>/dev/null && ACK=ack-grep
 type -p ack >/dev/null 2>/dev/null && ACK=ack
 
@@ -20,4 +19,3 @@ elif [[ -n ${ACK} ]];then
 else
     grep -r $@ .
 fi
-set +x

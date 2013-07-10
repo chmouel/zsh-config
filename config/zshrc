@@ -48,8 +48,8 @@ path=($HOME/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
 
 #History Settings
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE="9000000"
-SAVEHIST="9000000"
+HISTSIZE="5000000"
+SAVEHIST="5000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
 setopt extended_history hist_ignore_all_dups \

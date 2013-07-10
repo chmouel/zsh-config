@@ -1,0 +1,14 @@
+# vim: ft=zsh
+arg=$1
+
+if [[ ${arg} == http* ]];then
+    [[ ${arg} == */c/* ]] && arg=$(echo ${arg}|sed 's,.*/c/,,;s,/.*,,')
+    [[ ${arg} =~ "/([0-9]{4,})$" ]] && arg=${MATCH[2,-1]}
+fi
+if [[ ${arg} =~ "^[0-9]{4,}$" ]];then
+    :
+else
+    echo "I could not figure out what review this is: ${arg}"
+    return 1
+fi
+git-review -d ${arg}
