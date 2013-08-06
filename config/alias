@@ -27,3 +27,5 @@ alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 
 
 alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+alias fina='fin -a'
