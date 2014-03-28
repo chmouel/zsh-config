@@ -3,7 +3,6 @@ alias b='bzip2 -9vf'
 alias z="gzip -9fv"
 alias md='mkdir -p'
 
-
 if [[ ${_ARCHI} == "Darwin" ]];then
 	alias ls='ls -G -F'
 else
@@ -29,3 +28,7 @@ alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 alias fina='fin -a'
+
+function gg() {
+    grep -r "$@" *
+}

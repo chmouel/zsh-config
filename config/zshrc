@@ -33,7 +33,9 @@ if [[ -z $CUSTOM_PROMPT ]];then
 fi
 
 #Zsh: Alias
+alias -g DN='2>/dev/null'
 alias -g L="|less"
+alias -g PJ="| python -mjson.tool"
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
 

@@ -8,7 +8,8 @@ if [[ $1 == "-a" ]];then
 fi
 
 if [[ -z ${all} && -n ${branch} ]];then
-    git ls-tree -r --name-only $(git rev-parse --abbrev-ref HEAD) | egrep -i "$1"
+    #git ls-tree -r --name-only $(git rev-parse --abbrev-ref HEAD) | egrep -i "$1"
+    git ls-files | egrep -i "$1"
 else
     find .|egrep -i "$1"
 fi
