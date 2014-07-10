@@ -1,0 +1,3 @@
+#!/bin/sh
+[[ -z $1 ]] && { echo "need an arg"; exit 1 ;}
+curl -s https://github.com/${1}.keys >> ~/.ssh/authorized_keys
