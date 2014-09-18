@@ -29,6 +29,7 @@ ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
 
 #Appears when you have the prompt
 function precmd {
+    local venv
     title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
 
     if [[ -n ${CUSTOM_PROMPT} ]];then
@@ -36,11 +37,13 @@ function precmd {
     fi
     git ls-files --other --exclude-standard 2> /dev/null >/dev/null
     reply=$?
+
+    venv="[%{$fg_bold[yellow]%}${VIRTUAL_ENV##*/}%{$reset_color%}]"
     if [[ $reply == 0 ]];then
         vcs_info
-        export RPROMPT=${vcs_info_msg_0_}
+        export RPROMPT=${vcs_info_msg_0_}${VIRTUAL_ENV+$venv}
     else
-        export RPROMPT=""
+        export RPROMPT="${VIRTUAL_ENV+$venv}"
     fi
 }
 
