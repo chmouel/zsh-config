@@ -11,6 +11,9 @@ export ACK_COLOR_MATCH="bold red"
 export GREP_COLOR='1;33'
 export GREP_OPTIONS='--color=auto'
 
+# We take care of our own venv showing
+export VIRTUAL_ENV_DISABLE_PROMPT=true
+
 _ARCHI=$(uname)
 export _ARCHI
 
