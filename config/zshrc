@@ -96,10 +96,15 @@ bindkey -e "^[z" zap-to-char
 
 source $confdir/config/termsupport.zsh
 
+
+_dircolors=$(whence dircolors)
+_dircolors=$(whence gdircolors)
 #LS Colors in Completion
-type -p dircolors &>/dev/null && \
-	[[ -z $LS_COLORS ]] && eval $(dircolors -b) && \
-	zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
+[[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
+    export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
+    zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
+
+unset _dircolors
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id

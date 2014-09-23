@@ -15,7 +15,7 @@ fi
 if git rev-parse --show-toplevel >/dev/null 2>/dev/null;then
    git grep --color $@
 elif [[ -n ${ACK} ]];then
-    ${ACK} ${ARG} $@ &
+    ${ACK} ${ARG} $@
 else
     grep -r $@ .
 fi
