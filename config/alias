@@ -24,11 +24,14 @@ alias mv="mv -i"
 alias vih="$EDITOR ~/.shell/hosts/${HOST%%.*}.sh"
 alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 
-
 alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
+alias gc="git checkout"
+alias gb="git checkout -b"
+alias gm="git checkout master"
+
+alias een="emacsclient -c -n"
+alias ee="emacsclient -c"
+alias e="emacsclient -c -nw"
 
 alias fina='fin -a'
-
-function gg() {
-    grep -r "$@" *
-}
