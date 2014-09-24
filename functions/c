@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-SERVER=$1
-
-print -Pn "\ek${SERVER}\e\\" #set screen hardstatus, usually truncated at 20 chars
-ssh ${SERVER}
