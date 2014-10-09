@@ -30,7 +30,7 @@ ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
 #Appears when you have the prompt
 function precmd {
     local venv
-    title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
+    #title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
 
     if [[ -n ${CUSTOM_PROMPT} ]];then
         return
@@ -53,5 +53,5 @@ function preexec {
   setopt extended_glob
   local CMD=${1[(wr)^(*=*|sudo|ssh|-*)]} #cmd name only, or if this is sudo or ssh, the next cmd
   [[ -n $SSH_CLIENT ]] && CMD="%n@%m: ${CMD}"
-  title "$CMD" "%100>...>$2%<<"
+  #title "$CMD" "%100>...>$2%<<"
 }
