@@ -1,0 +1,13 @@
+case $(uname -s) in
+    Darwin)
+        local target='macosx';;
+    *)
+        local target='vm';;
+esac
+
+topdir=$(git rev-parse  --show-toplevel)
+virtualenv ${topdir}/.tox/${target} && \
+    ${topdir}/.tox/${target}/bin/pip install \
+             -r ${topdir}/requirements.txt \
+             -r ${topdir}/test-requirements.txt \
+             -e ${topdir}
