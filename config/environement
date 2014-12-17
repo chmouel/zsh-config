@@ -1,15 +1,13 @@
 #!/bin/bash
-GREP_OPTIONS="--color"
 EDITOR="vim"
 LESS='-F -g -i -M -R -S -w -X -z-4'
 
-export EDITOR GREP_OPTIONS LESS
+export EDITOR LESS
 
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
 export GREP_COLOR='1;33'
-export GREP_OPTIONS='--color=auto'
 
 # We take care of our own venv showing
 export VIRTUAL_ENV_DISABLE_PROMPT=true

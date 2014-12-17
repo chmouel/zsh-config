@@ -36,3 +36,5 @@ alias e="emacsclient -c -nw"
 
 alias fina='fin -a'
 alias ss="sudo systemctl"
+
+alias grep="grep --color=auto"
