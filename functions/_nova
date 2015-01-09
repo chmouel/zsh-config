@@ -75,8 +75,23 @@ __nova_flavors() {
 }
 
 __nova_images() {
-    rets=(${(f)"$(_call_program commands nova image-list|sed -e '1,3d;$d' -e 's/ | /|/g;s/| //'|awk -F\| '{print $1":"$2}')"})
-    _describe -t nova-images "Nova Images" rets
+    local cache_policy
+
+    zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+    if [[ -z "$cache_policy" ]]; then
+        zstyle ":completion:${curcontext}:" cache-policy __nova_small_caching_policy
+    fi
+    cachename="nova_images"
+
+    local expl
+    local -a result
+    if ( [[ ${(P)+cachename} -eq 0 ]] || _cache_invalid ${cachename#_} ) \
+        && ! _retrieve_cache ${cachename#_}; then
+        _message "Searching for ${searchterm}..."
+        result=(${(f)"$(_call_program commands nova image-list|sed -e '1,3d;$d' -e 's/ | /|/g;s/| //'|awk -F\| '{print $1":"$2}')"})
+        _store_cache ${cachename#_} result
+    fi
+    _describe -t nova-images "Nova Images" result
 }
 
 __nova_volumes() {
@@ -109,11 +124,11 @@ __nova_subcommand () {
                 '--image-with=-[Image metadata property]:image_metadata: ' \
                 '--boot-volume[Volume ID to boot from]:volumes:__nova_volumes'
             ;;
-        (image-show)
+        (image-show|image-delete)
             _arguments \
                 ':images:__nova_images'
             ;;
-        (flavor-show)
+        (flavor-show|flavor-delete)
             _arguments \
                 ':images:__nova_flavors'
             ;;
