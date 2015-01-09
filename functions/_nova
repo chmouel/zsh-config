@@ -1,16 +1,26 @@
 #compdef nova
 
-__nova_caching_policy()
+__nova_long_caching_policy()
 {
   oldp=( "$1"(Nmh+1) )     # 24 hour
   (( $#oldp ))
+}
+
+__nova_small_caching_policy() {
+  typeset -a old
+
+  # cache for a minute
+  old=( "$1"(mm+10) )
+  (( $#old )) && return 0
+
+  return 1
 }
 
 __nova_commands () {
     local cache_policy _result
     zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
     if [[ -z "$cache_policy" ]]; then
-        zstyle ":completion:${curcontext}:" cache-policy __nova_caching_policy
+        zstyle ":completion:${curcontext}:" cache-policy __nova_long_caching_policy
     fi
     if ( [[ ${+_nova_subcommands} -eq 0 ]] || _cache_invalid nova_subcommands) \
         && ! _retrieve_cache nova_subcommands;
@@ -27,7 +37,7 @@ __nova_runningvms() {
 
     zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
     if [[ -z "$cache_policy" ]]; then
-        zstyle ":completion:${curcontext}:" cache-policy __nova_caching_policy
+        zstyle ":completion:${curcontext}:" cache-policy __nova_small_caching_policy
     fi
     cachename="nova_runningvms"
 
@@ -44,8 +54,24 @@ __nova_runningvms() {
 }
 
 __nova_flavors() {
-    rets=(${(f)"$(_call_program commands nova flavor-list|sed -e '1,3d;$d' -e 's/ | /|/g;s/| //;s/[ \t]\{1,\}//'|awk -F\| '{print $2":""Memory:"$3" Disk: "$4" Vcpu: "$7}')"})
-    _describe -t nova-flavors "Nova Flavors" rets
+    local cache_policy
+
+    zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+    if [[ -z "$cache_policy" ]]; then
+        zstyle ":completion:${curcontext}:" cache-policy __nova_small_caching_policy
+    fi
+    cachename="nova_flavors"
+
+    local expl
+    local -a result
+    if ( [[ ${(P)+cachename} -eq 0 ]] || _cache_invalid ${cachename#_} ) \
+        && ! _retrieve_cache ${cachename#_}; then
+        _message "Searching for ${searchterm}..."
+        result=(${(f)"$(_call_program commands nova flavor-list|awk \
+                 '$4 ~ "Name|^$" {next}{gsub(/[ ]*$/, "");print $4": Memory:",$6,"Disk:",$8"GB","Vcpu:" $13}')"})
+        _store_cache ${cachename#_} result
+    fi
+    _describe -t nova-flavors "Nova Flavors" result
 }
 
 __nova_images() {
