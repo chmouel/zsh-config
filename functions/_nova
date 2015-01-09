@@ -23,11 +23,27 @@ __nova_commands () {
 }
 
 __nova_runningvms() {
-    rets=(${(f)"$(_call_program commands nova list|sed -e '1,3d;$d'|awk '{print $4}')"})
-    _describe -t nova-running-vms "Nova VMS"  rets
+    local cache_policy
+
+    zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+    if [[ -z "$cache_policy" ]]; then
+        zstyle ":completion:${curcontext}:" cache-policy __nova_caching_policy
+    fi
+    cachename="nova_runningvms"
+
+    local expl
+    local -a result
+    if ( [[ ${(P)+cachename} -eq 0 ]] || _cache_invalid ${cachename#_} ) \
+        && ! _retrieve_cache ${cachename#_}; then
+        _message "Searching for ${searchterm}..."
+        result=(${(f)"$(_call_program commands nova list|sed -e '1,3d;$d'|awk '{print $4}')"})
+        echo $result
+        _store_cache ${cachename#_} result
+    fi
+    _wanted runningvms expl 'Running VMS' compadd -a result
 }
 
-__nova_flavors() {  
+__nova_flavors() {
     rets=(${(f)"$(_call_program commands nova flavor-list|sed -e '1,3d;$d' -e 's/ | /|/g;s/| //;s/[ \t]\{1,\}//'|awk -F\| '{print $2":""Memory:"$3" Disk: "$4" Vcpu: "$7}')"})
     _describe -t nova-flavors "Nova Flavors" rets
 }
@@ -51,6 +67,10 @@ __nova_secgroups() {
 
 __nova_subcommand () {
     case "$words[1]" in
+        (delete)
+            _arguments \
+                ':vms:__nova_runningvms'
+            ;;
         (show)
             _arguments \
                 '--minimal[Skips flavor/image lookups when showing servers]' \
@@ -92,7 +112,7 @@ _nova() {
          '--os-cache' \
          '(-): :->command' \
          '(-)*:: :->option-or-argument'
-    case $state in 
+    case $state in
         (command)
             __nova_commands
             ;;
