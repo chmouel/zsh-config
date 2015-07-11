@@ -1,0 +1,134 @@
+#compdef oc
+
+__oc_top_commands() {
+    local rets
+    rets=(login logout project new-project new-app status start-build
+      cancel-build build-logs deploy rollback env expose get describe create
+      process edit update delete logs exec port-forward proxy version config
+      resize stop label help)
+    compadd $rets
+}
+
+__oc_types () {
+    local rets
+    rets=(persistentVolumeClaims persistentVolumes pods nodes build replicationcontrollers
+          deploymentConfigs buildConfigs imageStreams imageStreamTags imageStreamImages route
+          service options template)
+    compadd $rets
+}
+
+__oc_contexts () {
+    local rets
+    rets=($(oc config -o json view| \
+                   python -c 'import json, sys;json = json.loads(sys.stdin.read());print " ".join([v["name"] for v in json["contexts"]])'))
+    compadd $rets
+}
+
+__oc_output () {
+    local rets
+    rets=(json yaml)
+    _describe -t oc-output "OpenShift Output" rets
+}
+
+__oc_build() {
+    local rets
+    rets=($(oc get build|sed '1d'|awk '{print $1}'))
+    compadd $rets
+}
+
+__oc_running-pods () {
+    rets=($(oc get pods|sed '1d'|awk '{print $1}'))
+    _describe -t oc-running-pods "Running Pods" rets
+}
+
+__oc_build () {
+    compadd $(oc get builds|sed '1d'|awk '{print $1}')
+}
+
+__oc_build_configs () {
+    compadd $(oc get bc|sed '1d'|awk '{print $1}')
+}
+
+__oc_project () {
+    compadd $(oc get project|sed '1d'|awk '{print $1}')
+}
+
+
+
+__oc_subcommand () {
+    case "$words[1]" in
+        (config)
+            _arguments \
+                '1: :(view use-context)'
+            ;;
+        (create)
+            _arguments \
+                {-h,--help}"[show help]" \
+                {-f,--file=}"[template file]:filename:_files"
+            ;;
+        (get)
+            _arguments \
+                {-o,--ouput}"[output]:output:(json yaml)" \
+                {-h,--help}"[show help]" \
+                ':octypes:__oc_types'
+            ;;
+        (describe|edit)
+            _arguments \
+                {-h,--help}"[show help]" \
+                ':octypes:__oc_types'
+            ;;
+        (start-build)
+            _arguments '1:ocbuild:__oc_build_configs'
+            ;;
+        (build-logs)
+            _arguments '1:ocbuild:__oc_build'
+            ;;
+        (logs)
+            _arguments '1:ocrunning:__oc_running-pods'
+            ;;
+        (project)
+            _arguments '1:ocrunning:__oc_project'
+            ;;
+        (help)
+            _arguments \
+                ':vmoc_command:__oc_top_commands'
+            ;;
+         (*)
+             _message 'Unkown sub command'
+    esac
+
+    case "$words[2]" in
+        (build)
+            __oc_build
+            ;;
+        (use-context)
+            __oc_contexts
+            ;;
+        (pod|pods)
+            __oc_running-pods
+            ;;
+        (bc|buildConfig)
+            __oc_build_configs
+            ;;
+ 
+    esac
+
+}
+
+_oc () {
+    local curcontext="$curcontext" state
+    _arguments -C \
+        '(-): :->command' \
+        '(-)*:: :->option-or-argument'
+    case $state in
+        (command)
+            __oc_top_commands
+            ;;
+        (option-or-argument)
+            curcontext=${curcontext%:*:*}:oc-$words[1]:
+            __oc_subcommand
+            ;;
+    esac
+}
+
+_oc "$@"
