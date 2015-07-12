@@ -1,0 +1,10 @@
+function oce () {
+    [[ -z $1 ]] && { echo 'I need a pod'; exit 1 ;}
+    oc exec -i -t -p $1 -- bash -il
+}
+
+__oc_running-pods () {
+    compadd $(oc get pods|awk '$3 ~ /^Running$/ { print $1}')
+}
+
+compdef __oc_running-pods oce

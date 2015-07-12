@@ -49,6 +49,10 @@ __oc_build_configs () {
     compadd $(oc get bc|sed '1d'|awk '{print $1}')
 }
 
+__oc_deployment_configs () {
+    compadd $(oc get dc|sed '1d'|awk '{print $1}')
+}
+
 __oc_project () {
     compadd $(oc get project|sed '1d'|awk '{print $1}')
 }
@@ -80,7 +84,7 @@ __oc_subcommand () {
         (start-build)
             _arguments '1:ocbuild:__oc_build_configs'
             ;;
-        (build-logs)
+        (cancel-build|build-logs)
             _arguments '1:ocbuild:__oc_build'
             ;;
         (logs)
@@ -110,7 +114,9 @@ __oc_subcommand () {
         (bc|buildConfig)
             __oc_build_configs
             ;;
- 
+        (dc|deploymentConfigs)
+            __oc_deployment_configs
+            ;;
     esac
 
 }

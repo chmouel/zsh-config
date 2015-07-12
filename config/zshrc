@@ -109,7 +109,6 @@ unset _dircolors
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
-compdef _hosts c
 
 [[ -f $HOME/.shell/hosts/${basehost}-post.sh ]] && source $HOME/.shell/hosts/${basehost}-post.sh
 
