@@ -120,8 +120,36 @@ __oc_subcommand () {
 }
 
 _oc () {
-    local curcontext="$curcontext" state
+    local curcontext="$curcontext" state common_options
+    common_options=(
+        '--alsologtostderr=[log to standard error as well as files]:log also to stderr:(true false)'
+        '--api-version=[The API version to use when talking to the server]:api version:'
+        '--certificate-authority=[Path to a cert. file for the certificate authority.]:certa auth:_files'
+        '--client-certificate=[Path to a client cert file for TLS.]:client cert:_files'
+        '--client-key=[Path to a client key file for TLS.]:client key:_files'
+        '--cluster=[The name of the kubeconfig cluster to use]:cluster:'
+        '--config=[Path to the config file to use for CLI requests.]:config file:_files'
+        '--context=[The name of the kubeconfig context to use]:context:'
+        '--google-json-key=[The Google Cloud Platform Service Account JSON Key to use for authentication.]:google json:'
+        '--httptest.serve=[if non-empty, httptest.NewServer serves on this address and blocks]:httptest:'
+        '--insecure-skip-tls-verify=[If use insecure HTTPS connections.]:insecure:(true false)'
+        '--log-backtrace-at=[when logging hits line file:N, emit a stack trace]:log backtrace:'
+        '--log-dir=[If non-empty, write log files in this directory]:log dir:_directories'
+        '--log-flush-frequency=[Maximum number of seconds between log flushes]:log flush:'
+        '--loglevel=[Set the level of log output (0-5)]:loglevel:(0 1 2 3 4 5)'
+        '--logtostderr=[log to standard error instead of files]:log to stderr:(true false)'
+        '--match-server-version=[Require server version to match client version]:match version:(true false)'
+        {-n,--namespace}'[If present, the namespace scope for this CLI request.]:namespace:__oc_project'
+        '--server=[The address and port of the Kubernetes API server]:server:'
+        '--stderrthreshold=[logs at or above this threshold go to stderr]:stderr:'
+        '--token=[Bearer token for authentication to the API server.]:token:'
+        '--user=[The name of the kubeconfig user to use]:user:'
+        '--v=[log level for V logs]:'
+        '--validate=[If true, use a schema to validate the input before sending it]:validate:(true false)'
+        '--vmodule=[comma-separated list of pattern=N settings for file-filtered logging]:vmodule:')
+
     _arguments -C \
+         ${common_options} \
         '(-): :->command' \
         '(-)*:: :->option-or-argument'
     case $state in
