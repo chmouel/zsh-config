@@ -11,8 +11,10 @@ __oc_top_commands() {
 
 __oc_types () {
     local rets
-    rets=(persistentVolumeClaims pvc persistentVolumes pv pods nodes build rc replicationcontrollers
-          deploymentConfigs buildConfigs imageStreams imageStreamTags imageStreamImages route
+    rets=(persistentVolumeClaims pvc
+          persistentVolumes pv pods nodes build rc replicationcontrollers
+          deploymentConfigs buildConfigs imageStreams
+          imageStreamTags imageStreamImages route
           service options template)
     compadd $rets
 }
@@ -30,6 +32,7 @@ __oc_build () { __oc_get build }
 __oc_build_configs () { __oc_get bc }
 __oc_deployment_configs () { __oc_get dc }
 __oc_project () {__oc_get project }
+__oc_route () {__oc_get route }
 
 __oc_subcommand () {
     case "$words[1]" in
@@ -74,21 +77,12 @@ __oc_subcommand () {
     esac
 
     case "$words[2]" in
-        (build)
-            __oc_build
-            ;;
-        (use-context)
-            __oc_contexts
-            ;;
-        (pod|pods)
-            __oc_running-pods
-            ;;
-        (bc|buildConfig)
-            __oc_build_configs
-            ;;
-        (dc|deploymentConfigs)
-            __oc_deployment_configs
-            ;;
+        (build) __oc_build;;
+        (route) __oc_route;;
+        (use-context) __oc_contexts ;;
+        (pod|pods) __oc_running-pods ;;
+        (bc|buildConfig) __oc_build_configs ;;
+        (dc|deploymentConfigs) __oc_deployment_configs;;
     esac
 
 }
