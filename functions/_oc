@@ -24,38 +24,12 @@ __oc_contexts () {
     compadd $rets
 }
 
-__oc_output () {
-    local rets
-    rets=(json yaml)
-    _describe -t oc-output "OpenShift Output" rets
-}
-
-__oc_build() {
-    local rets
-    rets=($(oc get build|sed '1d'|awk '{print $1}'))
-    compadd $rets
-}
-
-__oc_running-pods () {
-    rets=($(oc get pods|sed '1d'|awk '{print $1}'))
-    _describe -t oc-running-pods "Running Pods" rets
-}
-
-__oc_build () {
-    compadd $(oc get builds|sed '1d'|awk '{print $1}')
-}
-
-__oc_build_configs () {
-    compadd $(oc get bc|sed '1d'|awk '{print $1}')
-}
-
-__oc_deployment_configs () {
-    compadd $(oc get dc|sed '1d'|awk '{print $1}')
-}
-
-__oc_project () {
-    compadd $(oc get project|sed '1d'|awk '{print $1}')
-}
+__oc_get () { compadd $(oc get $1|sed '1d'|awk '{print $1}')}
+__oc_running-pods () { __oc_get pods }
+__oc_build () { __oc_get build }
+__oc_build_configs () { __oc_get bc }
+__oc_deployment_configs () { __oc_get dc }
+__oc_project () {__oc_get project }
 
 __oc_subcommand () {
     case "$words[1]" in
