@@ -129,7 +129,7 @@ _oc () {
         '--client-key=[Path to a client key file for TLS.]:client key:_files'
         '--cluster=[The name of the kubeconfig cluster to use]:cluster:'
         '--config=[Path to the config file to use for CLI requests.]:config file:_files'
-        '--context=[The name of the kubeconfig context to use]:context:'
+        '--context=[The name of the kubeconfig context to use]:context:__oc_contexts'
         '--google-json-key=[The Google Cloud Platform Service Account JSON Key to use for authentication.]:google json:'
         '--httptest.serve=[if non-empty, httptest.NewServer serves on this address and blocks]:httptest:'
         '--insecure-skip-tls-verify=[If use insecure HTTPS connections.]:insecure:(true false)'
