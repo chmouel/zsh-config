@@ -11,7 +11,7 @@ __oc_top_commands() {
 
 __oc_types () {
     local rets
-    rets=(persistentVolumeClaims persistentVolumes pods nodes build replicationcontrollers
+    rets=(persistentVolumeClaims pvc persistentVolumes pv pods nodes build rc replicationcontrollers
           deploymentConfigs buildConfigs imageStreams imageStreamTags imageStreamImages route
           service options template)
     compadd $rets
@@ -56,8 +56,6 @@ __oc_deployment_configs () {
 __oc_project () {
     compadd $(oc get project|sed '1d'|awk '{print $1}')
 }
-
-
 
 __oc_subcommand () {
     case "$words[1]" in
