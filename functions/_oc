@@ -26,8 +26,9 @@ __oc_contexts () {
     compadd $rets
 }
 
-__oc_get () { compadd $(oc get $1|sed '1d'|awk '{print $1}')}
-__oc_running-pods () { __oc_get pods }
+__oc_get () { compadd $(oc get $1|sed '1d'|grep "$2"|awk '{print $1}')}
+__oc_pods () { __oc_get pods}
+__oc_pods_running () { __oc_get pods Running}
 __oc_build () { __oc_get build }
 __oc_build_configs () { __oc_get bc }
 __oc_deployment_configs () { __oc_get dc }
@@ -36,6 +37,13 @@ __oc_route () {__oc_get route }
 
 __oc_subcommand () {
     case "$words[1]" in
+        (exec)
+            _arguments -C -s -S -A "-*" \
+                {-p,--pod}"[Pod name]:pod:__oc_pods_running" \
+                {-i,--stdin}"[Pass stdin to the container]" \
+                {-t,--tty}"[Stdin is a TTY]" \
+                '*::arguments: _normal'
+            ;;
         (config)
             _arguments \
                 '1: :(view use-context)'
@@ -63,7 +71,7 @@ __oc_subcommand () {
             _arguments '1:ocbuild:__oc_build'
             ;;
         (logs)
-            _arguments '1:ocrunning:__oc_running-pods'
+            _arguments '1:ocrunning:__oc_pods'
             ;;
         (project)
             _arguments '1:ocrunning:__oc_project'
@@ -80,7 +88,7 @@ __oc_subcommand () {
         (build) __oc_build;;
         (route) __oc_route;;
         (use-context) __oc_contexts ;;
-        (pod|pods) __oc_running-pods ;;
+        (pod|pods) __oc_pods ;;
         (bc|buildConfig) __oc_build_configs ;;
         (dc|deploymentConfigs) __oc_deployment_configs;;
     esac
