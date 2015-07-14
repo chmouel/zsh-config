@@ -48,7 +48,7 @@ __oc_subcommand () {
                 {-h,--help}"[show help]" \
                 ':octypes:__oc_types'
             ;;
-        (describe|edit|volume)
+        (delete|describe|edit|volume)
             _arguments \
                 {-h,--help}"[show help]" \
                 ':octypes:__oc_types'
