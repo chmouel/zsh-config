@@ -14,7 +14,7 @@ __oc_types () {
     rets=(persistentVolumeClaims pvc
           persistentVolumes pv pods nodes build rc replicationcontrollers
           deploymentConfigs buildConfigs imageStreams
-          imageStreamTags imageStreamImages route
+          imageStreamTags imageStreamImages route project
           service options template)
     compadd $rets
 }
@@ -87,7 +87,8 @@ __oc_subcommand () {
     case "$words[2]" in
         (build) __oc_build;;
         (route) __oc_route;;
-        (use-context) __oc_contexts ;;
+        (use-context) __oc_contexts;;
+        (project) __oc_project;;
         (pod|pods) __oc_pods ;;
         (bc|buildConfig) __oc_build_configs ;;
         (dc|deploymentConfigs) __oc_deployment_configs;;
