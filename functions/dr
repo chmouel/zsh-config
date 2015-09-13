@@ -81,3 +81,4 @@ while (( $# > 0 )); do
   shift
 done
 
+# vim: ft=zsh

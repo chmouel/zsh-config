@@ -12,3 +12,6 @@ env time git --git-dir="$d" repack -afd --window=250 --depth=250
 echo started $start
 date
 du -sh "$d"
+
+
+# vim: ft=zsh

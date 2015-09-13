@@ -1,4 +1,3 @@
-# vim: ft=bash
 local ACK
 local ARG
 
@@ -19,3 +18,5 @@ elif [[ -n ${ACK} ]];then
 else
     grep -r $@ .
 fi
+
+# vim: ft=zsh
