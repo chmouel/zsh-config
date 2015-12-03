@@ -108,7 +108,7 @@ __nova_secgroups() {
 
 __nova_subcommand () {
     case "$words[1]" in
-        (delete)
+        (console-log|delete)
             _arguments \
                 ':vms:__nova_runningvms'
             ;;
