@@ -106,6 +106,13 @@ __nova_secgroups() {
 }
 
 
+__nova_floatingips() {
+    local rets=(${(f)"$(_call_program commands nova floating-ip-list|sed '1,3d'|awk '{print $4}')"})
+    _describe -t nova-floatingips "Nova Floatings"  rets
+
+}
+
+
 __nova_subcommand () {
     case "$words[1]" in
         (console-log|delete)
@@ -136,6 +143,10 @@ __nova_subcommand () {
             _arguments \
                 ':images:__nova_secgroups'
             ;;
+        (floating-ip-associate)
+            _arguments -C \
+            '1:floating-ip-associates:__nova_runningvms' \
+            ':floating-ip-associates:__nova_floatingips' \
         (help)
             _arguments \
                 ':vms:__nova_commands'
