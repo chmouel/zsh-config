@@ -41,8 +41,8 @@ function precmd {
     venv="[%{$fg_bold[yellow]%}${VIRTUAL_ENV##*/}%{$reset_color%}]"
 
     if [[ -n ${OPENSHIFT_PROMPT} ]];then
-        eval $(oc config view -o json|python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print ' '.join([('_oc_namepsace='+lo['context']['namespace'],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0])")
-    export OPENSHIFT_PROMPT="(%B$_oc_namepsace/${_oc_user}%b)"
+        eval $(oc config view -o json|python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print ' '.join([('_oc_namepsace='+lo['context']['namespace'],'_oc_cluster='+lo['context']['cluster'],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0])")
+    export OPENSHIFT_PROMPT="(%B$_oc_namepsace/${_oc_cluster}%b)"
     fi
     
     if [[ $reply == 0 ]];then
