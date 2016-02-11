@@ -10,6 +10,11 @@ local success
 local file_name
 local extract_dir
 
+type -p dtrx >/dev/null 2>/dev/null && {
+    dtrx $@
+    return
+}
+
 if (( $# == 0 )); then
   cat >&2 <<EOF
 usage: $0 [-option] [file ...]
