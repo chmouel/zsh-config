@@ -35,8 +35,7 @@ function precmd {
     if [[ -n ${CUSTOM_PROMPT} ]];then
         return
     fi
-    git ls-files --other --exclude-standard 2> /dev/null >/dev/null
-    reply=$?
+    vcs_info
 
     venv="[%{$fg_bold[yellow]%}${VIRTUAL_ENV##*/}%{$reset_color%}]"
 
@@ -45,8 +44,7 @@ function precmd {
     export OPENSHIFT_PROMPT="(%B$_oc_namepsace/${_oc_user}/${_oc_cluster}%b)"
     fi
 
-    if [[ $reply == 0 ]];then
-        vcs_info
+    if [[ -n ${vcs_info_msg_0_} ]];then
         export RPROMPT=${vcs_info_msg_0_}${VIRTUAL_ENV+$venv}${OPENSHIFT_PROMPT}
     else
         export RPROMPT="${VIRTUAL_ENV+$venv}${OPENSHIFT_PROMPT}"
