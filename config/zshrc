@@ -98,8 +98,8 @@ bindkey -e "^[z" zap-to-char
 source $confdir/config/termsupport.zsh
 
 
-_dircolors=$(whence dircolors)
-[[[ -z ${_dircolors} ]] && _dircolors=$(whence gdircolors)
+_dircolors=$(whence dircolors) 
+[[ -z ${_dircolors} ]] && _dircolors=$(whence gdircolors)
 #LS Colors in Completion
 [[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
     export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
