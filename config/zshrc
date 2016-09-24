@@ -80,8 +80,8 @@ zstyle ':completion:*' special-dirs true
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
 #Auto quote URL
-autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
+#autoload -U url-quote-magic
+#zle -N self-insert url-quote-magic
 
 #Keys
 stty -ixon #disable c-q c-s
