@@ -1,0 +1,11 @@
+function dl () {
+    local tempf tempf2 random
+    tempf=$(randomword)
+    tempf2=$(randomword)
+    [[ -z ${1} ]] && { echo "no url!"; return 1 ;}
+    [[ ${url} == "-n" ]] && { random="" ; shift ;} || random="-o ${tempf}${tempf2}.mp4"
+    url=$1
+
+    aria2c $random --file-allocation=none --continue=true --max-connection-per-server=5 --max-connection-per-server=5 --min-split-size=10M ${url}
+
+}
