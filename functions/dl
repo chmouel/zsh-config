@@ -6,6 +6,16 @@ function dl () {
     [[ ${url} == "-n" ]] && { random="" ; shift ;} || random="-o ${tempf}${tempf2}.mp4"
     url=$1
 
-    aria2c $random --file-allocation=none --continue=true --max-connection-per-server=5 --max-connection-per-server=5 --min-split-size=10M ${url}
+    echo aria2c $random --file-allocation=none --continue=true --max-connection-per-server=5 --max-connection-per-server=5 --min-split-size=10M ${url}
+    aria2c $random --file-allocation=none --continue=true --max-connection-per-server=5 --max-connection-per-server=5 --min-split-size=10M ${url} || {
+        echo -n "Delete [yN]: "
+        read -q
+        if [[ ${REPLY} == y ]];then
+            echo
+            rm -vf ${tempf}${tempf2}.mp4*
+        fi
+    }
 
 }
+
+# vim: ft=zsh
