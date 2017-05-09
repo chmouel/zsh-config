@@ -9,13 +9,13 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:git*' formats "%{$reset_color%}%{$fg[red]%}%c%u%{$reset_color%}[%{$fg[magenta]%}%b%{$reset_color%}]%{$reset_color%}"
 
 # Show untracked file
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
-+vi-git-untracked(){
-    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
-        git status --porcelain | grep '??' &> /dev/null ; then
-        hook_com[staged]+='T'
-    fi
-}
+#zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
+#+vi-git-untracked(){
+#    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+#        git status --porcelain | grep '??' &> /dev/null ; then
+#        hook_com[staged]+='T'
+#    fi
+#}
 
 #usage: title short_tab_title looooooooooooooooooooooggggggg_windows_title
 #http://www.faqs.org/docs/Linux-mini/Xterm-Title.html#ss3.1
