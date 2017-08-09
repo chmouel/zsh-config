@@ -58,6 +58,7 @@ export HISTSIZE HISTSIZE SAVEHIST
 setopt extended_history hist_ignore_all_dups \
     append_history hist_ignore_dups hist_ignore_space \
     hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
+    nohistignorespace
 
 type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
 
