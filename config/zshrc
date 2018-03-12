@@ -27,10 +27,13 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 #PS1
 if [[ -z $CUSTOM_PROMPT ]];then
-    [[ -z $hostColor ]] && hostColor=white
-    [[ -z $userColor ]] && userColor=yellow
-    [[ -z $restColor ]] && restColor=cyan
-    PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
+    #[[ -z $hostColor ]] && hostColor=white
+    #[[ -z $userColor ]] && userColor=yellow
+    #[[ -z $restColor ]] && restColor=cyan
+    #PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
+	autoload -U promptinit
+	promptinit
+	prompt adam1 black
 fi
 
 #Zsh: Alias
@@ -43,7 +46,6 @@ alias o='popd'
 #Considers only alphanumeric as work like in bash
 autoload -U select-word-style
 select-word-style bash
-
 
 # Path
 typeset -U path
