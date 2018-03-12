@@ -35,7 +35,7 @@ fi
 
 #Zsh: Alias
 alias -g L="|less"
-alias -g MJ="| python -mjson.tool"
+type -p jq >/dev/null 2>/dev/null && alias -g MJ="| jq '.'" || alias -g MJ="| python -mjson.tool"
 alias -g EEL=' 2>&1 | less'
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
