@@ -25,8 +25,10 @@ ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
 
 #Appears when you have the prompt
 function precmd {
+	local buildp
     [[ -n ${CUSTOM_PROMPT} ]] && return
-
     vcs_info
-    export RPROMPT="${vcs_info_msg_0_}${EXTRA_PROMPT}"
+	buildp=${vcs_info_msg_0_}
+	[[ -n ${EXTRA_PROMPT} ]] && buildp+="%B%F{yellow}|%F{normal}${EXTRA_PROMPT}"
+	[[ -n ${buildp} ]] && export RPROMPT="${buildp}"
 }
