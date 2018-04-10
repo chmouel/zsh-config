@@ -27,8 +27,14 @@ ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
 function precmd {
 	local buildp
     [[ -n ${CUSTOM_PROMPT} ]] && return
+
+    if [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != "|"* ]];then
+		eval $(oc config view -o json|python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print ' '.join([('_oc_namepsace='+lo['context']['namespace'],'_oc_clustr='+lo['context']['cluster'].split(':')[0],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0])")
+		OPENSHIFT_PROJECT="|%B$_oc_namepsace%{$reset_color%}"
+    fi
+
     vcs_info
 	buildp=${vcs_info_msg_0_}
-	[[ -n ${EXTRA_PROMPT} ]] && buildp+="%B%F{yellow}|%F{normal}${EXTRA_PROMPT}"
-	[[ -n ${buildp} ]] && export RPROMPT="${buildp}"
+	[[ -n ${EXTRA_PROMPT} ]] && buildp+="%B%F{yellow}|%F{normal}${EXTRA_PROMPT}${OPENSHIFT_PROJECT}"
+	[[ -n ${buildp} ]] && export RPROMPT="${buildp}" || export RPROMPT=""
 }
