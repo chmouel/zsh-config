@@ -22,7 +22,6 @@ function title {
 
 ZSH_THEME_TERM_TAB_TITLE_IDLE="%12<..<%~%<<" #15 char left truncated PWD
 ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
-
 #Appears when you have the prompt
 function precmd {
 	local buildp
