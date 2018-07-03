@@ -34,6 +34,7 @@ function precmd {
 
     vcs_info
 	buildp=${vcs_info_msg_0_}
-	[[ -n ${EXTRA_PROMPT} ]] && buildp+="%B%F{yellow}|%F{normal}${EXTRA_PROMPT}${OPENSHIFT_PROJECT}"
+	[[ -n ${EXTRA_PROMPT} && -n ${buildp} ]] && buildp+="|%B%F{yellow}"
+	[[ -n ${EXTRA_PROMPT} ]] && buildp+="${EXTRA_PROMPT}${OPENSHIFT_PROJECT}"
 	[[ -n ${buildp} ]] && export RPROMPT="${buildp}" || export RPROMPT=""
 }
