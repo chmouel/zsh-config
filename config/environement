@@ -7,8 +7,6 @@ export EDITOR LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
-export GREP_COLOR='1;33'
-
 # We take care of our own venv showing
 export VIRTUAL_ENV_DISABLE_PROMPT=true
 

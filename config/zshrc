@@ -37,8 +37,8 @@ if [[ -z $CUSTOM_PROMPT ]];then
 fi
 
 #Zsh: Alias
-alias -g L="|less"
-type -p jq >/dev/null 2>/dev/null && alias -g MJ="| jq '.'" || alias -g MJ="| python -mjson.tool"
+alias -g L="|less -R"
+type -p jq >/dev/null 2>/dev/null && alias -g MJ="| jq -C '.'" || alias -g MJ="| python -mjson.tool"
 alias -g EEL=' 2>&1 | less'
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
@@ -46,6 +46,7 @@ alias o='popd'
 #Considers only alphanumeric as work like in bash
 autoload -U select-word-style
 select-word-style bash
+
 
 # Path
 typeset -U path
@@ -78,6 +79,9 @@ zstyle ':completion:*' cache-path $HOME/.shell/cache
 
 #Completion style
 zstyle ':completion:*' special-dirs true
+
+# Completion menu
+zstyle ':completion:*' menu select
 
 # Ignore completion functions for commands you don’t have
 zstyle ':completion:*:functions' ignored-patterns '_*'
