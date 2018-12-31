@@ -1,0 +1,18 @@
+local root=~/GIT/go/src/github.com/
+local res results
+local fnd=$1
+
+if [[ -n ${fnd} ]];then
+    local zz=$(zshz -e ${fnd})
+    [[ -n ${zz} ]] && { cd ${zz};return;}
+
+    local results=($(fd -d 2 -t d . ${root}|gegrep -i "${fnd}"))
+    [[ ${#results} == 1 ]] && { echo ${results}; cd ${results} ; return;}
+    [[ ${#results} == 0 ]] && { echo "No results found for ${fnd}"; return 1;}
+    res=$(fd -d 2 -t d . ${root}|gegrep -i "${fnd}"|fzf)
+    [[ -n ${res} ]] && cd ${res}
+    return
+fi
+
+res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf)
+[[ -n ${res} ]] && cd ${root}${res}
