@@ -1,10 +1,24 @@
 local root=~/GIT/go/src/github.com/
 local res results
+
+while getopts "n" opt; do
+  if [[ $opt = "?" ]]; then
+    print -r -- "$myname: unrecognized option: -$OPTARG" >&2
+    return 1
+  fi
+  eval "opt_$opt=\${OPTARG:--\$opt}"
+done
+(( OPTIND > 1 )) && shift $(( OPTIND - 1 ))
+
 local fnd=$1
+type -f zshz 2>/dev/null >/dev/null || opt_n=true
 
 if [[ -n ${fnd} ]];then
-    local zz=$(zshz -e ${fnd})
-    [[ -n ${zz} ]] && { cd ${zz};return;}
+
+    [[ -z ${opt_n} ]] && {
+        local zz=$(zshz -e ${fnd})
+        [[ -n ${zz} ]] && { echo "ZSHZ: ${zz}"; cd ${zz}; return;}
+    }
 
     local results=($(fd -d 2 -t d . ${root}|gegrep -i "${fnd}"))
     [[ ${#results} == 1 ]] && { echo ${results}; cd ${results} ; return;}
@@ -15,4 +29,4 @@ if [[ -n ${fnd} ]];then
 fi
 
 res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf)
-[[ -n ${res} ]] && cd ${root}${res}
+[[ -n ${res} ]] && {echo ${root}${res}; cd ${root}${res} ; }
