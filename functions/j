@@ -1,7 +1,7 @@
 local root=~/GIT/go/src/github.com/
-local res results
+local res results args
 
-while getopts "n" opt; do
+while getopts "np" opt; do
   if [[ $opt = "?" ]]; then
     print -r -- "$myname: unrecognized option: -$OPTARG" >&2
     return 1
@@ -17,16 +17,14 @@ if [[ -n ${fnd} ]];then
 
     [[ -z ${opt_n} ]] && {
         local zz=$(zshz -e ${fnd})
-        [[ -n ${zz} ]] && { echo "ZSHZ: ${zz}"; cd ${zz}; return;}
+        [[ -n ${zz} ]] && { echo "ZSHZ: ${zz}"; [[ -z ${opt_p} ]] && cd ${zz}; return;}
     }
 
     local results=($(fd -d 2 -t d . ${root}|gegrep -i "${fnd}"))
-    [[ ${#results} == 1 ]] && { echo ${results}; cd ${results} ; return;}
+    [[ ${#results} == 1 ]] && { echo ${results}; [[ -z ${opt_p} ]] && cd ${results} ; return;}
     [[ ${#results} == 0 ]] && { echo "No results found for ${fnd}"; return 1;}
-    res=$(fd -d 2 -t d . ${root}|gegrep -i "${fnd}"|fzf)
-    [[ -n ${res} ]] && cd ${res}
-    return
+    args="-q ${fnd}"
 fi
 
-res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf)
-[[ -n ${res} ]] && {echo ${root}${res}; cd ${root}${res} ; }
+res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf ${args})
+[[ -n ${res} ]] && {echo ${root}${res}; [[ -z ${opt_p} ]]  && cd ${root}${res} ; }
