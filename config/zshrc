@@ -33,7 +33,7 @@ if [[ -z $CUSTOM_PROMPT ]];then
     #PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
 	autoload -U promptinit
 	promptinit
-	prompt adam1 black
+	prompt chmou
 fi
 
 #Zsh: Alias
@@ -104,7 +104,7 @@ bindkey -e "^[z" zap-to-char
 source $confdir/config/termsupport.zsh
 
 
-_dircolors=$(whence dircolors) 
+_dircolors=$(whence dircolors)
 [[ -z ${_dircolors} ]] && _dircolors=$(whence gdircolors)
 #LS Colors in Completion
 [[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
