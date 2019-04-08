@@ -31,5 +31,6 @@ alias e="emacsclient -n"
 
 alias fina='fin -a'
 type -p systemctl &>/dev/null && alias ss="sudo systemctl"
+type -p tailf &>/dev/null || alias tailf="tail -f"
 
 alias grep="grep --color=auto"
