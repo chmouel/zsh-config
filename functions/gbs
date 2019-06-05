@@ -1,0 +1,1 @@
+git checkout $(git branch --format '%(refname:short)' -l|grep -v heads/|fzf --height 80% --border --tac --preview "git log --no-merges --patch-with-stat -1 {}|bat --language=diff --color=always" --bind CTRL-P:preview-up,CTRL-N:preview-down,CTRL-SPACE:preview-page-down)
