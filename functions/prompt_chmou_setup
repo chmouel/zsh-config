@@ -110,7 +110,7 @@ prompt_chmou_precmd() {
 
     if [[ $prompt_length -lt 40 ]]; then
         path_prompt="%B%F{$prompt_chmou_color2}$(spaceship_dir)%F{white}"
-        export RPROMPT=${${${extrap[2,-1]}// /%B%F{yellow}|%B%F{white}}}
+        RPROMPT=${vcs_info_msg_0_}
     else
         space_left=$(($COLUMNS - $#base_prompt_expanded_no_color - 2))
         path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir)%F{normal}${extrap}$prompt_newline%F{white}"
