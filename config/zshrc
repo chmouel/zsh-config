@@ -17,7 +17,13 @@ fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(x:t)
 for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
-#get environement and alias
+# Get zplug if it exists first
+[[ -e $HOME/.zplug/init.zsh ]] && {
+	source $HOME/.zplug/init.zsh
+	[[ -e $confdir/config/plugins ]] && for i ($(cat $confdir/config/plugins)) zplug $i
+}
+
+# get environement and alias
 [[ -f $confdir/config/environement ]] && source $confdir/config/environement
 [[ -f $confdir/config/alias ]] && source $confdir/config/alias
 [[ -f $HOME/.shell/hosts/$basehost.sh ]] && source $HOME/.shell/hosts/$basehost.sh
@@ -116,7 +122,11 @@ unset _dircolors
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
 
+# load conifg
 [[ -f $HOME/.shell/hosts/${basehost}-post.sh ]] && source $HOME/.shell/hosts/${basehost}-post.sh
+
+# load zplugs
+which zplug 2>/dev/null >/dev/null && zplug load
 
 #Unsetting
 unset basehost confdir func user_fun_path reload hostColor userColor restColor
