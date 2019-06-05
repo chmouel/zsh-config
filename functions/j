@@ -26,5 +26,5 @@ if [[ -n ${fnd} ]];then
     args="-q ${fnd}"
 fi
 
-res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf ${args})
+res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf --height 50% --border ${args})
 [[ -n ${res} ]] && {echo ${root}${res}; [[ -z ${opt_p} ]]  && cd ${root}${res} ; }
