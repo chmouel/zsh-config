@@ -20,7 +20,6 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 # Get zplug if it exists first
 [[ -e $HOME/.zplug/init.zsh ]] && {
 	source $HOME/.zplug/init.zsh
-	[[ -e $confdir/config/plugins ]] && for i ($(cat $confdir/config/plugins)) zplug $i
 }
 
 # get environement and alias
@@ -126,7 +125,7 @@ compdef _user_at_host ssh-copy-id
 [[ -f $HOME/.shell/hosts/${basehost}-post.sh ]] && source $HOME/.shell/hosts/${basehost}-post.sh
 
 # load zplugs
-which zplug 2>/dev/null >/dev/null && zplug load
+which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
 
 #Unsetting
 unset basehost confdir func user_fun_path reload hostColor userColor restColor
