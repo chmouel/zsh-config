@@ -1,0 +1,124 @@
+# chmou prompt theme
+
+prompt_chmou_help() {
+    cat <<'EOF'
+This prompt is color-scheme-able.  You can invoke it thus:
+
+  prompt chmou [<color1> [<color2> [<color3>]]]
+
+where the colors are for the user@host background, current working
+directory, and current working directory if the prompt is split over
+two lines respectively.  The default colors are blue, cyan and green.
+This theme works best with a dark background.
+
+Recommended fonts for this theme: nexus or vga or similar.  If you
+don't have any of these, then specify the `plain' option to use 7-bit
+replacements for the 8-bit characters.
+EOF
+}
+
+prompt_chmou_setup() {
+    setopt localoptions nowarncreateglobal
+    prompt_chmou_color1=${1:-'black'}
+    prompt_chmou_color2=${2:-'magenta'}
+    prompt_chmou_color3=${3:-'green'}
+
+    base_prompt="%K{$prompt_chmou_color1}%n@%m%k "
+    post_prompt="%b%f%k"
+
+    setopt localoptions extendedglob
+    base_prompt_no_color="${base_prompt//(%K{[^\\\}]#\}|%k)/}"
+    post_prompt_no_color="${post_prompt//(%K{[^\\\}]#\}|%k)/}"
+
+    add-zsh-hook precmd prompt_chmou_precmd
+}
+
+
+spaceship_dir() {
+  local 'dir' 'trunc_prefix'
+  local inGit=${1}
+  local SPACESHIP_DIR_LOCK_COLOR="${SPACESHIP_DIR_LOCK_COLOR="red"}"
+  local SPACESHIP_DIR_LOCK_SYMBOL="${SPACESHIP_DIR_LOCK_SYMBOL="🔒"}"
+  local SPACESHIP_DIR_COLOR="${SPACESHIP_DIR_COLOR="green"}"
+  local SPACESHIP_DIR_TRUNC_PREFIX="${SPACESHIP_DIR_TRUNC_PREFIX=".../"}"
+  local SPACESHIP_DIR_TRUNC=${SPACESHIP_DIR_TRUNC="14"}
+
+  # Threat repo root as a top-level directory or not
+  if [[ -n ${vcs_info_msg_0_} ]];then
+    local git_root=$(git rev-parse --show-toplevel)
+
+    # Check if the parent of the $git_root is "/"
+    if [[ $git_root:h == / ]]; then
+        trunc_prefix=/
+    else
+        trunc_prefix=$SPACESHIP_DIR_TRUNC_PREFIX
+    fi
+
+    # `${NAME#PATTERN}` removes a leading prefix PATTERN from NAME.
+    # `$~~` avoids `GLOB_SUBST` so that `$git_root` won't actually be
+    # considered a pattern and matched literally, even if someone turns that on.
+    # `$git_root` has symlinks resolved, so we use `${PWD:A}` which resolves
+    # symlinks in the working directory.
+    # See "Parameter Expansion" under the Zsh manual.
+    dir="$trunc_prefix$git_root:t${${PWD:A}#$~~git_root}"
+  else
+    if [[ SPACESHIP_DIR_TRUNC -gt 0 ]]; then
+      # `%(N~|TRUE-TEXT|FALSE-TEXT)` replaces `TRUE-TEXT` if the current path,
+      # with prefix replacement, has at least N elements relative to the root
+      # directory else `FALSE-TEXT`.
+      # See "Prompt Expansion" under the Zsh manual.
+      trunc_prefix="%($((SPACESHIP_DIR_TRUNC + 1))~|$SPACESHIP_DIR_TRUNC_PREFIX|)"
+    fi
+
+    dir="$trunc_prefix%${SPACESHIP_DIR_TRUNC}~"
+  fi
+
+  if [[ ! -w . ]]; then
+    SPACESHIP_DIR_SUFFIX=" %F{$SPACESHIP_DIR_LOCK_COLOR}${SPACESHIP_DIR_LOCK_SYMBOL}%f${SPACESHIP_DIR_SUFFIX}"
+  fi
+
+  echo -n "%{%B%F{${SPACESHIP_DIR_COLOR}}%}" # set color
+  echo -n "${dir}"     # section content
+  echo -n "%{%b%f%}"     # unset color
+
+  echo -n "%{%B%}" # reset bold, if it was diabled before
+  echo -n "${SPACESHIP_DIR_SUFFIX}"
+  echo -n "%{%b%}" # unset bold
+}
+
+
+prompt_chmou_precmd() {
+    setopt localoptions noxtrace nowarncreateglobal
+    local base_prompt_expanded_no_color base_prompt_etc
+    local prompt_length space_left cpmsg extrap
+
+    vcs_info
+    extrap=""
+    [[ -n ${EXTRA_PROMPT} ]] && extrap+=" ${EXTRA_PROMPT}"
+    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} == 1 ]] && {
+        eval $(oc config view -o json | python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print ' '.join([('_oc_namepsace='+lo['context'].get('namespace','NONE'),'_oc_clustr='+lo['context']['cluster'].split(':')[0],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0])")
+        OPENSHIFT_PROJECT="%B%F{yellow}${_oc_namepsace}%B"
+    }
+    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != 1 ]] && extrap+="::${OPENSHIFT_PROJECT}"
+    [[ -n ${vcs_info_msg_0_} ]] && {
+        extrap+=" ${vcs_info_msg_0_}"
+    }
+
+    base_prompt_expanded_no_color=$(print -P "$base_prompt_no_color")
+    base_prompt_etc=$(print -P "$base_prompt%(4~|...|)%3~")
+    prompt_length=${#base_prompt_etc}
+
+    if [[ $prompt_length -lt 40 ]]; then
+        path_prompt="%B%F{$prompt_chmou_color2}$(spaceship_dir)%F{white}"
+        export RPROMPT=${${${extrap[2,-1]}// /%B%F{yellow}|%B%F{white}}}
+    else
+        space_left=$(($COLUMNS - $#base_prompt_expanded_no_color - 2))
+        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir)%F{normal}${extrap}$prompt_newline%F{white}"
+        RPROMPT=""
+    fi
+    PS1="$base_prompt$path_prompt %# $post_prompt"
+    PS2="$base_prompt$path_prompt %_> $post_prompt"
+    PS3="$base_prompt$path_prompt ?# $post_prompt"
+}
+
+prompt_chmou_setup "$@"
