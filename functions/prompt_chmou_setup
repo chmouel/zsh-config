@@ -93,15 +93,15 @@ prompt_chmou_precmd() {
     local prompt_length space_left cpmsg extrap
 
     vcs_info
-    extrap=""
-    [[ -n ${EXTRA_PROMPT} ]] && extrap+=" ⛵ ${EXTRA_PROMPT:u} "
+    extrap=()
+    [[ -n ${EXTRA_PROMPT} ]] && extrap="🎯 %F{magenta}${EXTRA_PROMPT:u}%F"
     [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} == 1 ]] && {
         eval $(oc config view -o json | python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print ' '.join([('_oc_namepsace='+lo['context'].get('namespace','NONE'),'_oc_clustr='+lo['context']['cluster'].split(':')[0],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0])")
-        OPENSHIFT_PROJECT="%B%F{yellow}${_oc_namepsace}%B"
+        OPENSHIFT_PROJECT="%F{yellow}${_oc_namepsace}%B"
     }
-    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != 1 ]] && extrap+="🌊 ${OPENSHIFT_PROJECT} "
+    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != 1 ]] && extrap="${extrap}%F{red}::%B${OPENSHIFT_PROJECT} "
     [[ -n ${vcs_info_msg_0_} ]] && {
-        extrap+="🏹${vcs_info_msg_0_}"
+        extrap+="🔀${vcs_info_msg_0_}"
     }
 
     base_prompt_expanded_no_color=$(print -P "$base_prompt_no_color")
@@ -113,7 +113,7 @@ prompt_chmou_precmd() {
         RPROMPT=${vcs_info_msg_0_}
     else
         space_left=$(($COLUMNS - $#base_prompt_expanded_no_color - 2))
-        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir)${extrap}$prompt_newline%F{white}"
+        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir) ${extrap}$prompt_newline%F{white}"
         RPROMPT=""
     fi
     PS1="$base_prompt$path_prompt%# $post_prompt"
