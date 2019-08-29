@@ -7,11 +7,5 @@ export EDITOR LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
-# We take care of our own venv showing
-export VIRTUAL_ENV_DISABLE_PROMPT=true
-
-_ARCHI=$(uname)
-export _ARCHI
-
 type -p lessfile &>/dev/null  && eval $(lessfile)
 umask 022

@@ -32,10 +32,6 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 #PS1
 if [[ -z $CUSTOM_PROMPT ]];then
-    #[[ -z $hostColor ]] && hostColor=white
-    #[[ -z $userColor ]] && userColor=yellow
-    #[[ -z $restColor ]] && restColor=cyan
-    #PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
     autoload -U promptinit
     promptinit
     prompt chmou
@@ -43,7 +39,7 @@ fi
 
 #Zsh: Alias
 alias -g L="|less"
-if (( $+commands[jq] )); then alias -g MJ="| jq -C '.'" ;else alias -g MJ="| python -mjson.tool";fi
+(( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
 
 alias -g EEL=' 2>&1 | less'
 alias so="source $HOME/.zshrc reloading && unset reload"
@@ -65,16 +61,16 @@ SAVEHIST="5000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
 setopt extended_history hist_ignore_all_dups \
-append_history hist_ignore_dups hist_ignore_space \
-hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
-nohistignorespace
+       append_history hist_ignore_dups hist_ignore_space \
+       hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
+       nohistignorespace
 
 type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
 
 #setopt
 setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
-AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD completeinword \
-interactivecomments nopromptcr alwaystoend
+       AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD completeinword \
+       interactivecomments nopromptcr alwaystoend
 
 #Ignore stuff starting by _ for the completion.
 export CORRECT_IGNORE="_*"
@@ -117,17 +113,12 @@ bindkey '^[#' pound-insert
 zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
-source $confdir/config/appearance
-
-
 _dircolors=$(whence dircolors)
 [[ -z ${_dircolors} ]] && _dircolors=$(whence gdircolors)
 #LS Colors in Completion
 [[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
 export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
-
-unset _dircolors
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
@@ -139,9 +130,9 @@ compdef _user_at_host ssh-copy-id
 which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
 
 #Unsetting
-unset basehost confdir func user_fun_path reload hostColor userColor restColor
+unset basehost confdir func user_fun_path reload _dircolors
 
-
+# Emacs Tramp
 if [[ "$TERM" = "dumb" ]];then
     unsetopt zle
     unsetopt prompt_cr
