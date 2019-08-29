@@ -42,7 +42,7 @@ if [[ -z $CUSTOM_PROMPT ]];then
 fi
 
 #Zsh: Alias
-alias -g L="|most"
+alias -g L="|bat"
 type -p jq >/dev/null 2>/dev/null && alias -g MJ="| jq -C '.'" || alias -g MJ="| python -mjson.tool"
 alias -g EEL=' 2>&1 | less'
 alias so="source $HOME/.zshrc reloading && unset reload"
