@@ -1,7 +1,6 @@
 local root=${GOPATH}/src/github.com/
 local opt_n opt_p opt fnd
-local res results args
-local grepcmd=grep;type -p ggrep >/dev/null 2>/dev/null && grepcmd=ggrep # osx brew grep detection
+local res  args
 local sedcmd=sed;type -p gsed >/dev/null 2>/dev/null && sedcmd=gsed # osx brew sed detection
 
 while getopts ":np" opt;do
@@ -26,21 +25,16 @@ if [[ -n ${fnd} ]];then
 			return
 		}
 	}
-	results=($(fd -d 2 -t d ${fnd} ${root}))
-
-	[[ ${#results} == 1 ]] && {
-		[[ -z ${opt_p} ]] && cd ${results}
-		return
-	}
-	[[ ${#results} == 0 ]] && {
-		echo "No results found for ${fnd}"
-		return 1
-	}
 	args="-q ${fnd}"
 fi
 
-[[ -z ${results} ]] && results=($(fd -d 2 -t d . ${root}))
-res=$(echo ${results}|${sedcmd} -e "s/ /\n/g;"|${sedcmd} -e "s,${root},,;"|fzf --layout=reverse-list --header="Choose a directory to jump to:" --min-height=10 --height 30% --border ${args})
+res=$(fd -d 2 -t d . ${root} | \
+          ${sedcmd} -e "s,${root},,;"| \
+          fzf -1 --layout=reverse-list \
+              --header="Choose a directory to jump to:" \
+              --min-height=10 --height 30% \
+              --border ${args}
+   )
 [[ -n ${res} ]] && {
 	echo ${root}${res}
 	[[ -z ${opt_p} ]] && cd ${root}${res}
