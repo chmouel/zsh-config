@@ -1,6 +1,6 @@
 local root=${GOPATH}/src/github.com/
 local opt_n opt_p opt fnd
-local res  args
+local res args
 local sedcmd=sed;type -p gsed >/dev/null 2>/dev/null && sedcmd=gsed # osx brew sed detection
 
 while getopts ":np" opt;do
