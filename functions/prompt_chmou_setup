@@ -94,12 +94,12 @@ prompt_chmou_precmd() {
 
     vcs_info
     extrap=();sextrap=()
-    [[ -n ${EXTRA_PROMPT} ]] && {sextrap="🎯:${EXTRA_PROMPT:u}";extrap=$sextrap ;}
+    [[ -n ${EXTRA_PROMPT} ]] && {sextrap="${EXTRA_PROMPT:u}";extrap=$sextrap ;}
     [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} == 1 ]] && {
         eval $(oc config view -o json | python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print ' '.join([('_oc_namepsace='+lo['context'].get('namespace','NONE'),'_oc_clustr='+lo['context']['cluster'].split(':')[0],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0])")
-        OPENSHIFT_PROJECT="%F{yellow}${_oc_namepsace}%B"
+        OPENSHIFT_PROJECT="${_oc_namepsace}"
     }
-    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != 1 ]] && extrap="${extrap}%B%F{magenta}::%F${OPENSHIFT_PROJECT} %F"
+    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != 1 ]] && extrap="%F{yellow}%B${extrap}%F{red}::%F{reset}%F{magenta}${OPENSHIFT_PROJECT}%F{reset} "
     [[ -n ${vcs_info_msg_0_} ]] && {
         extrap+="%B%F{white}${vcs_info_msg_0_}%B"
         sextrap+="${vcs_info_msg_0_}"
