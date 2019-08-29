@@ -1,30 +1,43 @@
-local root=~/GIT/go/src/github.com/
+local root=${GOPATH}/src/github.com/
+local opt_n opt_p opt fnd
 local res results args
+local grepcmd=grep;type -p ggrep >/dev/null 2>/dev/null && grepcmd=ggrep #osx brew grep detection
 
-while getopts "np" opt; do
-  if [[ $opt = "?" ]]; then
-    print -r -- "$myname: unrecognized option: -$OPTARG" >&2
-    return 1
-  fi
-  eval "opt_$opt=\${OPTARG:--\$opt}"
+while getopts ":np" opt;do
+    case $opt in
+        n) opt_n=true;;
+        p) opt_p=true;;
+        \*) print nothing: $OPTARG; usage;;
+        \?) print invalid option: $OPTARG; usage;;
+    esac
 done
 (( OPTIND > 1 )) && shift $(( OPTIND - 1 ))
 
-local fnd=$1
-type -f zshz 2>/dev/null >/dev/null || opt_n=true
-
+fnd=$1
+type -f zshz 2> /dev/null > /dev/null || opt_n=true
 if [[ -n ${fnd} ]];then
-
-    [[ -z ${opt_n} ]] && {
-        local zz=$(zshz -e ${fnd})
-        [[ -n ${zz} ]] && { echo "ZSHZ: ${zz}"; [[ -z ${opt_p} ]] && cd ${zz}; return;}
-    }
-
-    local results=($(fd -d 2 -t d . ${root}|gegrep -i "${fnd}"))
-    [[ ${#results} == 1 ]] && { echo ${results}; [[ -z ${opt_p} ]] && cd ${results} ; return;}
-    [[ ${#results} == 0 ]] && { echo "No results found for ${fnd}"; return 1;}
-    args="-q ${fnd}"
+	[[ -z ${opt_n} ]] && {
+		local zz=$(zshz -e ${fnd})
+		[[ -n ${zz} ]] && {
+			echo "ZSHZ: ${zz}"
+			[[ -z ${opt_p} ]] && cd ${zz}
+			return
+		}
+	}
+	local results=($(fd -d 2 -t d . ${root}|${grepcmd} -E -i "${fnd}"))
+	[[ ${#results} == 1 ]] && {
+		echo ${results}
+		[[ -z ${opt_p} ]] && cd ${results}
+		return
+	}
+	[[ ${#results} == 0 ]] && {
+		echo "No results found for ${fnd}"
+		return 1
+	}
+	args="-q ${fnd}"
 fi
-
 res=$(fd -d 2 -t d . ${root}|sed "s,${root},,"|fzf --height 50% --border ${args})
-[[ -n ${res} ]] && {echo ${root}${res}; [[ -z ${opt_p} ]]  && cd ${root}${res} ; }
+[[ -n ${res} ]] && {
+	echo ${root}${res}
+	[[ -z ${opt_p} ]] && cd ${root}${res}
+}
