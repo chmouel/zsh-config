@@ -3,9 +3,7 @@ alias b='bzip2 -9vf'
 alias z="gzip -9fv"
 alias md='mkdir -p'
 
-LS=ls
-type -p gls >/dev/null && LS=gls
-alias ls="${LS} --color=auto -F"
+alias ls="ls --color=auto -F"
 alias d=ls
 alias s='cd ..'
 alias p='cd -'
@@ -22,15 +20,18 @@ alias mv="mv -i"
 alias vih="$EDITOR ~/.shell/hosts/${HOST%%.*}.sh"
 alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 
-alias gl="git log --no-merges --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+#GIT
 alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
-alias gc="git checkout"
 alias gb="git checkout -b"
+alias pr="git pr"
+alias gc="git checkout"
+builtin type -p hub >/dev/null && alias gcm="git checkout master && hub sync"
+builtin type -p hub >/dev/null && alias hs='hub sync'
 
 alias e="emacsclient -n"
 
 alias fina='fin -a'
-type -p systemctl &>/dev/null && alias ss="sudo systemctl"
-type -p tailf &>/dev/null || alias tailf="tail -f"
+builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
+builtin type -P tailf &>/dev/null || alias tailf="tail -f"
 
 alias grep="grep --color=auto"
