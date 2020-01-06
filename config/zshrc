@@ -34,7 +34,7 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 if [[ -z $CUSTOM_PROMPT ]];then
     autoload -U promptinit
     promptinit
-    prompt chmou
+    prompt chmou ${userColor}
 fi
 
 #Zsh: Alias
