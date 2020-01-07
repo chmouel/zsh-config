@@ -1,5 +1,7 @@
 # vim: ft=zsh
 local options
+FD=fd ; type -p fd-find >/dev/null 2>/dev/null && FD=fd-find
+type -p fdfind >/dev/null 2>/dev/null && FD=fdfind
 if [[ $1 == "-a" ]];then
     all=true
     shift
@@ -11,4 +13,4 @@ if [[ -n ${all} ]];then
 	options="-I"
 fi
 
-fd -c=auto ${options} $@
+${FD} -c=auto ${options} $@
