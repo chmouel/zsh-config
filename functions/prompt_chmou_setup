@@ -23,7 +23,7 @@ prompt_chmou_setup() {
     prompt_chmou_color2=${2:-'magenta'}
     prompt_chmou_color3=${3:-'green'}
 
-    base_prompt="%K{$prompt_chmou_color1}%n@%m%k "
+    base_prompt="%K{$prompt_chmou_color1}%n@%m%k${promptUserEmoji} "
     post_prompt="%b%f%k"
 
     setopt localoptions extendedglob

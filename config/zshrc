@@ -55,6 +55,7 @@ alias -g L="|less"
 
 alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
+alias -g GR='`git rev-parse --short-toplevel`'
 
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
