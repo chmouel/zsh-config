@@ -154,3 +154,4 @@ if [[ "$TERM" = "dumb" ]];then
     unsetopt prompt_subst
     prompt off
 fi
+
