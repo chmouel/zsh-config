@@ -28,8 +28,6 @@ alias gc="git checkout"
 builtin type -p hub >/dev/null && alias gcm="git checkout master && hub sync"
 builtin type -p hub >/dev/null && alias hs='hub sync'
 
-type -p emacsclient >/dev/null 2>/dev/null && alias e="emacsclient -n"
-
 alias fina='fin -a'
 builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
 builtin type -P tailf &>/dev/null || alias tailf="tail -f"
