@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+local query
+[[ -n ${1} && -e ${1} ]] && {
+    emacsclient -n  ${1}
+    return
+}
+[[ -n ${1} ]] && query="-q ${@}"
+local chosen=$(fd -t f|fzf ${query})
+
+[[ -n ${chosen} ]] && emacsclient -n ${chosen}
