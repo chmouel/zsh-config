@@ -40,6 +40,7 @@ fi
 #Zsh: Alias
 alias -g L="|less"
 (( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
+(( $+commands[fzf] )) && alias -g "?"="| fzf"
 
 # Direnv
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
@@ -55,7 +56,7 @@ alias -g L="|less"
 
 alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
-alias -g GR='`git rev-parse --short-toplevel`'
+alias -g GR='`git rev-parse --show-toplevel`'
 
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
@@ -64,6 +65,10 @@ alias o='popd'
 autoload -U select-word-style
 select-word-style bash
 
+# edit-command-line
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
 
 # Path
 typeset -U path
@@ -80,11 +85,21 @@ setopt extended_history hist_ignore_all_dups \
        hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
        nohistignorespace
 
+
+zmodload -i zsh/complist
+setopt auto_list # automatically list choices on ambiguous completion
+setopt auto_menu # automatically use menu completion
+setopt always_to_end # move cursor to end if word had one match
+zstyle ':completion:*' menu select # select completions with arrow keys
+zstyle ':completion:*' group-name '' # group results by category
+zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
+
+
 type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
 
 #setopt
-setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
-       AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD completeinword \
+setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
+       AUTO_CD noFLOW_CONTROL AUTO_PUSHD completeinword \
        interactivecomments nopromptcr alwaystoend
 
 #Ignore stuff starting by _ for the completion.
@@ -154,4 +169,3 @@ if [[ "$TERM" = "dumb" ]];then
     unsetopt prompt_subst
     prompt off
 fi
-
