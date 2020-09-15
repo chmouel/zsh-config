@@ -85,21 +85,16 @@ setopt extended_history hist_ignore_all_dups \
        hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
        nohistignorespace
 
-
 zmodload -i zsh/complist
 setopt auto_list # automatically list choices on ambiguous completion
 setopt no_auto_menu # do not automatically use menu completion
 setopt always_to_end # move cursor to end if word had one match
-zstyle ':completion:*' menu select # select completions with arrow keys
-zstyle ':completion:*' group-name '' # group results by category
-zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
-
-type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
+(( $+commands[on_ac_power] )) && on_ac_power && setopt inc_append_history
 
 #setopt
 setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
-       AUTO_CD noFLOW_CONTROL AUTO_PUSHD completeinword \
+       AUTO_CD noFLOW_CONTROL AUTO_PUSHD noCompleteinword \
        interactivecomments nopromptcr alwaystoend
 
 #Ignore stuff starting by _ for the completion.
