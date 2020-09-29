@@ -7,5 +7,4 @@ export EDITOR LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
-type -p lessfile &>/dev/null  && eval $(lessfile)
 umask 022

@@ -25,7 +25,7 @@ alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
 alias gb="git checkout -b"
 alias pr="git pr"
 alias gc="git checkout"
-builtin type -p hub >/dev/null && alias gcm="git checkout master && hub sync"
+builtin type -p hub >/dev/null && alias gcm="git checkout master && git branch --merged | egrep -v '(^\*|master)'| xargs git branch -d && hub sync"
 builtin type -p hub >/dev/null && alias hs='hub sync'
 
 alias fina='fin -a'
