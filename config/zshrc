@@ -42,8 +42,8 @@ alias -g L="|less"
 (( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
 (( $+commands[jq] )) && {
 	 alias -g JST="-o json|jq .status"
-	 alias -g JS="-o json|jq ."
-	 alias -g YJQ="-o yaml|yjq"
+	 alias -g JS="-o json|jq "
+	 alias -g YJ="-o yaml|yjq"
 }
 (( $+commands[fzf] )) && alias -g "?"="| fzf"
 

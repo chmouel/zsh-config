@@ -1,22 +1,39 @@
-local ACK
-local ARG
+#!/usr/bin/env zsh
+local MODE
 
-type -p ack-grep >/dev/null 2>/dev/null && ACK=ack-grep
-type -p ack >/dev/null 2>/dev/null && ACK=ack
+function _g() {
+	local BAT_THEME color
+	export BAT_THEME="Monokai Extended Bright"
+	if git rev-parse --show-toplevel >/dev/null 2>/dev/null;then
+	   [[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
+	   CMD="git grep --line-number ${=color} ${=@}"
+	elif (( $+commands[rg] ));then
+	   [[ ${MODE} == fzf ]] && color="--no-heading -n --color=never" || color="-p"
+	   CMD="rg --column ${=color} ${=@}"
+	elif (( $+commands[ag] ));then
+	   CMD="ag --vimgrep ${=@}"
+	else
+	   [[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
+	   CMD="grep -R --line-number ${=color} ${=@}"
+	   [[ -d ${@[-1]}  ]] || CMD+=" ."
+	fi
 
-${ACK} -a >/dev/null 2>/dev/null
-if [[ $? == 1 ]];then
-    ARG=""
-else
-    ARG="-a"
-fi
+	[[ ${MODE} != fzf ]] && {
+		${=CMD}
+		return 
+	}
 
-if git rev-parse --show-toplevel >/dev/null 2>/dev/null;then
-   git grep --color $@
-elif [[ -n ${ACK} ]];then
-    ${ACK} ${ARG} $@
-else
-    grep -r $@ .
-fi
+	${=CMD} | fzf --delimiter : \
+	  -0 \
+      --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
+	  --layout reverse \
+      --preview-window 70%:bottom:+{2}-/2
+}
+
+[[ $funcstack[1] == "g" ]] && {
+	MODE=fzf
+}
+_g $@
+
 
 # vim: ft=zsh
