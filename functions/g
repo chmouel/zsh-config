@@ -1,47 +1,6 @@
 #!/usr/bin/env zsh
 local MODE
-
-function _g() {
-	local BAT_THEME color
-	export BAT_THEME="Monokai Extended Bright"
-
-    for arg in $@;do
-        [[ ${arg} == -* ]] && switches+="${arg} " || args+="${arg} "
-    done
-    [[ ${args} =~ " "$ ]] && args=${args% }
-	if git rev-parse --show-toplevel >/dev/null 2>/dev/null;then
-	   [[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
-	   CMD="git grep --column --line-number ${=color}"
-	elif (( $+commands[rg] ));then
-	   [[ ${MODE} == fzf ]] && color="--no-heading -n --color=never" || color="-p"
-	   CMD="rg --column ${=color}"
-	elif (( $+commands[ag] ));then
-	   CMD="ag --vimgrep"
-	else
-	   [[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
-	   CMD="grep -R --line-number ${=color}"
-	   [[ -d ${@[-1]}  ]] || CMD+=" ."
-	fi
-
-	[[ ${MODE} != fzf ]] && {
-		${=CMD} ${=switches} "'${args}'"
-		return
-	}
-
-	output=$(${=CMD} ${=switches} ${args} | fzf --delimiter : \
-	  -0 \
-      --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
-	  --layout reverse \
-      --preview-window 70%:bottom:+{2}-/2)
-    eval $(echo "${output}"|sed 's|\([^:]*\):\([^:]*\):\([^:]*\):.*|file="\1" line="\2" column="\3"|')
-    if [[ ${editwith} == vim ]];then
-        vim "+normal ${line}G${column}|" "${file}"
-    elif [[ ${editwith} == emacs ]];then
-        emacsclient -n +${line}:${column} "${file}"
-    else
-        echo "${file}"
-    fi
-}
+local BAT_THEME color
 
 MODE=fzf
 
@@ -59,8 +18,39 @@ MODE=fzf
     editwith=vim
 }
 
+export BAT_THEME="Monokai Extended Bright"
 
-_g "${=@}"
+if git rev-parse --show-toplevel >/dev/null 2>/dev/null;then
+	[[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
+	CMD="git grep --column --line-number ${=color}"
+elif (( $+commands[rg] ));then
+	[[ ${MODE} == fzf ]] && color="--no-heading -n --color=never" || color="-p"
+	CMD="rg --column ${=color}"
+elif (( $+commands[ag] ));then
+	CMD="ag --vimgrep"
+else
+	[[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
+	CMD="grep -R --line-number ${=color}"
+	[[ -d ${@[-1]}  ]] || CMD+=" ."
+fi
 
+[[ ${MODE} != fzf ]] && {
+	${=CMD} ${@}
+	return
+}
+
+output=$(${=CMD} ${@} | fzf --delimiter : \
+	  -0 \
+      --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
+	  --layout reverse \
+      --preview-window 70%:bottom:+{2}-/2)
+eval $(echo "${output}"|sed 's|\([^:]*\):\([^:]*\):\([^:]*\):.*|file="\1" line="\2" column="\3"|')
+if [[ ${editwith} == vim ]];then
+    vim "+normal ${line}G${column}|" "${file}"
+elif [[ ${editwith} == emacs ]];then
+    emacsclient -n +${line}:${column} "${file}"
+else
+    echo "${file}"
+fi
 
 # vim: ft=zsh
