@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
-local MODE
-local BAT_THEME color
-
+local MODE color editwith output CMD file
 MODE=fzf
 
 [[ $funcstack[1] == "gg" || "$(basename $0)" == "gg" ]] && {
@@ -17,8 +15,6 @@ MODE=fzf
 	MODE=fzf
     editwith=vim
 }
-
-export BAT_THEME="Monokai Extended Bright"
 
 if git rev-parse --show-toplevel >/dev/null 2>/dev/null;then
 	[[ ${MODE} == fzf ]] && color="--color=never" || color="--color=always"
@@ -44,6 +40,7 @@ output=$(${=CMD} ${@} | fzf --delimiter : \
       --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
 	  --layout reverse \
       --preview-window 70%:bottom:+{2}-/2)
+[[ -z ${output} ]] && return
 eval $(echo "${output}"|sed 's|\([^:]*\):\([^:]*\):\([^:]*\):.*|file="\1" line="\2" column="\3"|')
 if [[ ${editwith} == vim ]];then
     vim "+normal ${line}G${column}|" "${file}"
