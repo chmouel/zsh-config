@@ -67,6 +67,9 @@ alias -g L="|less"
 alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
 alias -g GR='`git config branch.$(git rev-parse --abbrev-ref HEAD).remote`'
+alias -g GROOT='`git rev-parse --show-toplevel`'
+
+
 
 alias so="source $HOME/.zshrc reloading && unset reload"
 alias o='popd'
