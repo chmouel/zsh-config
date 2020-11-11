@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh -f
+[[ -n $@ ]] && args="-q $@"; 
+dir=$(fd --type d|fzf -1 ${~args});
+[[ -n ${dir} ]] && cd ${dir}
