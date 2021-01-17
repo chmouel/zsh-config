@@ -71,6 +71,7 @@ alias -g GROOT='`git rev-parse --show-toplevel`'
 
 
 alias so="source $HOME/.zshrc reloading && unset reload"
+alias incognito="unset HISTFILE"
 alias o='popd'
 
 #Considers only alphanumeric as work like in bash
