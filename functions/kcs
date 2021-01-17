@@ -1,0 +1,115 @@
+#!/usr/bin/env zsh -f
+# compdef '_arguments "1: :(${(Q)$(_kcs_list_profiles)})"' kcs
+
+KCS_DIR="${HOME}/.kube"
+KCS_EXPORT_EXTRA_PROMPT=yes
+KCS_DEFAULT_PROMPT_COLOR=yellow
+KCS_DEFAULT_NS_PROMPT_COLOR=white
+
+autoload -U colors && colors
+
+function _kcs_get_config_info() {
+    oc config view -o json | python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print(' '.join([('oc_namespace='+lo['context'].get('namespace','NONE'),'oc_cluster='+lo['context']['cluster'].split(':')[0],'oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0]))"
+}
+
+function _kcs_export_completions() {
+    for cmd in oc kubectl tkn;do
+        source <(${cmd} completion zsh)
+    done
+}
+
+function _kcs_set_kubeconfig() {
+    local profile=${1}
+    export KCS_PROFILE=${profile}
+    local profilefile=${KCS_DIR}/config.${profile}
+    local color=${KCS_DEFAULT_PROMPT_COLOR}
+    local ns_color=${KCS_DEFAULT_NS_PROMPT_COLOR}
+    local export_prompt=${KCS_EXPORT_EXTRA_PROMPT}
+    local profile_short_name _oc_namespace oc_namepsace=""
+
+    [[ -e ${profilefile} ]] || {
+        echo "I could not find the file ${profilefile}"
+        return 1
+    }
+
+    [[ -e ${profilefile}.kcs.pre ]] && {
+        source ${profilefile}.kcs.pre
+    }
+
+    export KUBECONFIG=${KCS_DIR}/config.${profile}
+    [[ -z ${kcs_namespace} ]] && {
+        eval $(_kcs_get_config_info)
+    } || {
+        oc_namespace=${kcs_namespace}
+    }
+
+    [[ -n ${profile_short_name} ]] || profile_short_name=${profile}
+    [[ -n ${oc_namespace} && ${oc_namespace} != NONE ]] && {
+        _oc_namespace="[%F{$ns_color}${oc_namespace}%F{reset}]"
+    }
+    _kcs_export_completions
+
+    if [[ -n ${export_prompt} ]];then
+        export EXTRA_SHORT_PROMPT="%F{$color}%B${profile_short_name}%b%F{reset}"
+        export EXTRA_LONG_PROMPT="${EXTRA_SHORT_PROMPT}${_oc_namespace}"
+    fi
+
+    [[ -e ${profilefile}.kcs.post ]] && {
+        source ${profilefile}.kcs.post
+    }
+}
+
+function _kcs_prexec() {
+    export kcs_namespace=""
+    local _kcs_namespace
+    [[ ${@} =~ "oc (new-)?project ([^ ])*" ]] && [[ -n ${KCS_PROFILE} ]] && {
+        _kcs_namespace=${@#*oc project }
+        _kcs_namespace=${kcs_namespace%% *}
+        _kcs_namespace=${kcs_namespace%%;*}
+		echo ${_kcs_namespace}
+        [[ ${_kcs_namespace} == -* || -z ${_kcs_namespace} ] && return
+		return
+        kcs_namespace=${_kcs_namespace}
+        _kcs_set_kubeconfig ${KCS_PROFILE}
+    }
+}
+
+autoload -Uz  add-zsh-hook
+add-zsh-hook preexec _kcs_prexec
+
+function _kcs_list_profiles() {
+    local profile
+    for file in ${KCS_DIR}/config.*(.N);do
+        profile=${file#*/config.}
+        [[ -z ${profile} ]] && continue
+        echo ${profile}
+    done
+}
+
+function _kcs_usage() {
+    cat <<EOF
+Usage: kcs [profile]
+
+-l list profiles
+EOF
+}
+
+function kcs () {
+    while getopts 'l' arg;do
+        case $arg in
+            (l)
+                _kcs_list_profiles;
+                return 0;
+            (*)
+                _kcs_usage;
+                return 1;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
+    [[ -n ${1} ]] && _kcs_set_kubeconfig ${1}
+}
+
+compdef '_arguments "1: :(${(Q)$(_kcs_list_profiles)})"' kcs
+
+kcs $@

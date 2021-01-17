@@ -93,13 +93,15 @@ prompt_chmou_precmd() {
     local prompt_length space_left cpmsg extrap
 
     vcs_info
-    extrap=();sextrap=()
-    [[ -n ${EXTRA_PROMPT} ]] && {sextrap="${EXTRA_PROMPT:u}";extrap=$sextrap ;}
-    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} == 1 ]] && {
-        eval $(oc config view -o json | python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print(' '.join([('_oc_namepsace='+lo['context'].get('namespace','NONE'),'_oc_clustr='+lo['context']['cluster'].split(':')[0],'_oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0]))")
-        OPENSHIFT_PROJECT="${_oc_namepsace}"
+    local extrap=();
+    local sextrap=()
+    [[ -n ${EXTRA_SHORT_PROMPT} ]] && {
+        sextrap="${EXTRA_SHORT_PROMPT}";
     }
-    [[ -n ${OPENSHIFT_PROJECT} && ${OPENSHIFT_PROJECT} != 1 ]] && extrap="%B%F{white}${extrap}%F{reset}/%B%F{white}${OPENSHIFT_PROJECT}%F{reset} "
+    [[ -n ${EXTRA_LONG_PROMPT} ]] && {
+        extrap="${EXTRA_LONG_PROMPT} ";
+    }
+
     [[ -n ${vcs_info_msg_0_} ]] && {
         extrap+="%B%F{white}${vcs_info_msg_0_}%B"
         sextrap+="${vcs_info_msg_0_}"
@@ -117,6 +119,7 @@ prompt_chmou_precmd() {
         path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir) ${extrap}$prompt_newline%F{white}"
         RPROMPT=""
     fi
+
     PS1="$base_prompt$path_prompt%# $post_prompt"
     PS2="$base_prompt$path_prompt%_> $post_prompt"
     PS3="$base_prompt$path_prompt?# $post_prompt"
