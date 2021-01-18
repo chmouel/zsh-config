@@ -107,7 +107,8 @@ prompt_chmou_precmd() {
 
 
     if [[ -n ${vcs_info_msg_0_} ]];then
-        if [[ -n ${vcs_info_git_root} ]] && [[ ${PWD} == ${vcs_info_git_root} ]];then
+        # set -x
+        if [[ -n ${vcs_info_git_root} ]] && [[ ${PWD} =~ "${vcs_info_git_root}/*" ]];then
             true
         else
             export vcs_info_git_root=$(git rev-parse --show-toplevel)

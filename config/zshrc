@@ -40,7 +40,7 @@ if [[ -z $CUSTOM_PROMPT ]];then
 fi
 
 #Zsh: Alias
-alias -g L="|less"
+alias -g L="|& less"
 (( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
 (( $+commands[jq] )) && {
 	 alias -g JST="-o json|jq .status"
