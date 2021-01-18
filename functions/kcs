@@ -9,7 +9,7 @@ KCS_DEFAULT_NS_PROMPT_COLOR=white
 autoload -U colors && colors
 
 function _kcs_get_config_info() {
-    oc config view -o json | python -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print(' '.join([('oc_namespace='+lo['context'].get('namespace','NONE'),'oc_cluster='+lo['context']['cluster'].split(':')[0],'oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0]))"
+    oc config view -o json | python3 -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print(' '.join([('oc_namespace='+lo['context'].get('namespace','NONE'),'oc_cluster='+lo['context']['cluster'].split(':')[0],'oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0]))"
 }
 
 function _kcs_export_completions() {
@@ -62,13 +62,9 @@ function _kcs_set_kubeconfig() {
 function _kcs_prexec() {
     export kcs_namespace=""
     local _kcs_namespace
-    [[ ${@} =~ "oc (new-)?project ([^ ])*" ]] && [[ -n ${KCS_PROFILE} ]] && {
-        _kcs_namespace=${@#*oc project }
-        _kcs_namespace=${kcs_namespace%% *}
-        _kcs_namespace=${kcs_namespace%%;*}
-		echo ${_kcs_namespace}
-        [[ ${_kcs_namespace} == -* || -z ${_kcs_namespace} ] && return
-		return
+    [[ -n ${KCS_PROFILE} ]] && [[ ${@} =~ "oc (new-)?project ([^ ;]*)" ]] && {
+        _kcs_namespace=${match[2]}
+        [[ ${_kcs_namespace} == -* || -z ${_kcs_namespace} ]] && return
         kcs_namespace=${_kcs_namespace}
         _kcs_set_kubeconfig ${KCS_PROFILE}
     }
@@ -111,5 +107,4 @@ function kcs () {
 }
 
 compdef '_arguments "1: :(${(Q)$(_kcs_list_profiles)})"' kcs
-
 kcs $@

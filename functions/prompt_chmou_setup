@@ -88,7 +88,7 @@ spaceship_dir() {
 
 
 prompt_chmou_precmd() {
-    setopt localoptions noxtrace nowarncreateglobal
+    setopt localoptions nowarncreateglobal
     local base_prompt_expanded_no_color base_prompt_etc
     local prompt_length space_left cpmsg extrap
 
