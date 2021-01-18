@@ -36,7 +36,7 @@ prompt_chmou_setup() {
 
 spaceship_dir() {
   local 'dir' 'trunc_prefix'
-  local inGit=${1}
+  local git_root=${1}
   local SPACESHIP_DIR_LOCK_COLOR="${SPACESHIP_DIR_LOCK_COLOR="red"}"
   local SPACESHIP_DIR_LOCK_SYMBOL="${SPACESHIP_DIR_LOCK_SYMBOL="🔒"}"
   local SPACESHIP_DIR_COLOR="${SPACESHIP_DIR_COLOR="green"}"
@@ -45,8 +45,6 @@ spaceship_dir() {
 
   # Threat repo root as a top-level directory or not
   if [[ -n ${vcs_info_msg_0_} ]];then
-    local git_root=$(git rev-parse --show-toplevel)
-
     # Check if the parent of the $git_root is "/"
     if [[ $git_root:h == / ]]; then
         trunc_prefix=/
@@ -107,16 +105,25 @@ prompt_chmou_precmd() {
         sextrap+="${vcs_info_msg_0_}"
     }
 
+
+    if [[ -n ${vcs_info_msg_0_} ]];then
+        if [[ -n ${vcs_info_git_root} ]] && [[ ${PWD} == ${vcs_info_git_root} ]];then
+            true
+        else
+            export vcs_info_git_root=$(git rev-parse --show-toplevel)
+        fi
+    fi
+
     base_prompt_expanded_no_color=$(print -P "$base_prompt_no_color")
     base_prompt_etc=$(print -P "$base_prompt%(4~|...|)%3~")
     prompt_length=${#base_prompt_etc}
 
     if [[ $prompt_length -lt 40 ]]; then
-        path_prompt="%B%F{$prompt_chmou_color2}$(spaceship_dir)%F{white}"
+        path_prompt="%B%F{$prompt_chmou_color2}$(spaceship_dir ${vcs_info_git_root})%F{white}"
         RPROMPT=${sextrap}
     else
         space_left=$(($COLUMNS - $#base_prompt_expanded_no_color - 2))
-        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir) ${extrap}$prompt_newline%F{white}"
+        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir ${vcs_info_git_root}) ${extrap}$prompt_newline%F{white}"
         RPROMPT=""
     fi
 

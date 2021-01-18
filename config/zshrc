@@ -17,16 +17,17 @@ fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(x:t)
 for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
+# get environement and alias
+[[ -f $confdir/config/environement ]] && source $confdir/config/environement
+[[ -f $confdir/config/alias ]] && source $confdir/config/alias
+[[ -f $HOME/.shell/hosts/$basehost.sh ]] && source $HOME/.shell/hosts/$basehost.sh
+
 # Get zplug if it exists first
 [[ -e $HOME/.zplug/init.zsh ]] && {
 	source $HOME/.zplug/init.zsh
 	source $confdir/config/packages.zsh
 }
 
-# get environement and alias
-[[ -f $confdir/config/environement ]] && source $confdir/config/environement
-[[ -f $confdir/config/alias ]] && source $confdir/config/alias
-[[ -f $HOME/.shell/hosts/$basehost.sh ]] && source $HOME/.shell/hosts/$basehost.sh
 
 #Compinit
 [[ -z $reload ]] && compinit -i
