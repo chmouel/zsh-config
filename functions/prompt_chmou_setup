@@ -113,6 +113,8 @@ prompt_chmou_precmd() {
         else
             export vcs_info_git_root=$(git rev-parse --show-toplevel)
         fi
+    else
+        export vcs_info_git_root=""
     fi
 
     base_prompt_expanded_no_color=$(print -P "$base_prompt_no_color")
