@@ -12,12 +12,6 @@ function _kcs_get_config_info() {
     oc config view -o json | python3 -c "import sys, json;x=json.load(sys.stdin);c=x['current-context']; print(' '.join([('oc_namespace='+lo['context'].get('namespace','NONE'),'oc_cluster='+lo['context']['cluster'].split(':')[0],'oc_user='+lo['context']['user'].split('/')[0]) for lo in x['contexts'] if lo['name'] == c][0]))"
 }
 
-function _kcs_export_completions() {
-    for cmd in oc kubectl tkn;do
-        source <(${cmd} completion zsh)
-    done
-}
-
 function _kcs_set_kubeconfig() {
     local profile=${1}
     export KCS_PROFILE=${profile}
@@ -47,7 +41,6 @@ function _kcs_set_kubeconfig() {
     [[ -n ${oc_namespace} && ${oc_namespace} != NONE ]] && {
         _oc_namespace="[%F{$ns_color}${oc_namespace}%F{reset}]"
     }
-    _kcs_export_completions
 
     if [[ -n ${export_prompt} ]];then
         export EXTRA_SHORT_PROMPT="%F{$color}%B${profile_short_name}%b%F{reset}"
