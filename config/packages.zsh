@@ -5,4 +5,3 @@ zplug "zsh-users/zsh-autosuggestions"
 zplug "zplug/zplug", hook-build:zplug\ --self-manage
 zplug "felixr/docker-zsh-completion"
 zplug "trystan2k/zsh-tab-title"
-zplug "greymd/docker-zsh-completion"
