@@ -35,6 +35,6 @@ builtin type -p hub >/dev/null && alias hs='hub sync'
 
 alias fina='fin -a'
 builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
-builtin type -P tailf &>/dev/null || alias tailf="tail -f"
+builtin type -P tailf &>/dev/null || alias tailf="tail -F"
 
 alias grep="grep --color=auto"
