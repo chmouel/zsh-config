@@ -20,6 +20,8 @@ alias mv="mv -i"
 alias vih="$EDITOR ~/.shell/hosts/${HOST%%.*}.sh"
 alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 
+builtin type -p emacsclient >/dev/null 2>/dev/null && alias e="emacsclient -n"
+
 #GIT
 alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
 alias gb="git checkout -b"
