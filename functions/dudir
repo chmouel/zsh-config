@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh -f
+
+SORT=sort
+type -p gsort >/dev/null 2>/dev/null && SORT=gsort
+
+DU=du
+type -p gdu >/dev/null 2>/dev/null && DU=gdu
+
+type -p fd >/dev/null 2>/dev/null && FD=fd
+type -p fdfind >/dev/null 2>/dev/null && FD=fdfind
+[[ -z ${FD} ]] && {
+    echo "Cannot find fd"
+    return 1
+}
+
+${FD} --one-file-system -H -d 1 -x ${DU} -sh|${SORT} -h
