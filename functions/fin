@@ -10,7 +10,7 @@ fi
 options="-E vendor/*"
 
 if [[ -n ${all} ]];then
-	options="-I"
+	options="-IH"
 fi
 
 ${FD} -c=auto ${options} $@
