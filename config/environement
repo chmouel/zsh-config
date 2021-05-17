@@ -7,6 +7,8 @@ export EDITOR LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
+export BAT_STYLE="plain"
+
 umask 022
 
 
