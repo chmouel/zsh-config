@@ -1,15 +1,16 @@
-# vim: zsh
-local all
-branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-
+# vim: ft=zsh
+local options
+FD=fd ; type -p fd-find >/dev/null 2>/dev/null && FD=fd-find
+type -p fdfind >/dev/null 2>/dev/null && FD=fdfind
 if [[ $1 == "-a" ]];then
     all=true
     shift
 fi
 
-if [[ -z ${all} && -n ${branch} ]];then
-    #git ls-tree -r --name-only $(git rev-parse --abbrev-ref HEAD) | egrep -i "$1"
-    git ls-files | egrep -i "$1"
-else
-    find .|egrep -i "$1"
+options="-E vendor/*"
+
+if [[ -n ${all} ]];then
+	options="-IH"
 fi
+
+${FD} -c=auto ${options} $@

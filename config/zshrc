@@ -17,33 +17,73 @@ fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(x:t)
 for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
-#get environement and alias
+# get environement and alias
 [[ -f $confdir/config/environement ]] && source $confdir/config/environement
 [[ -f $confdir/config/alias ]] && source $confdir/config/alias
 [[ -f $HOME/.shell/hosts/$basehost.sh ]] && source $HOME/.shell/hosts/$basehost.sh
+
+# Get zplug if it exists first
+[[ -e $HOME/.zplug/init.zsh ]] && {
+	source $HOME/.zplug/init.zsh
+	source $confdir/config/packages.zsh
+}
+
 
 #Compinit
 [[ -z $reload ]] && compinit -i
 
 #PS1
 if [[ -z $CUSTOM_PROMPT ]];then
-    [[ -z $hostColor ]] && hostColor=white
-    [[ -z $userColor ]] && userColor=yellow
-    [[ -z $restColor ]] && restColor=cyan
-    PS1="%{$fg_bold[$userColor]%}%n%{$fg_no_bold[white]%}@%{$fg_bold[$hostColor]%}%m%{$fg_no_bold[white]%}:%{$fg_bold[$restColor]%}%3~$%{$fg_no_bold[white]%} "
+    autoload -U promptinit
+    promptinit
+    prompt chmou ${userColor}
 fi
 
 #Zsh: Alias
-alias -g L="|less"
-alias -g MJ="| python -mjson.tool"
+alias -g L="|& less"
+(( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
+(( $+commands[jq] )) && {
+	 alias -g JST="-o json|jq .status"
+	 alias -g JS="-o json|jq "
+	 alias -g YJ="-o yaml|yjq"
+}
+(( $+commands[fzf] )) && alias -g "?"="| fzf"
+
+# Direnv
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+# LS
+(( $+commands[gls] )) &&  alias ls="gls --color=auto -F"
+(( $+commands[exa] )) && {
+    alias ll="exa --git --colour-scale -arlh";
+
+    export EXA_COLORS='in=37:ur=1;36:uw=1;33:ux=1;32:gr=36:gw=33:gx=32:tr=36:tw=33:tx=32:sn=32:sb=1;32:lc=37:uu=35:gu=35:un=1;31:gn=1;31:da=36';
+}
+
+# Source code highlight
+(( $+commands[lesspipe.sh] )) && export LESSOPEN="| =lesspipe.sh %s" 
+#(( $+commands[pygmentize] )) && export LESSOPEN="| =pygmentize %s" 
+#(( $+commands[chroma] )) && export LESSOPEN="| =chroma %s" 
+
 alias -g EEL=' 2>&1 | less'
+alias -g GB='`git rev-parse --abbrev-ref HEAD`'
+alias -g GR='`git config branch.$(git rev-parse --abbrev-ref HEAD).remote`'
+alias -g GROOT='`git rev-parse --show-toplevel`'
+
+
+
 alias so="source $HOME/.zshrc reloading && unset reload"
+alias incognito="unset HISTFILE"
 alias o='popd'
 
 #Considers only alphanumeric as work like in bash
 autoload -U select-word-style
 select-word-style bash
 
+# edit-command-line
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
 
 # Path
 typeset -U path
@@ -56,15 +96,21 @@ SAVEHIST="5000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
 setopt extended_history hist_ignore_all_dups \
-    append_history hist_ignore_dups hist_ignore_space \
-    hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
+       append_history hist_ignore_dups hist_ignore_space \
+       hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
+       nohistignorespace
 
-type -p on_ac_power &>/dev/null && on_ac_power && setopt inc_append_history
+zmodload -i zsh/complist
+setopt auto_list # automatically list choices on ambiguous completion
+setopt no_auto_menu # do not automatically use menu completion
+setopt always_to_end # move cursor to end if word had one match
+
+(( $+commands[on_ac_power] )) && on_ac_power && setopt inc_append_history
 
 #setopt
-setopt nobeep AUTO_LIST COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
-    AUTO_CD noAUTO_MENU noFLOW_CONTROL AUTO_PUSHD completeinword \
-    interactivecomments nopromptcr alwaystoend
+setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
+       AUTO_CD noFLOW_CONTROL AUTO_PUSHD noCompleteinword \
+       interactivecomments nopromptcr alwaystoend
 
 #Ignore stuff starting by _ for the completion.
 export CORRECT_IGNORE="_*"
@@ -76,12 +122,24 @@ zstyle ':completion:*' cache-path $HOME/.shell/cache
 #Completion style
 zstyle ':completion:*' special-dirs true
 
+# Completion menu
+zstyle ':completion:*' menu select
+
 # Ignore completion functions for commands you don’t have
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
 #Auto quote URL
-autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
+zle -N bracketed-paste bracketed-paste-url-magic
+
+# GIT support
+autoload -Uz vcs_info
+setopt promptsubst
+zstyle ':vcs_info:*' unstagedstr '%F{red}*'
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' actionformats '%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f'
+zstyle ':vcs_info:*' formats '[%F{7}%b%f]'
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git*' formats "%{$fg[cyan]%}%b%{$reset_color%}%m%u%c%{$reset_color%}"
 
 #Keys
 stty -ixon #disable c-q c-s
@@ -95,33 +153,29 @@ bindkey '^[#' pound-insert
 zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
-source $confdir/config/termsupport.zsh
-
-
 _dircolors=$(whence dircolors)
-_dircolors=$(whence gdircolors)
+[[ -z ${_dircolors} ]] && _dircolors=$(whence gdircolors)
 #LS Colors in Completion
 [[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
-    export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
-    zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
-
-unset _dircolors
+export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
+zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
-compdef _hosts c
 
+# load zplugs
+which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
+
+# load conifg
 [[ -f $HOME/.shell/hosts/${basehost}-post.sh ]] && source $HOME/.shell/hosts/${basehost}-post.sh
 
 #Unsetting
-unset basehost confdir func user_fun_path reload hostColor userColor restColor
+unset basehost confdir func user_fun_path reload _dircolors
 
-
+# Emacs Tramp
 if [[ "$TERM" = "dumb" ]];then
-  unsetopt zle
-  unsetopt prompt_cr
-  unsetopt prompt_subst
-  unfunction precmd
-  unfunction preexec
-  PS1='$ '
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    prompt off
 fi

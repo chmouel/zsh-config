@@ -3,11 +3,7 @@ alias b='bzip2 -9vf'
 alias z="gzip -9fv"
 alias md='mkdir -p'
 
-if [[ ${_ARCHI} == "Darwin" ]];then
-	alias ls='ls -G -F'
-else
-	alias ls='ls --color=auto -F'
-fi
+alias ls="ls --color=auto -F"
 alias d=ls
 alias s='cd ..'
 alias p='cd -'
@@ -24,17 +20,23 @@ alias mv="mv -i"
 alias vih="$EDITOR ~/.shell/hosts/${HOST%%.*}.sh"
 alias cdf="cd ~/.shell/functions/hosts/${HOST%%.*}"
 
-alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
-alias gc="git checkout"
-alias gb="git checkout -b"
-alias gm="git checkout master"
+builtin type -p emacsclient >/dev/null 2>/dev/null && alias e="emacsclient -n"
 
-alias een="emacsclient -c -n"
-alias ee="emacsclient -c"
-alias e="emacsclient -c -nw"
+#GIT
+alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
+alias gb="git checkout -b"
+alias pr="git pr"
+alias gc="git checkout"
+
+function gcm() {
+	git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
+	(( $+commands[hub] )) && hub sync
+}
+
+builtin type -p hub >/dev/null && alias hs='hub sync'
 
 alias fina='fin -a'
-alias ss="sudo systemctl"
+builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
+builtin type -P tailf &>/dev/null || alias tailf="tail -F"
 
 alias grep="grep --color=auto"

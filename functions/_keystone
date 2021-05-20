@@ -173,3 +173,5 @@ _arguments \
     '(--version)'--version'[show programs version number and exit]' \
     '(--debug)'--debug'[Print debugging output]'\
   &&  return 0
+
+# vim: ft=zsh

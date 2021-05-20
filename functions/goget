@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh -f
+go get -u ${1/http?:\/\//}

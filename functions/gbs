@@ -1,0 +1,3 @@
+chosen=$(git branch --sort=-committerdate --format='%(refname:short)'|fzf --border --preview "git log --no-merges --patch-with-stat -1 {}|bat --language=diff --color=always" --bind CTRL-P:preview-up,CTRL-N:preview-down,pgup:preview-page-up,pgdn:preview-page-down --preview-window=up:80%)
+[[ $1 == -n ]] && { echo $chosen ; return ;}
+git checkout ${chosen}

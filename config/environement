@@ -7,13 +7,19 @@ export EDITOR LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
-export GREP_COLOR='1;33'
+export BAT_STYLE="plain"
 
-# We take care of our own venv showing
-export VIRTUAL_ENV_DISABLE_PROMPT=true
-
-_ARCHI=$(uname)
-export _ARCHI
-
-type -p lessfile &>/dev/null  && eval $(lessfile)
 umask 022
+
+
+# if [[ -n ${SSH_AUTH_SOCK} && -S ${SSH_AUTH_SOCK} && -z ${TMUX} ]];then
+#    echo "export SSH_AUTH_SOCK=\"${SSH_AUTH_SOCK}\"" > ~/.ssh/authsock.sh
+#    chmod 0600 ~/.ssh/authsock.sh
+# fi
+# if [[ -e ~/.ssh/authsock.sh && -z $SSH_AUTH_SOCK ]] || [[ -n ${SSH_AUTH_SOCK} && ! -S ${SSH_AUTH_SOCK} ]];then
+#    source ~/.ssh/authsock.sh
+#    if [[ ! -S ${SSH_AUTH_SOCK} ]];then
+#        rm -f ~/.ssh/authsock.sh
+#        unset SSH_AUTH_SOCK
+#    fi
+# fi

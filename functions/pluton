@@ -1,0 +1,7 @@
+#!/bin/bash
+[[ -z $1 ]] && return
+port=$(lsof -t -i tcp:$1) 
+
+[[ -z ${port} ]] && { echo "port don't seem to be binded ${port}"; return ;}
+
+ps -p ${port} -o comm=
