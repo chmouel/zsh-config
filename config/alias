@@ -31,9 +31,10 @@ alias gc="git checkout"
 function gcm() {
 	git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
 	(( $+commands[hub] )) && hub sync
+	git remote|grep -qw chmouel && git remote prune chmouel
 }
 
-builtin type -p hub >/dev/null && alias hs='hub sync'
+builtin type -p hub >/dev/null && alias hs='hub sync &&  git remote|grep -qw chmouel && git remote prune chmouel'
 
 alias fina='fin -a'
 builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
