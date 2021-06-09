@@ -37,6 +37,10 @@ function gcm() {
 
 builtin type -p hub >/dev/null && alias hs='hub sync &&  git remote|grep -qw chmouel && git remote prune chmouel && git branch --merged|sed 's/^..//'|grep -vw main|xargs -r git branch -d'
 
+builtin type -p gh >/dev/null && {
+   alias ghissuecreate="gh issue create -R ${PWD:t2}"
+}
+
 alias fina='fin -a'
 builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
 builtin type -P tailf &>/dev/null || alias tailf="tail -F"
