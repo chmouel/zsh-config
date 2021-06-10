@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+function _ghpr() {
+    local force=""
+    [[ $1 == "-f" ]] && force="-f"
+    local mainbranch=$(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
+    [[ -z ${mainbranch} ]] && return
+    tremote=origin
+    git --no-pager remote get-url chmouel 2>/dev/null >/dev/null && tremote=chmouel
+    git push -u ${tremote} `git rev-parse --abbrev-ref HEAD` && gh pr create -B ${mainbranch} ${force}
+}
+
+_ghpr "$@"
