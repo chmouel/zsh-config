@@ -4,7 +4,7 @@
 KCS_DIR="${HOME}/.kube"
 KCS_EXPORT_EXTRA_PROMPT=yes
 KCS_DEFAULT_PROMPT_COLOR=yellow
-KCS_DEFAULT_NS_PROMPT_COLOR=white
+KCS_DEFAULT_NS_PROMPT_COLOR=magenta
 
 autoload -U colors && colors
 
@@ -43,7 +43,7 @@ function _kcs_set_kubeconfig() {
     }
 
     if [[ -n ${export_prompt} ]];then
-        export EXTRA_SHORT_PROMPT="%F{$color}%B${profile_short_name}%b%F{reset}"
+        export EXTRA_SHORT_PROMPT="%B%F{$color}${profile_short_name}%b%F{reset}"
         export EXTRA_LONG_PROMPT="${EXTRA_SHORT_PROMPT}${_oc_namespace}"
     fi
 

@@ -19,11 +19,11 @@ EOF
 
 prompt_chmou_setup() {
     setopt localoptions nowarncreateglobal
-    prompt_chmou_color1=${1:-'black'}
+    prompt_chmou_color1=${1:-'white'}
     prompt_chmou_color2=${2:-'magenta'}
     prompt_chmou_color3=${3:-'green'}
 
-    base_prompt="%K{$prompt_chmou_color1}%n@%m%k${promptUserEmoji} "
+    base_prompt="%n@%m${promptUserEmoji} "
     post_prompt="%b%f%k"
 
     setopt localoptions extendedglob
@@ -122,11 +122,11 @@ prompt_chmou_precmd() {
     prompt_length=${#base_prompt_etc}
 
     if [[ $prompt_length -lt 40 ]]; then
-        path_prompt="%B%F{$prompt_chmou_color2}$(spaceship_dir ${vcs_info_git_root})%F{white}"
+        path_prompt="%B%F{$prompt_chmou_color2}$(spaceship_dir ${vcs_info_git_root})%F{normal}"
         RPROMPT=${sextrap}
     else
         space_left=$(($COLUMNS - $#base_prompt_expanded_no_color - 2))
-        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir ${vcs_info_git_root}) ${extrap}$prompt_newline%F{white}"
+        path_prompt="%B%F{$prompt_chmou_color3}%${space_left}<...<$(spaceship_dir ${vcs_info_git_root}) ${extrap}$prompt_newline%F{normal}"
         RPROMPT=""
     fi
 
