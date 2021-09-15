@@ -50,6 +50,8 @@ function _kcs_set_kubeconfig() {
     [[ -e ${profilefile}.kcs.post ]] && {
         source ${profilefile}.kcs.post
     }
+    # we do  this so we automatically  get it as the last one when listing with fzf
+    touch ${KUBECONFIG}
 }
 
 function _kcs_prexec() {
@@ -68,10 +70,11 @@ add-zsh-hook preexec _kcs_prexec
 
 function _kcs_list_profiles() {
     local profile
-    for file in ${KCS_DIR}/config.*(.N);do
+    set -A profiles $(ls -td $HOME/.kube/config.*)
+    for file in ${profiles};do
         profile=${file#*/config.}
         [[ -z ${profile} ]] && continue
-        echo ${profile}
+        echo ${profile[@]}
     done
 }
 
@@ -88,15 +91,19 @@ function kcs () {
         case $arg in
             (l)
                 _kcs_list_profiles;
-                return 0;
+                return 0;;
             (*)
                 _kcs_usage;
                 return 1;;
         esac
     done
     shift $(( OPTIND - 1 ))
+    profile=${1}
+    [[ -z ${profile} ]] &&  {
+        profile=$(_kcs_list_profiles | fzf --history=${HOME}/.kube/.kcs.history -1)
+    }
 
-    [[ -n ${1} ]] && _kcs_set_kubeconfig ${1}
+    [[ -n ${profile} ]] && _kcs_set_kubeconfig ${profile}
 }
 
 compdef '_arguments "1: :(${(Q)$(_kcs_list_profiles)})"' kcs
