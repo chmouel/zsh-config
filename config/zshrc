@@ -62,6 +62,7 @@ alias -g L="|& less"
 
 (( $+commands[bat] )) && {
     alias -g BY="| bat -l yaml"
+    alias -g BJ="| jq -C |bat"
 }
 
 # Source code highlight
