@@ -10,4 +10,5 @@ function _ghpr() {
     git push -u ${tremote} `git rev-parse --abbrev-ref HEAD` && gh pr create -B ${mainbranch} ${force}
 }
 
+alias ghprf="ghpr  -f"
 _ghpr "$@"
