@@ -1,5 +1,6 @@
 #!/bin/bash
 EDITOR="vim"
+builtin type -p nvim >/dev/null 2>/dev/null && export EDITOR=nvim
 LESS='-F -g -i -M -R -S -w -X -z-4'
 
 export EDITOR LESS
