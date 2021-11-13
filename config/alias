@@ -30,7 +30,7 @@ alias gc="git checkout"
 
 function gcm() {
 	git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
-	(( $+commands[hub] )) && git remote -v |grep -q github.com && hub sync
+	(( $+commands[gh] )) && git remote -v |grep -q github.com && gh repo sync
 	git remote|grep -qw chmouel && git remote prune chmouel
     git branch --merged|sed 's/^..//'|egrep -vw '(main|master)'|xargs -r git branch -d
 }
