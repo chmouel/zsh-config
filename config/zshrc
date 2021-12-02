@@ -2,6 +2,7 @@
 # Chmouel Boudjnah <chmouel@chmouel.com>
 
 confdir=$HOME/.shell
+[[ -d ${confdir} ]] || confdir=$HOME/.config/zsh
 basehost=${HOST%%.*}
 [[ $1 == 'reloading' ]] && reload=yes
 
@@ -20,7 +21,7 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 # get environement and alias
 [[ -f $confdir/config/environement ]] && source $confdir/config/environement
 [[ -f $confdir/config/alias ]] && source $confdir/config/alias
-[[ -f $HOME/.shell/hosts/$basehost.sh ]] && source $HOME/.shell/hosts/$basehost.sh
+[[ -f $confdir/hosts/$basehost.sh ]] && source $confdir/hosts/$basehost.sh
 
 # Get zplug if it exists first
 [[ -e $HOME/.zplug/init.zsh ]] && {
@@ -77,7 +78,7 @@ alias -g GROOT='`git rev-parse --show-toplevel`'
 
 
 
-alias so="source $HOME/.zshrc reloading && unset reload"
+alias so="source $confdir/config/zshrc reloading && unset reload"
 alias incognito="unset HISTFILE"
 alias o='popd'
 
@@ -122,7 +123,7 @@ export CORRECT_IGNORE="_*"
 
 #cache completion
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $HOME/.shell/cache
+zstyle ':completion:*' cache-path $confdir/cache
 
 #Completion style
 zstyle ':completion:*' special-dirs true
@@ -172,7 +173,7 @@ compdef _user_at_host ssh-copy-id
 which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
 
 # load conifg
-[[ -f $HOME/.shell/hosts/${basehost}-post.sh ]] && source $HOME/.shell/hosts/${basehost}-post.sh
+[[ -f $confdir/hosts/${basehost}-post.sh ]] && source $confdir/hosts/${basehost}-post.sh
 
 #Unsetting
 unset basehost confdir func user_fun_path reload _dircolors
