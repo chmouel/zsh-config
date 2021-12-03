@@ -24,10 +24,12 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 [[ -f $confdir/hosts/$basehost.sh ]] && source $confdir/hosts/$basehost.sh
 
 # Get zplug if it exists first
-[[ -e $HOME/.zplug/init.zsh ]] && {
-	source $HOME/.zplug/init.zsh
+[[ -z ${reload} ]] && {
+    [[ -e $HOME/.zplug/init.zsh ]] && {
+        source $HOME/.zplug/init.zsh
+    }
+    (( $+functions[zplug] )) && source $confdir/config/packages.zsh
 }
-(( $+functions[zplug] )) && source $confdir/config/packages.zsh
 
 
 #Compinit
@@ -159,9 +161,8 @@ bindkey '^[#' pound-insert
 zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
 
-_dircolors=$(whence dircolors)
-[[ -z ${_dircolors} ]] && _dircolors=$(whence gdircolors)
-#LS Colors in Completion
+(( $+commands[dircolors] )) && _dircolors=dircolors
+(( $+commands[gdircolors] )) && _dircolors=gdircolors
 [[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
 export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
@@ -170,7 +171,7 @@ zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 compdef _user_at_host ssh-copy-id
 
 # load zplugs
-which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
+[[ -z ${reload} ]] && which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
 
 # load conifg
 [[ -f $confdir/hosts/${basehost}-post.sh ]] && source $confdir/hosts/${basehost}-post.sh
