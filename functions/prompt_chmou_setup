@@ -136,3 +136,5 @@ prompt_chmou_precmd() {
 }
 
 prompt_chmou_setup "$@"
+
+# vim: ft=sh
