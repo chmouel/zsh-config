@@ -2,3 +2,5 @@ hosts/*
 !hosts/.gitignore
 cache/*
 !cache/.gitignore
+.zcompdump
+.zsh_history
