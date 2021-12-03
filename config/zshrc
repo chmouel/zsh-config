@@ -96,7 +96,7 @@ typeset -U path
 path=($HOME/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
 
 #History Settings
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="${confdir}/cache/zsh_history"
 HISTSIZE="5000000"
 SAVEHIST="5000000"
 export HISTSIZE HISTSIZE SAVEHIST
