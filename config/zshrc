@@ -149,6 +149,13 @@ zstyle ':vcs_info:*' formats '[%F{7}%b%f]'
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:git*' formats "%{$fg[cyan]%}%b%{$reset_color%}%m%u%c%{$reset_color%}"
 
+# Kill support  https://github.com/zsh-users/zsh-completions/issues/93#issuecomment-8311702
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:processes' command 'NOCOLORS=1 ps -U $(whoami)|sed "/ps/d"'
+zstyle ':completion:*:processes' insert-ids menu yes select
+zstyle ':completion:*:processes-names' command 'NOCOLORS=1 ps xho command|sed "s/://g"'
+zstyle ':completion:*:processes' sort false
+
 #Keys
 stty -ixon #disable c-q c-s
 bindkey -e
