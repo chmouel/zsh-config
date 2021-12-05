@@ -50,7 +50,7 @@ alias -g L="|& less"
 	 alias -g JS="-o json|jq "
 	 alias -g YJ="-o yaml|yjq"
 }
-(( $+commands[fzf] )) && alias -g "?"="| fzf"
+(( $+commands[fzf] )) && alias -g F="| fzf"
 
 # Direnv
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
@@ -163,6 +163,11 @@ bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
 bindkey -s "^Xs" "^p^asudo ^e"
 # M-# comment current line
 bindkey '^[#' pound-insert
+
+# Bind control-left/right properly
+[[ -n ${terminfo[kLFT5]}  ]] && bindkey -- "${terminfo[kLFT5]}"  backward-word
+[[ -n ${terminfo[kRIT5]}  ]] && bindkey -- "${terminfo[kRIT5]}"  forward-word
+[[ -n ${terminfo[Home]}  ]] && bindkey -- "${terminfo[Home]}" beginning-of-line
 
 #Ala emacs
 zmodload -i zsh/deltochar
