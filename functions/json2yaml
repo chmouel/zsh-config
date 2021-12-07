@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python -c 'import sys,json,yaml;print(yaml.safe_dump(json.loads(sys.stdin.read()), default_flow_style=False))'

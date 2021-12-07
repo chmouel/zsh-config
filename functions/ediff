@@ -1,6 +1,0 @@
-#!/bin/bash
-if [ -d $1 ]; then
-    emacsclient -n -a emacs -q --eval "(ediff-directories \"$1\" \"$2\" \"\")";
-else
-    emacsclient -n -a emacs -q --eval "(ediff-files \"$1\" \"$2\")";
-fi
