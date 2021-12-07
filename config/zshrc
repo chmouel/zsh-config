@@ -137,6 +137,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
 #Auto quote URL
+autoload -U bracketed-paste-url-magic
 zle -N bracketed-paste bracketed-paste-url-magic
 
 # GIT support
