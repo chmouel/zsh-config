@@ -20,7 +20,7 @@ alias mv="mv -i"
 alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
 
-builtin type -p emacsclient >/dev/null 2>/dev/null && alias e="emacsclient -n"
+(( $+commands[emacsclient] )) && alias e="emacsclient -n"
 
 #GIT
 alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
@@ -34,12 +34,8 @@ function gcm() {
 	git remote|grep -qw chmouel && git remote prune chmouel
     git branch --merged|sed 's/^..//'|egrep -vw '(main|master)'|xargs -r git branch -d
 }
-
-builtin type -p hub >/dev/null && alias hs='hub sync &&  git remote|grep -qw chmouel && git remote prune chmouel && git branch --merged|sed 's/^..//'|grep -vw main|xargs -r git branch -d'
-
-builtin type -p gh >/dev/null && {
-   alias ghissuecreate="gh issue create -R ${PWD:t2}"
-}
+(( $+commands[gh] )) && alias ghissuecreate="gh issue create -R ${PWD:t2}"
+(( $+commands[rg] )) && alias g=rg
 
 alias fina='fin -a'
 builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
