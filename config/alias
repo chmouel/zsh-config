@@ -27,6 +27,7 @@ alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
 alias gb="git checkout -b"
 alias pr="git pr"
 alias gc="git checkout"
+alias fina='fin -a'
 
 function gcm() {
 	git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
@@ -35,10 +36,13 @@ function gcm() {
     git branch --merged|sed 's/^..//'|egrep -vw '(main|master)'|xargs -r git branch -d
 }
 (( $+commands[gh] )) && alias ghissuecreate="gh issue create -R ${PWD:t2}"
-(( $+commands[rg] )) && alias g=rg
 
-alias fina='fin -a'
-builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
-builtin type -P tailf &>/dev/null || alias tailf="tail -F"
+(( $+commands[systemctl] )) && {
+    alias ss="sudo -E systemctl"
+    alias ssu="systemctl --user"
+}
+(( $+commands[tailf] )) || alias tailf="tail -F"
+
 
 alias grep="grep --color=auto"
+(( $+commands[rg] )) && alias g=rg
