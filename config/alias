@@ -17,10 +17,13 @@ alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
 
+(( $+commands[bat] )) && less=bat
+
 alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
 
-builtin type -p emacsclient >/dev/null 2>/dev/null && alias e="emacsclient -n"
+(( $+commands[fin] )) && alias fina='fin -a'
+(( $+functions[j] )) && alias jn='j -n'
 
 #GIT
 alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
@@ -28,21 +31,38 @@ alias gb="git checkout -b"
 alias pr="git pr"
 alias gc="git checkout"
 
+(( $+commands[emacsclient] )) && alias e="emacsclient -n"
+
 function gcm() {
 	git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
 	(( $+commands[gh] )) && git remote -v |grep -q github.com && gh repo sync
 	git remote|grep -qw chmouel && git remote prune chmouel
     git branch --merged|sed 's/^..//'|egrep -vw '(main|master)'|xargs -r git branch -d
 }
+(( $+commands[gh] )) && alias ghissuecreate="gh issue create -R ${PWD:t2}"
 
-builtin type -p hub >/dev/null && alias hs='hub sync &&  git remote|grep -qw chmouel && git remote prune chmouel && git branch --merged|sed 's/^..//'|grep -vw main|xargs -r git branch -d'
+(( $+commands[systemctl] )) && {
+    alias ss="sudo -E systemctl"
+    alias ssu="systemctl --user"
+}
+(( $+commands[tailf] )) || alias tailf="tail -F"
+(( $+commands[rg] )) && alias g=rg
 
-builtin type -p gh >/dev/null && {
-   alias ghissuecreate="gh issue create -R ${PWD:t2}"
+(( $+commands[pacman] )) && {
+  alias inst="sudo pacman -S"
+  alias yinst="yay -S"
+  alias remove="sudo pacman -Rcs"
+
+  _fpac() {
+      packages=$(awk {'print $1'} <<< $(${1} -Ss ${2} | awk 'NR%2 {printf "\033[1;32m%s \033[0;36m%s\033[0m — ",$1,$2;next;}{ print substr($0, 5, length($0) - 4); }' | fzf -m --ansi))
+      [ "$packages" ] && yay -S $(echo "$packages" | tr "\n" " ")
+  }
+  alias ysearch="_fpac yay"
+  alias ysearch2="yay --color=always -Ss"
+  alias search="_fpac pacman"
+  alias search2="pacman --color=always -Ss"
 }
 
-alias fina='fin -a'
-builtin type -P systemctl &>/dev/null && alias ss="sudo systemctl"
-builtin type -P tailf &>/dev/null || alias tailf="tail -F"
+(( $+commands[xdg-open] )) && alias open=xdg-open
+(( $+commands[yadm] )) && alias y=yadm
 
-alias grep="grep --color=auto"
