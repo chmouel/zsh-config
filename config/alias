@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 alias b='bzip2 -9vf'
 alias z="gzip -9fv"
 alias md='mkdir -p'
@@ -23,7 +23,8 @@ alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
 
 (( $+commands[fin] )) && alias fina='fin -a'
-(( $+functions[j] )) && alias jn='j -n'
+alias j=jump-to-dir # comes from our zsh functions 
+alias jn='j -n'
 
 #GIT
 alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
@@ -65,4 +66,3 @@ function gcm() {
 
 (( $+commands[xdg-open] )) && alias open=xdg-open
 (( $+commands[yadm] )) && alias y=yadm
-
