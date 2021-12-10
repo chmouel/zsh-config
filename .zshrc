@@ -80,7 +80,7 @@ alias -g GROOT='`git rev-parse --show-toplevel`'
 
 
 
-alias so="source $confdir/config/zshrc reloading && unset reload"
+alias so="source $confdir/.zshrc reloading && unset reload"
 alias incognito="unset HISTFILE"
 alias o='popd'
 
