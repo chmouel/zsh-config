@@ -1,36 +1,31 @@
 #!/usr/bin/zsh
-alias b='bzip2 -9vf'
+alias b="bzip2 -9vf"
 alias z="gzip -9fv"
-alias md='mkdir -p'
+alias md="mkdir -p"
 
 alias ls="ls --color=auto -F"
 alias d=ls
-alias s='cd ..'
-alias p='cd -'
-alias ll='ls -arSlh'
-alias la='ls -A'
-alias lt='ls -artl'
+alias s="cd .."
+alias p="cd -"
+alias ll="ls -arSlh"
+alias la="ls -A"
+alias lt="ls -artl"
 
-alias df='df -h'
-alias du='du -sh'
+alias df="df -h"
+alias du="du -sh"
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
+alias ppgrep="ps aux|grep"
 
 (( $+commands[bat] )) && less=bat
 
 alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
 
-(( $+commands[fin] )) && alias fina='fin -a'
+(( $+commands[fin] )) && alias fina="fin -a"
 alias j=jump-to-dir # comes from our zsh functions
-alias jn='j -n'
-
-#GIT
-alias ggd='git diff --ignore-space-at-eol -b -w --ignore-blank-lines'
-alias gb="git checkout -b"
-alias pr="git pr"
-alias gc="git checkout"
+alias jn="j -n"
 
 (( $+commands[emacsclient] )) && alias e="emacsclient -n"
 
@@ -53,6 +48,7 @@ function gcm() {
   alias inst="sudo pacman -S"
   alias yinst="yay -S"
   alias remove="sudo pacman -Rcs"
+  alias lastinstalled="expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort -r| bat"
 
   _fpac() {
       packages=$(awk {'print $1'} <<< $(${1} -Ss ${2} | awk 'NR%2 {printf "\033[1;32m%s \033[0;36m%s\033[0m — ",$1,$2;next;}{ print substr($0, 5, length($0) - 4); }' | fzf -m --ansi))
@@ -67,3 +63,29 @@ function gcm() {
 (( $+commands[xdg-open] )) && alias open=xdg-open
 (( $+commands[yadm] )) && alias y=yadm
 
+#GIT
+alias gg="git grep"
+alias ggd="git diff --ignore-space-at-eol -b -w --ignore-blank-lines"
+alias gb="git checkout -b"
+alias pr="git pr"
+alias gs="git switch -"
+alias gc="git checkout"
+alias gcb="git checkout -b"
+# to copy easily the gopath
+alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
+
+(( $+commands[git-branch-show] )) && alias gbs="git-browse-show"
+(( $+commands[git-branch-list] )) && {
+    alias gbl="git-branch-list -f"
+    alias gbk="git-branch-list -d"
+}
+(( $+functions[ghpr] )) && alias ghprf="ghpr -f"
+
+[[ -d $GOPATH/src/github.com/tektoncd/ ]] && {
+    alias pp="cd $GOPATH/src/github.com/tektoncd/pipeline"
+    alias pc="cd $GOPATH/src/github.com/tektoncd/cli"
+    alias pl="cd $GOPATH/src/github.com/tektoncd/catalog"
+}
+[[ -d $GOPATH/src/github.com/openshift-pipelines/ ]] && {
+    alias pm="cd $GOPATH/src/github.com/openshift-pipelines/pipelines-as-code"
+}
