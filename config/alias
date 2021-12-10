@@ -23,7 +23,7 @@ alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
 
 (( $+commands[fin] )) && alias fina='fin -a'
-alias j=jump-to-dir # comes from our zsh functions 
+alias j=jump-to-dir # comes from our zsh functions
 alias jn='j -n'
 
 #GIT
@@ -35,9 +35,9 @@ alias gc="git checkout"
 (( $+commands[emacsclient] )) && alias e="emacsclient -n"
 
 function gcm() {
-	git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
-	(( $+commands[gh] )) && git remote -v |grep -q github.com && gh repo sync
-	git remote|grep -qw chmouel && git remote prune chmouel
+    git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
+    (( $+commands[gh] )) && git remote -v |grep -q github.com && gh repo sync
+    git remote|grep -qw chmouel && git remote prune chmouel
     git branch --merged|sed 's/^..//'|egrep -vw '(main|master)'|xargs -r git branch -d
 }
 (( $+commands[gh] )) && alias ghissuecreate="gh issue create -R ${PWD:t2}"
