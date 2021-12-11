@@ -31,6 +31,10 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
     (( $+functions[zplug] )) && source $confdir/config/packages.zsh
 }
 
+if (( $+commands[upower] ));then
+    upower -i /org/freedesktop/UPower/devices/line_power_AC0|grep -q "online:.*no" && \
+        setopt no_inc_append_history || setopt inc_append_history
+fi
 
 #Compinit
 [[ -z $reload ]] && compinit -i
@@ -55,12 +59,6 @@ bindkey "^X^E" edit-command-line
 typeset -U path
 path=($HOME/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
 
-#History Settings
-HISTFILE="${confdir}/cache/zsh_history"
-HISTSIZE="5000000"
-SAVEHIST="5000000"
-export HISTSIZE HISTSIZE SAVEHIST
-
 setopt extended_history hist_ignore_all_dups \
        append_history hist_ignore_dups hist_ignore_space \
        hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
@@ -71,15 +69,10 @@ setopt auto_list # automatically list choices on ambiguous completion
 setopt no_auto_menu # do not automatically use menu completion
 setopt always_to_end # move cursor to end if word had one match
 
-(( $+commands[on_ac_power] )) && on_ac_power && setopt inc_append_history
-
 #setopt
 setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
        AUTO_CD noFLOW_CONTROL AUTO_PUSHD noCompleteinword \
        interactivecomments nopromptcr alwaystoend
-
-#Ignore stuff starting by _ for the completion.
-export CORRECT_IGNORE="_*"
 
 #cache completion
 zstyle ':completion:*' use-cache on
@@ -131,12 +124,6 @@ bindkey '^[#' pound-insert
 #Ala emacs
 zmodload -i zsh/deltochar
 bindkey -e "^[z" zap-to-char
-
-(( $+commands[dircolors] )) && _dircolors=dircolors
-(( $+commands[gdircolors] )) && _dircolors=gdircolors
-[[ -n ${_dircolors} &&  -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
-export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
-zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id

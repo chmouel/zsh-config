@@ -1,6 +1,11 @@
-#!/bin/bash
-builtin type -p nvim >/dev/null 2>/dev/null && export EDITOR=${EDITOR:-nvim}
-EDITOR=${EDITOR:-"vim"}
+#!/usr/bin/zsh 
+if [[ -z ${EDITOR} ]];then
+    if (( $+commands[nvim] ));then 
+       export EDITOR=nvim 
+    elif (( $+commands[vim] ));then  
+       export EDITOR=vim
+    fi
+fi
 LESS='-F -g -i -M -R -S -w -X -z-4'
 
 export EDITOR LESS
@@ -8,11 +13,27 @@ export EDITOR LESS
 export ACK_COLOR_FILENAME="bold blue"
 export ACK_COLOR_MATCH="bold red"
 
-export BAT_STYLE="plain"
+(( $+commands[bat] )) && export BAT_STYLE="plain"
 
+(( $+commands[dircolors] )) && _dircolors=dircolors
+(( $+commands[gdircolors] )) && _dircolors=gdircolors
+[[ -n ${_dircolors} && -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
+    export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
+    zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
+
+# plugin setting
 export EMOJI_CLI_USE_EMOJI=true
 export ZSH_TAB_TITLE_ONLY_FOLDER=true
 export ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
+
+#History Settings
+HISTFILE="${confdir}/cache/zsh_history"
+HISTSIZE="5000000"
+SAVEHIST="5000000"
+export HISTSIZE HISTSIZE SAVEHIST
+
+#Ignore stuff starting by _ for the completion.
+export CORRECT_IGNORE="_*"
 
 umask 022
 

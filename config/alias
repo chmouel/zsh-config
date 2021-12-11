@@ -21,13 +21,20 @@ alias ppgrep="ps aux|grep"
 (( $+commands[bat] )) && less=bat
 
 alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
-alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
+if [[ -d ${HOME}/.config/yadm ]];then
+    alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
+else
+    alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
+fi
 
 (( $+commands[fin] )) && alias fina="fin -a"
 alias j=jump-to-dir # comes from our zsh functions
 alias jn="j -n"
 
 (( $+commands[emacsclient] )) && alias e="emacsclient -n"
+
+(( $+commands[upower] )) && \
+    alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|percentage"'
 
 function gcm() {
     git checkout $(git --no-pager branch -l --no-color|sed -rn '/.*(master|main)/ { s/^..//;p;Q;}')
@@ -128,3 +135,4 @@ alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
 alias -g GR='`git config branch.$(git rev-parse --abbrev-ref HEAD).remote`'
 alias -g GROOT='`git rev-parse --show-toplevel`'
+
