@@ -42,48 +42,6 @@ if [[ -z $CUSTOM_PROMPT ]];then
     prompt chmou ${userColor}
 fi
 
-#Zsh: Alias
-alias -g L="|& less"
-(( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
-(( $+commands[jq] )) && {
-	 alias -g JST="-o json|jq .status"
-	 alias -g JS="-o json|jq "
-	 alias -g YJ="-o yaml|yjq"
-}
-(( $+commands[fzf] )) && alias -g F="| fzf"
-
-# Direnv
-(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
-
-# LS
-(( $+commands[gls] )) &&  alias ls="gls --color=auto -F"
-(( $+commands[exa] )) && {
-    alias ll="exa --git --colour-scale -arlh";
-
-    export EXA_COLORS='in=37:ur=1;36:uw=1;33:ux=1;32:gr=36:gw=33:gx=32:tr=36:tw=33:tx=32:sn=32:sb=1;32:lc=37:uu=35:gu=35:un=1;31:gn=1;31:da=36';
-}
-
-(( $+commands[bat] )) && {
-    alias -g BY="| bat -l yaml"
-    alias -g BJ="| jq -C |bat"
-}
-
-# Source code highlight
-(( $+commands[lesspipe.sh] )) && export LESSOPEN="| =lesspipe.sh %s" 
-#(( $+commands[pygmentize] )) && export LESSOPEN="| =pygmentize %s" 
-#(( $+commands[chroma] )) && export LESSOPEN="| =chroma %s" 
-
-alias -g EEL=' 2>&1 | less'
-alias -g GB='`git rev-parse --abbrev-ref HEAD`'
-alias -g GR='`git config branch.$(git rev-parse --abbrev-ref HEAD).remote`'
-alias -g GROOT='`git rev-parse --show-toplevel`'
-
-
-
-alias so="source $confdir/.zshrc reloading && unset reload"
-alias incognito="unset HISTFILE"
-alias o='popd'
-
 #Considers only alphanumeric as work like in bash
 autoload -U select-word-style
 select-word-style bash
