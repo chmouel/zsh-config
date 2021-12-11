@@ -25,9 +25,14 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 # Get zplug if it exists first
 [[ -z ${reload} ]] && {
-    (( ! $+functions[zplug] )) && [[ -e $HOME/.zplug/init.zsh ]] && {
-        source $HOME/.zplug/init.zsh
-    }
+    if (( ! $+functions[zplug] ));then
+        if [[ -e $HOME/.zplug/init.zsh ]];then
+            source $HOME/.zplug/init.zsh
+        # arch package
+        elif [[ -e /usr/share/zsh/scripts/zplug/init.zsh ]];then
+            source /usr/share/zsh/scripts/zplug/init.zsh
+        fi
+    fi
     (( $+functions[zplug] )) && source $confdir/config/packages.zsh
 }
 
