@@ -18,7 +18,7 @@ alias rm="rm -i"
 alias mv="mv -i"
 alias ppgrep="ps aux|grep"
 
-(( $+commands[bat] )) && less=bat
+(( $+commands[bat] )) && alias less=bat
 
 alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 if [[ -d ${HOME}/.config/yadm ]];then
