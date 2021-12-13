@@ -4,6 +4,7 @@ alias z="gzip -9fv"
 alias md="mkdir -p"
 
 alias ls="ls --color=auto -F"
+(( $+commands[exa] )) && alias ls="exa -F --icons"
 alias d=ls
 alias s="cd .."
 alias p="cd -"
