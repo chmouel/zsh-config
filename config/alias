@@ -28,10 +28,8 @@ else
 fi
 
 (( $+commands[fin] )) && alias fina="fin -a"
-(( $+functions[chmoujump] )) && {
-    alias j=chmoujump # comes from our zsh plugin
-    alias jn="j -n"
-}
+alias j=chmoujump # comes from our zsh plugin
+alias jn="j -n"
 
 (( $+commands[emacsclient] )) && alias e="emacsclient -n"
 
