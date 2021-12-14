@@ -21,19 +21,21 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 [[ -f $confdir/config/alias ]] && source $confdir/config/alias
 [[ -f $confdir/hosts/$basehost.sh ]] && source $confdir/hosts/$basehost.sh
 
-# Get zplug if it exists first
+# Get zplug from anywhere it can be
 [[ -z ${reload} ]] && {
     if (( ! $+functions[zplug] ));then
         if [[ -e $ZPLUG_HOME/init.zsh ]];then
             source $ZPLUG_HOME/init.zsh
-        elif [[ -e $HOME/.zplug/init.zsh ]];then
-            source $HOME/.zplug/init.zsh
-        # arch package
+        # distro packages
         elif [[ -e /usr/share/zsh/scripts/zplug/init.zsh ]];then
             source /usr/share/zsh/scripts/zplug/init.zsh
         fi
     fi
-    (( $+functions[zplug] )) && source $confdir/config/packages.zsh
+    (( $+functions[zplug] )) && {
+        source $confdir/config/packages.zsh
+        zplug check || zplug install
+        zplug load
+    }
 }
 
 if (( $+commands[upower] ));then
@@ -64,20 +66,17 @@ bindkey "^X^E" edit-command-line
 typeset -U path
 path=($HOME/.local/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
 
-setopt extended_history hist_ignore_all_dups \
-       append_history hist_ignore_dups hist_ignore_space \
-       hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
-       nohistignorespace
-
 zmodload -i zsh/complist
-setopt auto_list # automatically list choices on ambiguous completion
-setopt no_auto_menu # do not automatically use menu completion
-setopt always_to_end # move cursor to end if word had one match
 
 #setopt
 setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
        AUTO_CD noFLOW_CONTROL AUTO_PUSHD noCompleteinword \
-       interactivecomments nopromptcr alwaystoend
+       interactivecomments nopromptcr \
+       extended_history hist_ignore_all_dups \
+       append_history hist_ignore_dups hist_ignore_space \
+       hist_reduce_blanks hist_save_no_dups histverify nohistbeep \
+       nohistignorespace auto_list no_auto_menu always_to_end
+
 
 #cache completion
 zstyle ':completion:*' use-cache on
@@ -132,9 +131,6 @@ bindkey -e "^[z" zap-to-char
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
-
-# load zplugs
-[[ -z ${reload} ]] && which zplug 2>/dev/null >/dev/null && { zplug check || zplug install; zplug load ; }
 
 # load conifg
 [[ -f $confdir/hosts/${basehost}-post.sh ]] && source $confdir/hosts/${basehost}-post.sh
