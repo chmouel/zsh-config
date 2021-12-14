@@ -22,6 +22,7 @@ export ACK_COLOR_MATCH="bold red"
     zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 # plugin setting
+export ZPLUG_HOME=${confdir}/cache/zplug
 export EMOJI_CLI_USE_EMOJI=true
 export ZSH_TAB_TITLE_ONLY_FOLDER=true
 export ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
