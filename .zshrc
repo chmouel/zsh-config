@@ -62,7 +62,7 @@ bindkey "^X^E" edit-command-line
 
 # Path
 typeset -U path
-path=($HOME/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
+path=($HOME/.local/bin /usr/local/bin /usr/local/sbin /usr/sbin /sbin $path)
 
 setopt extended_history hist_ignore_all_dups \
        append_history hist_ignore_dups hist_ignore_space \
