@@ -6,8 +6,6 @@ confdir=$HOME/.shell
 basehost=${HOST%%.*}
 [[ $1 == 'reloading' ]] && reload=yes
 
-autoload -U colors;colors
-
 # We need that first
 setopt nonomatch
 
