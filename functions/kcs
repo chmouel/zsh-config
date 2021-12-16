@@ -104,7 +104,7 @@ function kcs () {
     }
 
     [[ -n ${profile} ]] && _kcs_set_kubeconfig ${profile}
-    ocompletion
+    (( $+commands[completion] )) && ocompletion
 }
 
 compdef '_arguments "1: :(${(Q)$(_kcs_list_profiles)})"' kcs
