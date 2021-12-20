@@ -19,6 +19,7 @@ alias mv="mv -i"
 alias ppgrep="ps aux|grep"
 
 (( $+commands[bat] )) && alias less=bat
+(( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
 alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
 if [[ -d ${HOME}/.config/yadm ]];then
