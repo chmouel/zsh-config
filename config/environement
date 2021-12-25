@@ -34,6 +34,8 @@ HISTSIZE="5000000"
 SAVEHIST="5000000"
 export HISTSIZE HISTSIZE SAVEHIST
 
+export IPYTHONDIR=$HOME/.config/ipython
+
 #Ignore stuff starting by _ for the completion.
 export CORRECT_IGNORE="_*"
 
