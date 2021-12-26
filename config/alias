@@ -32,8 +32,6 @@ fi
 alias j=chmoujump # comes from our zsh plugin
 alias jn="j -n"
 
-(( $+commands[emacsclient] )) && alias e="emacsclient -n"
-
 (( $+commands[upower] )) && \
     alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|percentage"'
 
