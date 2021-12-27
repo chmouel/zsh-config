@@ -125,6 +125,8 @@ alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 }
 (( $+functions[ghpr] )) && alias ghprf="ghpr -f"
 
+(( $+functions[zshz] )) && alias z=zshz
+
 alias so="source $confdir/.zshrc reloading && unset reload"
 alias incognito="unset HISTFILE"
 alias o='popd'
