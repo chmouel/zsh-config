@@ -18,6 +18,10 @@ alias rm="rm -i"
 alias mv="mv -i"
 alias ppgrep="ps aux|grep"
 
+alias so="source ${ZDOTDIR}/config/zshrc reloading && unset reload"
+alias incognito="unset HISTFILE"
+alias o='popd'
+
 test -d $HOME/.local/share/rc && alias cdrr="cd $HOME/.local/share/rc"
 
 (( $+commands[bat] )) && alias less=bat
@@ -26,13 +30,16 @@ test -d $HOME/.local/share/rc && alias cdrr="cd $HOME/.local/share/rc"
 alias vih="$EDITOR ${ZDOTDIR}/hosts/${HOST%%.*}.sh"
 if [[ -d ${HOME}/.config/yadm ]];then
     alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
-else
+elif [[ -f ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]];then
     alias cdf="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 fi
 
 (( $+commands[fin] )) && alias fina="fin -a"
-alias j=chmoujump # comes from our zsh plugin
+
+# from plugins
+alias j=chmoujump 
 alias jn="j -n"
+alias z=zshz
 
 (( $+commands[upower] )) && \
     alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|percentage"'
@@ -81,7 +88,6 @@ function gcm() {
     alias pm="cd $GOPATH/src/github.com/openshift-pipelines/pipelines-as-code"
 }
 
-
 #Zsh: Alias
 alias -g L="|& less"
 (( $+commands[jq] )) && alias -g MJ="| jq -C '.'"  || alias -g MJ="| python -mjson.tool"
@@ -127,11 +133,7 @@ alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 }
 (( $+functions[ghpr] )) && alias ghprf="ghpr -f"
 
-(( $+functions[zshz] )) && alias z=zshz
 
-alias so="source ${ZDOTDIR}/.zshrc reloading && unset reload"
-alias incognito="unset HISTFILE"
-alias o='popd'
 
 alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
