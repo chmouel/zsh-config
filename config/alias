@@ -18,6 +18,8 @@ alias rm="rm -i"
 alias mv="mv -i"
 alias ppgrep="ps aux|grep"
 
+test -d $HOME/.local/share/rc && alias cdrr="cd $HOME/.local/share/rc"
+
 (( $+commands[bat] )) && alias less=bat
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
