@@ -1,8 +1,7 @@
 #!/usr/bin/zsh
 # Chmouel Boudjnah <chmouel@chmouel.com>
 
-confdir=$HOME/.shell
-[[ -d ${confdir} ]] || confdir=$HOME/.config/zsh
+[[ -z ${ZDOTDIR} ]] && ZDOTDIR="$HOME/.config/zsh"
 basehost=${HOST%%.*}
 [[ $1 == 'reloading' ]] && reload=yes
 
@@ -11,15 +10,15 @@ setopt nonomatch
 
 #Local functions we want to autoload
 typeset -U fpath
-user_fun_path=($confdir/functions $confdir/functions/hosts/${basehost});
+user_fun_path=(${ZDOTDIR}/functions ${ZDOTDIR}/functions/hosts/${basehost});
 fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(x:t)
 for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 # get environement and alias
-[[ -f $confdir/config/environement ]] && source $confdir/config/environement
-[[ -f $confdir/config/alias ]] && source $confdir/config/alias
-[[ -f $confdir/hosts/$basehost.sh ]] && source $confdir/hosts/$basehost.sh
+[[ -f ${ZDOTDIR}/config/environement ]] && source ${ZDOTDIR}/config/environement
+[[ -f ${ZDOTDIR}/config/alias ]] && source ${ZDOTDIR}/config/alias
+[[ -f ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
 
 # Get zplug from anywhere it can be
 [[ -z ${reload} ]] && {
@@ -32,7 +31,7 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
         fi
     fi
     (( $+functions[zplug] )) && {
-        source $confdir/config/packages.zsh
+        source ${ZDOTDIR}/config/packages.zsh
         zplug check || zplug install
         zplug load
     }
@@ -44,7 +43,7 @@ if (( $+commands[upower] ));then
 fi
 
 #Compinit
-[[ -z $reload ]] && compinit -i -d ${confdir}/cache/zcompdump
+[[ -z $reload ]] && compinit -i -d ${ZDOTDIR}/cache/zcompdump
 
 #PS1
 if [[ -z $CUSTOM_PROMPT ]];then
@@ -80,7 +79,7 @@ setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
 
 #cache completion
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $confdir/cache
+zstyle ':completion:*' cache-path ${ZDOTDIR}/cache
 
 #Completion style
 zstyle ':completion:*' special-dirs true
@@ -133,10 +132,10 @@ bindkey -e "^[z" zap-to-char
 compdef _user_at_host ssh-copy-id
 
 # load conifg
-[[ -f $confdir/hosts/${basehost}-post.sh ]] && source $confdir/hosts/${basehost}-post.sh
+[[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
 #Unsetting
-unset basehost confdir func user_fun_path reload _dircolors
+unset basehost func user_fun_path reload _dircolors
 
 # Emacs Tramp
 if [[ "$TERM" = "dumb" ]];then

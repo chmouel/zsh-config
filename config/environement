@@ -22,14 +22,14 @@ export ACK_COLOR_MATCH="bold red"
     zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
 # plugin setting
-export ZPLUG_HOME=${confdir}/cache/zplug
+export ZPLUG_HOME=${ZDOTDIR}/cache/zplug
 export EMOJI_CLI_USE_EMOJI=true
 export ZSH_TAB_TITLE_ONLY_FOLDER=true
 export ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
-export ZSHZ_DATA=${confdir}/cache/zsh-cache-z
+export ZSHZ_DATA=${ZDOTDIR}/cache/zsh-cache-z
 
 #History Settings
-HISTFILE="${confdir}/cache/zsh_history"
+HISTFILE="${ZDOTDIR}/cache/zsh_history"
 HISTSIZE="5000000"
 SAVEHIST="5000000"
 export HISTSIZE HISTSIZE SAVEHIST

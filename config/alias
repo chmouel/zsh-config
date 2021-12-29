@@ -23,11 +23,11 @@ test -d $HOME/.local/share/rc && alias cdrr="cd $HOME/.local/share/rc"
 (( $+commands[bat] )) && alias less=bat
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
-alias vih="$EDITOR $confdir/hosts/${HOST%%.*}.sh"
+alias vih="$EDITOR ${ZDOTDIR}/hosts/${HOST%%.*}.sh"
 if [[ -d ${HOME}/.config/yadm ]];then
     alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
 else
-    alias cdf="cd $confdir/functions/hosts/${HOST%%.*}"
+    alias cdf="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 fi
 
 (( $+commands[fin] )) && alias fina="fin -a"
@@ -129,7 +129,7 @@ alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 
 (( $+functions[zshz] )) && alias z=zshz
 
-alias so="source $confdir/.zshrc reloading && unset reload"
+alias so="source ${ZDOTDIR}/.zshrc reloading && unset reload"
 alias incognito="unset HISTFILE"
 alias o='popd'
 
