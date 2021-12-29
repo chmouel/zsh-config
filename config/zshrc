@@ -44,7 +44,7 @@ if (( $+commands[upower] ));then
 fi
 
 #Compinit
-[[ -z $reload ]] && compinit -i
+[[ -z $reload ]] && compinit -i -d ${confdir}/cache/zcompdump
 
 #PS1
 if [[ -z $CUSTOM_PROMPT ]];then
