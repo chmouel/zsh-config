@@ -22,7 +22,7 @@ alias so="source ${ZDOTDIR}/config/zshrc reloading && unset reload"
 alias incognito="unset HISTFILE"
 alias o='popd'
 
-test -d $HOME/.local/share/rc && alias cdrr="cd $HOME/.local/share/rc"
+test -d $HOME/.local/share/rc && alias jrc="cd $HOME/.local/share/rc"
 
 (( $+commands[bat] )) && alias less=bat
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
