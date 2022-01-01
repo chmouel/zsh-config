@@ -1,9 +1,27 @@
-zplug "zplug/zplug", hook-build:zplug\ --self-manage
-zplug "agkozak/zsh-z"
-zplug "b4b4r07/emoji-cli"
-zplug "zsh-users/zsh-autosuggestions", defer:2
-zplug "trystan2k/zsh-tab-title"
-zplug "chmouel/chmoujump"
-#zplug "andrewferrier/fzf-z"
-#zplug "zdharma/fast-syntax-highlighting", defer:2
-#zplug "felixr/docker-zsh-completion"
+
+install_packages() {
+    local packages=(
+        agkozak/zsh-z
+        zsh-users/zsh-autosuggestions
+        trystan2k/zsh-tab-title
+        chmouel/chmoujump
+    )
+    local base_url=https://github.com
+    local cache_dir=${ZDOTDIR}/cache/repos/
+    local p
+    for p in ${packages[@]};do
+        local dirname=${p%%/*}
+        local basename=${p##*/}
+        local plugin=${cache_dir}/${p}/${basename}.plugin.zsh
+        local url=${base_url}/${p}
+        
+        [[ -d ${cache_dir}/${p} ]] || {
+            echo -e "plugin clone from ${url}"
+            mkdir -p ${cache_dir}/${dirname}
+            git clone --depth=1 ${url} ${cache_dir}/${p}
+        }
+        [[ -e ${plugin} ]] && source ${plugin}
+    done
+}
+
+install_packages

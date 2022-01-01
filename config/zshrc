@@ -21,21 +21,7 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 [[ -f ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
 
 # Get zplug from anywhere it can be
-[[ -z ${reload} ]] && {
-    if (( ! $+functions[zplug] ));then
-        if [[ -e ${ZPLUG_HOME}/init.zsh ]];then
-            source ${ZPLUG_HOME}/init.zsh
-        # distro packages
-        elif [[ -e /usr/share/zsh/scripts/zplug/init.zsh ]];then
-            source /usr/share/zsh/scripts/zplug/init.zsh
-        fi
-    fi
-    (( $+functions[zplug] )) && {
-        source ${ZDOTDIR}/config/packages.zsh
-        zplug check || zplug install
-        zplug load
-    }
-}
+source ${ZDOTDIR}/config/packages.zsh
 
 if (( $+commands[upower] ));then
     upower -i /org/freedesktop/UPower/devices/line_power_AC0|grep -q "online:.*no" && \
