@@ -9,7 +9,8 @@ install_packages() {
         b4b4r07/emoji-cli::emoji-cli.zsh
     )
     local base_url=https://github.com
-    local cache_dir=${ZDOTDIR}/cache/repos
+    local cachedir=${cachedir:-$HOME/.cache/zsh}
+    cachedir=${cachedir}/repos
     local p
     for p in ${packages[@]};do
         local fname=""
@@ -20,13 +21,13 @@ install_packages() {
         local dirname=${p%%/*}
         local basename=${p##*/}
         fname=${fname:-${basename}.plugin.zsh}
-        local plugin=${cache_dir}/${p}/${fname}
+        local plugin=${cachedir}/${p}/${fname}
         local url=${base_url}/${p}
         
-        [[ -d ${cache_dir}/${p} ]] || {
+        [[ -d ${cachedir}/${p} ]] || {
             echo -e "plugin clone from ${url}"
-            mkdir -p ${cache_dir}/${dirname}
-            git clone --depth=1 ${url} ${cache_dir}/${p}
+            mkdir -p ${cachedir}/${dirname}
+            git clone --depth=1 ${url} ${cachedir}/${p}
         }
         [[ -e ${plugin} ]] && source ${plugin}
     done

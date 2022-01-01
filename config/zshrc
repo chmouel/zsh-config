@@ -1,9 +1,10 @@
 #!/usr/bin/zsh
 # Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
-
 [[ -z ${ZDOTDIR} ]] && ZDOTDIR="$HOME/.config/zsh"
 basehost=${HOST%%.*}
+cachedir=${HOME}/.cache/zsh
 [[ $1 == 'reloading' ]] && reload=yes
+[[ -d  ${cachedir} ]] || mkdir -p ${cachedir}
 
 # We need that first
 setopt nonomatch
@@ -29,7 +30,7 @@ if (( $+commands[upower] ));then
 fi
 
 #Compinit
-[[ -z $reload ]] && compinit -i -d ${ZDOTDIR}/cache/zcompdump
+[[ -z $reload ]] && compinit -i -d ${cachedir}/zcompdump
 
 #PS1
 if [[ -z $CUSTOM_PROMPT ]];then
@@ -60,7 +61,7 @@ setopt nobeep COMPLETE_IN_WORD CORRECT EXTENDED_GLOB \
 
 #cache completion
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ${ZDOTDIR}/cache
+zstyle ':completion:*' cache-path ${cachedir}
 
 #Completion style
 zstyle ':completion:*' special-dirs true
@@ -123,7 +124,7 @@ source ${ZDOTDIR}/config/packages
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
 #Unsetting
-unset basehost func user_fun_path reload _dircolors
+unset basehost func user_fun_path reload _dircolors cachedir
 
 # Emacs Tramp
 if [[ "$TERM" = "dumb" ]];then
