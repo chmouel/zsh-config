@@ -1,4 +1,4 @@
-#!/usr/bin/zsh 
+# Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
 if [[ -z ${EDITOR} ]];then
     if (( $+commands[nvim] ));then 
        export EDITOR=nvim 
@@ -52,3 +52,5 @@ umask 022
 #        unset SSH_AUTH_SOCK
 #    fi
 # fi
+
+# vim: ft=zsh

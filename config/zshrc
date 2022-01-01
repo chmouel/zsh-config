@@ -1,4 +1,3 @@
-#!/usr/bin/zsh
 # Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
 [[ -z ${ZDOTDIR} ]] && ZDOTDIR="$HOME/.config/zsh"
 basehost=${HOST%%.*}
@@ -133,3 +132,5 @@ if [[ "$TERM" = "dumb" ]];then
     unsetopt prompt_subst
     prompt off
 fi
+
+# vim: ft=zsh

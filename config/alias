@@ -1,4 +1,5 @@
-#!/usr/bin/zsh
+# Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
+
 alias b="bzip2 -9vf"
 alias z="gzip -9fv"
 alias md="mkdir -p"
@@ -140,3 +141,4 @@ alias -g GB='`git rev-parse --abbrev-ref HEAD`'
 alias -g GR='`git config branch.$(git rev-parse --abbrev-ref HEAD).remote`'
 alias -g GROOT='`git rev-parse --show-toplevel`'
 
+# vim: ft=zsh
