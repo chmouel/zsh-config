@@ -1,5 +1,5 @@
 #!/usr/bin/zsh
-# Chmouel Boudjnah <chmouel@chmouel.com>
+# Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
 
 [[ -z ${ZDOTDIR} ]] && ZDOTDIR="$HOME/.config/zsh"
 basehost=${HOST%%.*}
@@ -16,16 +16,16 @@ for func ($user_fun_path) autoload -U $func/*(x:t)
 for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 # get environement and alias
-[[ -f ${ZDOTDIR}/config/environement ]] && source ${ZDOTDIR}/config/environement
-[[ -f ${ZDOTDIR}/config/alias ]] && source ${ZDOTDIR}/config/alias
-[[ -f ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
+source ${ZDOTDIR}/config/environement
+source ${ZDOTDIR}/config/alias
+[[ -z ${reload} ]] && source ${ZDOTDIR}/config/packages
 
-# Get zplug from anywhere it can be
-source ${ZDOTDIR}/config/packages.zsh
+# pre local config
+[[ -e ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
 
 if (( $+commands[upower] ));then
     upower -i /org/freedesktop/UPower/devices/line_power_AC0|grep -q "online:.*no" && \
-        setopt no_inc_append_history || setopt inc_append_history
+    setopt no_inc_append_history || setopt inc_append_history
 fi
 
 #Compinit
@@ -93,12 +93,11 @@ zstyle ':completion:*:processes-names' command 'NOCOLORS=1 ps xho command|sed "s
 zstyle ':completion:*:processes' sort false
 
 #Keys
-stty -ixon #disable c-q c-s
-bindkey -e
 bindkey -s '^Xd' "\`date '+%Y%m%d'\`\t" #`"
 bindkey -s "^Xs" "^p^asudo ^e"
 # M-# comment current line
 bindkey '^[#' pound-insert
+
 
 # Bind control-left/right properly
 [[ -n ${terminfo[kLFT5]}  ]] && bindkey -- "${terminfo[kLFT5]}"  backward-word
@@ -116,6 +115,9 @@ bindkey "^X^E" edit-command-line
 
 #on ssh-copy-id compile user-at-host
 compdef _user_at_host ssh-copy-id
+
+# need to be after the "bindkey -e" if not plugins would not be able to bindkeys
+source ${ZDOTDIR}/config/packages
 
 # load conifg
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh

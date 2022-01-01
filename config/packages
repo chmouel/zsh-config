@@ -1,3 +1,4 @@
+# Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
 
 install_packages() {
     local packages=(
@@ -5,14 +6,21 @@ install_packages() {
         zsh-users/zsh-autosuggestions
         trystan2k/zsh-tab-title
         chmouel/chmoujump
+        b4b4r07/emoji-cli::emoji-cli.zsh
     )
     local base_url=https://github.com
-    local cache_dir=${ZDOTDIR}/cache/repos/
+    local cache_dir=${ZDOTDIR}/cache/repos
     local p
     for p in ${packages[@]};do
+        local fname=""
+        [[ ${p} == *::* ]] && {
+            fname=${p#*::}
+            p=${p%::*}
+        }
         local dirname=${p%%/*}
         local basename=${p##*/}
-        local plugin=${cache_dir}/${p}/${basename}.plugin.zsh
+        fname=${fname:-${basename}.plugin.zsh}
+        local plugin=${cache_dir}/${p}/${fname}
         local url=${base_url}/${p}
         
         [[ -d ${cache_dir}/${p} ]] || {
@@ -25,3 +33,5 @@ install_packages() {
 }
 
 install_packages
+
+# vim: ft=zsh

@@ -23,10 +23,10 @@ export ACK_COLOR_MATCH="bold red"
 
 # plugin setting
 export ZPLUG_HOME=${ZDOTDIR}/cache/zplug
-export EMOJI_CLI_USE_EMOJI=true
 export ZSH_TAB_TITLE_ONLY_FOLDER=true
 export ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
 export ZSHZ_DATA=${ZDOTDIR}/cache/zsh-cache-z
+export EMOJI_CLI_USE_EMOJI=true
 
 #History Settings
 HISTFILE="${ZDOTDIR}/cache/zsh_history"
