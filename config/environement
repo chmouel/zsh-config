@@ -21,12 +21,19 @@ export ACK_COLOR_MATCH="bold red"
     export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
     zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 
-# plugin setting
-export ZPLUG_HOME=${cachedir}/zplug
-export ZSH_TAB_TITLE_ONLY_FOLDER=true
-export ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
-export ZSHZ_DATA=${cachedir}/zsh-cache-z
-export EMOJI_CLI_USE_EMOJI=true
+# plugins setting
+ZSH_PLUGINS=(
+        agkozak/zsh-z
+        zsh-users/zsh-autosuggestions
+        trystan2k/zsh-tab-title
+        chmouel/chmoujump
+        b4b4r07/emoji-cli::emoji-cli.zsh
+)
+ZPLUG_HOME=${cachedir}/zplug
+ZSH_TAB_TITLE_ONLY_FOLDER=true
+ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
+ZSHZ_DATA=${cachedir}/zsh-cache-z
+EMOJI_CLI_USE_EMOJI=true
 
 #History Settings
 HISTFILE=${cachedir}/zsh_history

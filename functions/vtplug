@@ -1,0 +1,52 @@
+# Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
+# 
+# very tiny zsh plugin manager that support only manage repos and source
+# plugins
+# 
+# need a repo array of owner/repo, only GH public is supported atm
+# i.e:
+# ZSH_PLUGINS=(
+#         chmouel/chmoujump # -> https://github.com/chmouel/chmoujump
+#         foo/bar::entrypoint.zsh # source entrypoint.zsh instead of the conventional plugins_name.plugins.zsh
+# )
+#
+# use -u to update the repos
+
+_vtplug() {
+    local p update
+    [[ ${1-""} == "-u" ]] && update=yes
+    local base_url=https://github.com
+    local cachedir=${cachedir:-$HOME/.cache/zsh}
+    cachedir=${cachedir}/repos
+    for p in ${ZSH_PLUGINS[@]};do
+        local fname=""
+        [[ ${p} == *::* ]] && {
+            fname=${p#*::}
+            p=${p%::*}
+        }
+        local dirname=${p%%/*}
+        local basename=${p##*/}
+        fname=${fname:-${basename}.plugin.zsh}
+        local plugin=${cachedir}/${p}/${fname}
+        local url=${base_url}/${p}
+        
+        if [[ ! -d ${cachedir}/${p} ]];then
+            echo -e "plugin clone: ${url}"
+            mkdir -p ${cachedir}/${dirname}
+            git clone --depth=1 ${url} ${cachedir}/${p}
+        elif [[ -n ${update} ]];then
+            ( 
+                echo "plugin update: ${url}"
+                pushd ${cachedir}/${p} >/dev/null && 
+                    git pull -q
+                popd >/dev/null
+            )
+        fi
+
+        [[ -e ${plugin} ]] && source ${plugin}
+    done
+}
+
+_vtplug $@
+
+# vim: ft=zsh
