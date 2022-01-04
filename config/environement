@@ -1,8 +1,8 @@
 # Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
 if [[ -z ${EDITOR} ]];then
-    if (( $+commands[nvim] ));then 
-       export EDITOR=nvim 
-    elif (( $+commands[vim] ));then  
+    if (( $+commands[nvim] ));then
+       export EDITOR=nvim
+    elif (( $+commands[vim] ));then
        export EDITOR=vim
     fi
 fi
@@ -43,8 +43,6 @@ HISTFILE=${cachedir}/zsh_history
 HISTSIZE=5000000
 SAVEHIST=5000000
 export HISTSIZE HISTSIZE SAVEHIST
-
-export IPYTHONDIR=$HOME/.config/ipython
 
 #Ignore stuff starting by _ for the completion.
 export CORRECT_IGNORE="_*"

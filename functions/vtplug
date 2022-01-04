@@ -1,8 +1,8 @@
 # Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
-# 
+#
 # very tiny zsh plugin manager that support only manage repos and source
 # plugins
-# 
+#
 # need a repo array of owner/repo, only GH public is supported atm
 # i.e:
 # ZSH_PLUGINS=(
@@ -29,15 +29,15 @@ _vtplug() {
         fname=${fname:-${basename}.plugin.zsh}
         local plugin=${cachedir}/${p}/${fname}
         local url=${base_url}/${p}
-        
+
         if [[ ! -d ${cachedir}/${p} ]];then
             echo -e "plugin clone: ${url}"
             mkdir -p ${cachedir}/${dirname}
             git clone --depth=1 ${url} ${cachedir}/${p}
         elif [[ -n ${update} ]];then
-            ( 
+            (
                 echo "plugin update: ${url}"
-                pushd ${cachedir}/${p} >/dev/null && 
+                pushd ${cachedir}/${p} >/dev/null &&
                     git pull -q
                 popd >/dev/null
             )
