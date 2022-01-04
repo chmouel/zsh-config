@@ -5,6 +5,7 @@ alias z="gzip -9fv"
 alias md="mkdir -p"
 
 alias ls="ls --color=auto -F"
+[[ ${TERM} == *kitty ]] && alias ls="ls --color=auto -F --hyperlink=always"
 alias d=ls
 alias s="cd .."
 alias p="cd -"
@@ -38,7 +39,7 @@ fi
 (( $+commands[fin] )) && alias fina="fin -a"
 
 # from plugins
-alias j=chmoujump 
+alias j=chmoujump
 alias jn="j -n"
 alias z=zshz
 
@@ -58,7 +59,10 @@ function gcm() {
     alias ssu="systemctl --user"
 }
 (( $+commands[tailf] )) || alias tailf="tail -F"
-(( $+commands[rg] )) && alias g=rg
+(( $+commands[rg] )) && {
+    alias g=rg
+    [[ ${TERM} == *kitty ]] && alias g="kitty +kitten hyperlinked_grep --smart-case"
+}
 
 (( $+commands[pacman] )) && {
   alias inst="sudo pacman -S"
@@ -115,7 +119,7 @@ alias -g L="|& less"
 }
 
 # Source code highlight
-(( $+commands[lesspipe.sh] )) && export LESSOPEN="| =lesspipe.sh %s" 
+(( $+commands[lesspipe.sh] )) && export LESSOPEN="| =lesspipe.sh %s"
 
 alias gg="git grep"
 alias ggd="git diff --ignore-space-at-eol -b -w --ignore-blank-lines"
