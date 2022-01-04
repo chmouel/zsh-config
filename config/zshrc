@@ -18,7 +18,6 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 # get environement and alias
 source ${ZDOTDIR}/config/environement
 source ${ZDOTDIR}/config/alias
-[[ -z ${reload} && (( $+functions[vtplug] )) ]] && vtplug
 
 # pre local config
 [[ -e ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
@@ -117,7 +116,7 @@ bindkey "^X^E" edit-command-line
 compdef _user_at_host ssh-copy-id
 
 # need to be after the "bindkey -e" if not plugins would not be able to bindkeys
-#source ${ZDOTDIR}/config/packages
+[[ -z ${reload} && (( $+functions[vtplug] )) ]] && vtplug
 
 # load conifg
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
