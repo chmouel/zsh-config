@@ -25,13 +25,16 @@ export ACK_COLOR_MATCH="bold red"
 ZSH_PLUGINS=(
         agkozak/zsh-z
         zsh-users/zsh-autosuggestions
-        trystan2k/zsh-tab-title
         chmouel/chmoujump
         b4b4r07/emoji-cli::emoji-cli.zsh
 )
-ZPLUG_HOME=${cachedir}/zplug
-ZSH_TAB_TITLE_ONLY_FOLDER=true
-ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
+
+# kitty does this builtin
+[[ ${TERM} != *kitty ]] &&{
+    ZSH_PLUGINS+=trystan2k/zsh-tab-title
+    ZSH_TAB_TITLE_ONLY_FOLDER=true
+    ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
+}
 ZSHZ_DATA=${cachedir}/zsh-cache-z
 EMOJI_CLI_USE_EMOJI=true
 
