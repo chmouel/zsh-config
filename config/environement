@@ -23,10 +23,10 @@ export ACK_COLOR_MATCH="bold red"
 
 # plugins setting
 ZSH_PLUGINS=(
-        agkozak/zsh-z
-        zsh-users/zsh-autosuggestions
-        chmouel/chmoujump
-        b4b4r07/emoji-cli::emoji-cli.zsh
+    agkozak/zsh-z
+    zsh-users/zsh-autosuggestions
+    chmouel/chmoujump
+    b4b4r07/emoji-cli::emoji-cli.zsh
 )
 
 # kitty does this builtin
