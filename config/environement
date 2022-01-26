@@ -37,6 +37,7 @@ ZSH_PLUGINS=(
 }
 ZSHZ_DATA=${cachedir}/zsh-cache-z
 EMOJI_CLI_USE_EMOJI=true
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#9400d3"
 
 #History Settings
 HISTFILE=${cachedir}/zsh_history
