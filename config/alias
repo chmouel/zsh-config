@@ -19,6 +19,7 @@ alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
 alias ppgrep="ps aux|grep"
+alias grep="grep --color=auto"
 
 alias so="source ${ZDOTDIR}/config/zshrc reloading && unset reload"
 alias incognito="unset HISTFILE"

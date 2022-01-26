@@ -17,10 +17,12 @@ for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 # get environement and alias
 source ${ZDOTDIR}/config/environement
-source ${ZDOTDIR}/config/alias
 
 # pre local config
 [[ -e ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
+
+# aliases
+source ${ZDOTDIR}/config/alias
 
 if (( $+commands[upower] ));then
     upower -i /org/freedesktop/UPower/devices/line_power_AC0|grep -q "online:.*no" && \
