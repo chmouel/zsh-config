@@ -1,4 +1,6 @@
 # Chmouel Boudjnah <chmouel@chmouel.com>  -*- mode: shell-script; -*-
+export GPG_KEY="2B68199819C7A977A9C7F5928E00E7B02807E02D"
+
 if [[ -z ${EDITOR} ]];then
     if (( $+commands[nvim] ));then
        export EDITOR=nvim

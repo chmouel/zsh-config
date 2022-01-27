@@ -81,9 +81,17 @@ function gcm() {
   alias search2="pacman --color=always -Ss"
 }
 
-(( $+commands[xdg-open] )) && alias open=xdg-open
-(( $+commands[yadm] )) && alias y=yadm
+(( $+commands[apt] )) && {
+    alias inst="sudo apt -y install"  [1/2]
+    alias remove="sudo apt -y remove"
+}
 
+(( $+commands[brew] )) && (( ${+LaunchInstanceID} )) && {
+    alias inst="brew install"
+    alias remove="brew remove"
+}
+
+(( $+commands[xdg-open] )) && alias open=xdg-open
 
 [[ -d $GOPATH/src/github.com/tektoncd/ ]] && {
     alias pp="cd $GOPATH/src/github.com/tektoncd/pipeline"
@@ -108,7 +116,6 @@ alias -g L="|& less"
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # LS
-(( $+commands[gls] )) &&  alias ls="gls --color=auto -F"
 (( $+commands[exa] )) && {
     alias el="exa --icons --git --colour-scale -arlh";
     export EXA_COLORS='in=37:ur=1;36:uw=1;33:ux=1;32:gr=36:gw=33:gx=32:tr=36:tw=33:tx=32:sn=32:sb=1;32:lc=37:uu=35:gu=35:un=1;31:gn=1;31:da=36';
@@ -139,7 +146,8 @@ alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 }
 (( $+functions[ghpr] )) && alias ghprf="ghpr -f"
 
-
+(( $+commands[aria2c] )) && \
+    alias adl='aria2c --bt-force-encryption=true --bt-min-crypto-level=arc4 --seed-ratio=0.1 --seed-time=0 --file-allocation=none --continue=true --max-connection-per-server=4 --max-connection-per-server=4 --min-split-size=10M'
 
 alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
