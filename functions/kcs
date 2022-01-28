@@ -70,7 +70,7 @@ add-zsh-hook preexec _kcs_prexec
 
 function _kcs_list_profiles() {
     local profile
-    set -A profiles $(ls -td $HOME/.kube/config.*)
+    set -A profiles $(=ls -td $HOME/.kube/config.*)
     for file in ${profiles};do
         profile=${file#*/config.}
         [[ -z ${profile} ]] && continue
@@ -102,7 +102,6 @@ function kcs () {
     [[ -z ${profile} ]] &&  {
         profile=$(_kcs_list_profiles | fzf --history=${HOME}/.kube/.kcs.history -1)
     }
-
     [[ -n ${profile} ]] && _kcs_set_kubeconfig ${profile}
     (( $+commands[completion] )) && ocompletion
 }
