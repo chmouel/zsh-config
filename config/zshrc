@@ -13,7 +13,6 @@ typeset -U fpath
 user_fun_path=(${ZDOTDIR}/functions ${ZDOTDIR}/functions/hosts/${basehost});
 fpath=($user_fun_path $fpath); autoload -U compinit
 for func ($user_fun_path) autoload -U $func/*(x:t)
-for func ($user_fun_path/*) [[ ${func} == *.source ]] && source ${func}
 
 # get environement and alias
 source ${ZDOTDIR}/config/environement
@@ -120,10 +119,15 @@ compdef _user_at_host ssh-copy-id
 # need to be after the "bindkey -e" if not plugins would not be able to bindkeys
 [[ -z ${reload} && (( $+functions[vtplug] )) ]] && vtplug
 
-# load conifg
+# Local functions to source
+for funp ($user_fun_path)
+    for func (${funp}/* )
+        [[ ${func} == *.source ]] && source ${func}
+
+# last config at the end
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
-#Unsetting
+# Unsetting variables to don't spread out
 unset basehost func user_fun_path reload _dircolors cachedir
 
 # Emacs Tramp
