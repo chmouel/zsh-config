@@ -5,6 +5,11 @@ cachedir=${HOME}/.cache/zsh
 [[ $1 == 'reloading' ]] && reload=yes
 [[ -d  ${cachedir} ]] || mkdir -p ${cachedir}
 
+powerlevel_prompt=
+if [[ -e /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme ]];then
+    powerlevel_prompt=/opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
+fi
+
 # We need that first
 setopt nonomatch
 
@@ -32,10 +37,14 @@ fi
 [[ -z $reload ]] && compinit -i -d ${cachedir}/zcompdump
 
 #PS1
-if [[ -z $CUSTOM_PROMPT ]];then
-    autoload -U promptinit
-    promptinit
-    prompt chmou ${userColor}
+if [[ -z ${CUSTOM_PROMPT} ]];then
+    if [[ -n ${powerlevel_prompt} && -f "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]];then
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    else
+        autoload -U promptinit
+        promptinit
+        prompt chmou ${userColor}
+    fi
 fi
 
 #Considers only alphanumeric as work like in bash
@@ -127,8 +136,13 @@ for funp ($user_fun_path)
 # last config at the end
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
+if [[ -n ${powerlevel_prompt} ]];then
+    [[ -f ${ZDOTDIR}/.p10k.zsh ]] && source ${ZDOTDIR}/.p10k.zsh
+    source ${powerlevel_prompt}
+fi
+
 # Unsetting variables to don't spread out
-unset basehost func user_fun_path reload _dircolors cachedir
+unset basehost func user_fun_path reload _dircolors cachedir powerlevel_prompt
 
 # Emacs Tramp
 if [[ "$TERM" = "dumb" ]];then
@@ -139,3 +153,4 @@ if [[ "$TERM" = "dumb" ]];then
 fi
 
 # vim: ft=zsh
+
