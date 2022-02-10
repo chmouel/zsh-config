@@ -43,6 +43,22 @@ input_lag_ms=1.369
 exit_time_ms=202.910
 ```
 
+zshbench p10k
+
+```
+==> benchmarking login shell of user chmouel ...
+creates_tty=0
+has_compsys=1
+has_syntax_highlighting=0
+has_autosuggestions=1
+has_git_prompt=1
+first_prompt_lag_ms=131.359
+first_command_lag_ms=136.320
+command_lag_ms=16.826
+input_lag_ms=3.083
+exit_time_ms=210.400
+```
+
 on slow RPI SD card : 
 
 ```bash
