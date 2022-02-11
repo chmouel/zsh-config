@@ -17,11 +17,12 @@ export ACK_COLOR_MATCH="bold red"
 
 (( $+commands[bat] )) && export BAT_STYLE="plain"
 
+
 (( $+commands[dircolors] )) && _dircolors=dircolors
 (( $+commands[gdircolors] )) && _dircolors=gdircolors
 [[ -n ${_dircolors} && -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
     export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
-    zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
+    zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} && unset _dircolors
 
 # plugins setting
 ZSH_PLUGINS=(

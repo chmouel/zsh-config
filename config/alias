@@ -27,6 +27,9 @@ alias o='popd'
 
 test -d $HOME/.local/share/rc && alias jrc="cd $HOME/.local/share/rc"
 
+# Direnv
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+
 (( $+commands[bat] )) && alias less=bat
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
@@ -112,8 +115,6 @@ alias -g L="|& less"
 }
 (( $+commands[fzf] )) && alias -g F="| fzf"
 
-# Direnv
-(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # LS
 (( $+commands[exa] )) && {
