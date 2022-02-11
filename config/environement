@@ -29,6 +29,7 @@ ZSH_PLUGINS=(
     agkozak/zsh-z
     zsh-users/zsh-autosuggestions
     chmouel/chmoujump
+    chmouel/kubectl-config-switcher
     b4b4r07/emoji-cli::emoji-cli.zsh
 )
 

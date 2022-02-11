@@ -43,6 +43,7 @@ _vtplug() {
             )
         fi
 
+        fpath+=${cachedir}/${p}
         [[ -e ${plugin} ]] && source ${plugin}
     done
 }
