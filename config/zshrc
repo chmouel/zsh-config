@@ -136,7 +136,7 @@ for funp ($user_fun_path)
 # last config at the end
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
-if [[ -n ${powerlevel_prompt} ]];then
+if [[ -z ${reload} && -n ${powerlevel_prompt} ]];then
     [[ -f ${ZDOTDIR}/.p10k.zsh ]] && source ${ZDOTDIR}/.p10k.zsh
     source ${powerlevel_prompt}
 fi
