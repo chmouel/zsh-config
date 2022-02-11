@@ -133,13 +133,13 @@ for funp ($user_fun_path)
     for func (${funp}/* )
         [[ ${func} == *.source ]] && source ${func}
 
-# last config at the end
-[[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
-
 if [[ -z ${reload} && -n ${powerlevel_prompt} ]];then
     [[ -f ${ZDOTDIR}/.p10k.zsh ]] && source ${ZDOTDIR}/.p10k.zsh
     source ${powerlevel_prompt}
 fi
+
+# last config at the end
+[[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
 # Unsetting variables to don't spread out
 unset basehost func user_fun_path reload _dircolors cachedir powerlevel_prompt
