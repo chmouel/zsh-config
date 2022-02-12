@@ -16,6 +16,21 @@ zsh -i -c 'exit'  0.08s user 0.04s system 103% cpu 0.118 total
 zsh -i -c 'exit'  0.06s user 0.05s system 103% cpu 0.107 total
 ```
 
+p10k prompt - zshbench
+```
+==> benchmarking login shell of user chmouel ...
+creates_tty=0
+has_compsys=1
+has_syntax_highlighting=0
+has_autosuggestions=1
+has_git_prompt=1
+first_prompt_lag_ms=116.530
+first_command_lag_ms=250.208
+command_lag_ms=30.609
+input_lag_ms=3.368
+exit_time_ms=256.197
+```
+
 Macbook M1:
 
 ```bash
