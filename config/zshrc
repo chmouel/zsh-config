@@ -8,6 +8,8 @@ cachedir=${HOME}/.cache/zsh
 powerlevel_prompt=
 if [[ -e /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme ]];then
     powerlevel_prompt=/opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
+elif [[ -e /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]];then
+    powerlevel_prompt=/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 fi
 
 # We need that first
@@ -137,6 +139,7 @@ for funp ($user_fun_path)
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
 if [[ -z ${reload} && -n ${powerlevel_prompt} ]];then
+    source ${ZDOTDIR}/config/p10k-default
     source ${ZDOTDIR}/config/p10k
     source ${powerlevel_prompt}
 fi
