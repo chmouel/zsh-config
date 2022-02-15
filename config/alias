@@ -88,11 +88,13 @@ function gcm() {
 (( $+commands[apt] )) && {
     alias inst="sudo apt -y install"  [1/2]
     alias remove="sudo apt -y remove"
+    alias search="apt search"
 }
 
 (( $+commands[brew] )) && (( ${+LaunchInstanceID} )) && {
     alias inst="brew install"
     alias remove="brew remove"
+    alias search="brew search"
 }
 
 (( $+commands[xdg-open] )) && alias open=xdg-open
