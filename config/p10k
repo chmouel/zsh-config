@@ -2,7 +2,7 @@
 
 () {
   emulate -L zsh -o extended_glob
-  
+
   typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='%%'
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=241
@@ -17,9 +17,9 @@
   typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl|kogito|k9s|helmfile|fluxctl|stern'
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_VISUAL_IDENTIFIER_EXPANSION=''
-  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='%F{190}${P9K_KUBECONTEXT_CLUSTER}%f'
-  POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION+='/%F{021}${${:-$P9K_KUBECONTEXT_NAMESPACE}:#default}%f'
-
+  local cname=
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='%F{13}${${${:-$KCS_PROFILE}:-$P9K_KUBECONTEXT_CLUSTER}}%f'
+  POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION+='/%F{3}${${:-$P9K_KUBECONTEXT_NAMESPACE}:-default}%f'
 
   function my_git_formatter() {
       emulate -L zsh
@@ -119,7 +119,7 @@
 
       typeset -g my_git_format=$res
   }
-  functions -M my_git_formatter 2>/dev/null  
+  functions -M my_git_formatter 2>/dev/null
 }
 
 
