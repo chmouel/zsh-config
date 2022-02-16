@@ -85,7 +85,7 @@ function gcm() {
   alias search2="pacman --color=always -Ss"
 }
 
-(( $+commands[apt] )) && {
+(( $+commands[apt] )) && [[ -f /etc/os-release ]] && {
     alias inst="sudo apt -y install"  [1/2]
     alias remove="sudo apt -y remove"
     alias search="apt search"
