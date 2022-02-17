@@ -91,7 +91,7 @@ function gcm() {
     alias search="apt search"
 }
 
-(( $+commands[brew] )) && (( ${+LaunchInstanceID} )) && {
+(( $+commands[brew] )) && [[ $(uname -o) == "Darwin" ]] && {
     alias inst="brew install"
     alias remove="brew remove"
     alias search="brew search"
