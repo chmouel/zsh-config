@@ -37,7 +37,7 @@ alias vih="vi ${ZDOTDIR}/hosts/${HOST%%.*}.sh"
 alias vihp="vi ${ZDOTDIR}/hosts/${HOST%%.*}-post.sh"
 if [[ -d ${HOME}/.config/yadm ]];then
     alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
-elif [[ -f ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]];then
+elif [[ -d ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]];then
     alias cdf="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 fi
 
