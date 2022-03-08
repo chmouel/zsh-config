@@ -66,8 +66,8 @@ function gcm() {
 (( $+commands[tailf] )) || alias tailf="tail -F"
 (( $+commands[rg] )) && {
     alias g=rg
-    [[ ${TERM} == *kitty ]] && alias g="kitty +kitten hyperlinked_grep --smart-case"
 }
+[[ ${TERM} == *kitty ]] && alias g="kitty +kitten hyperlinked_grep --smart-case"
 
 (( $+commands[pacman] )) && {
   alias inst="sudo pacman -S"
