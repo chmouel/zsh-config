@@ -12,8 +12,10 @@ LESS='-F -g -i -M -R -S -w -X -z-4'
 
 export EDITOR LESS
 
-export ACK_COLOR_FILENAME="bold blue"
-export ACK_COLOR_MATCH="bold red"
+(( $+commands[ack] )) && {
+    export ACK_COLOR_FILENAME="bold blue"
+    export ACK_COLOR_MATCH="bold red"
+}
 
 (( $+commands[bat] )) && export BAT_STYLE="plain"
 
