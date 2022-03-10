@@ -3,6 +3,12 @@
 () {
   emulate -L zsh -o extended_glob
 
+  typeset -g POWERLEVEL9K_BACKGROUND=                            # transparent background
+  typeset -g POWERLEVEL9K_{LEFT,RIGHT}_{LEFT,RIGHT}_WHITESPACE=  # no surrounding whitespace
+  typeset -g POWERLEVEL9K_{LEFT,RIGHT}_SUBSEGMENT_SEPARATOR=' '  # separate segments with a space
+  typeset -g POWERLEVEL9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR=        # no end-of-line symbol
+  ###
+
   typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='%%'
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=241
@@ -11,9 +17,32 @@
       '*' DEFAULT  ''
   )
 
+
+  ##################################[ dir: current directory ]##################################
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=31
+  typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
+  typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=103
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=39
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
+  local anchor_files=(
+    .bzr .citc .git .hg .node-version .python-version .go-version
+    .ruby-version .lua-version .java-version .perl-version .php-version
+    .tool-version .shorten_folder_marker .svn .terraform CVS Cargo.toml
+    composer.json go.mod package.json stack.yaml
+  )
+  typeset -g POWERLEVEL9K_SHORTEN_FOLDER_MARKER="(${(j:|:)anchor_files})"
+  typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER=false
+  typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+  typeset -g POWERLEVEL9K_DIR_MAX_LENGTH=80
+  typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS=40
+  typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT=50
+  typeset -g POWERLEVEL9K_DIR_HYPERLINK=false
   typeset -g POWERLEVEL9K_DIRENV_VISUAL_IDENTIFIER_EXPANSION=''
   typeset -g POWERLEVEL9K_DIR_WORK_VISUAL_IDENTIFIER_EXPANSION='⛑️ '
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON=''
+
+  ##  KUBECONTEXT
   typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl|kogito|k9s|helmfile|fluxctl|stern'
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_VISUAL_IDENTIFIER_EXPANSION=''
@@ -21,6 +50,26 @@
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='%F{13}${${${:-$KCS_PROFILE}:-$P9K_KUBECONTEXT_CLUSTER}}%f'
   POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION+='/%F{3}${${:-$P9K_KUBECONTEXT_NAMESPACE}:-default}%f'
 
+  ## Prompt
+  typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+    dir
+    vcs
+    newline
+    prompt_char
+  )
+  typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+    status
+    command_execution_time
+    background_jobs
+    direnv
+    virtualenv
+    goenv
+    kubecontext
+    vim_shell
+    newline
+  )
+
+  # VCS
   function my_git_formatter() {
       emulate -L zsh
 
@@ -120,6 +169,21 @@
       typeset -g my_git_format=$res
   }
   functions -M my_git_formatter 2>/dev/null
+
+  typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=-1
+  typeset -g POWERLEVEL9K_VCS_DISABLED_WORKDIR_PATTERN='~'
+  typeset -g POWERLEVEL9K_VCS_DISABLE_GITSTATUS_FORMATTING=true
+  typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION='${$((my_git_formatter(1)))+${my_git_format}}'
+  typeset -g POWERLEVEL9K_VCS_LOADING_CONTENT_EXPANSION='${$((my_git_formatter(0)))+${my_git_format}}'
+  typeset -g POWERLEVEL9K_VCS_{STAGED,UNSTAGED,UNTRACKED,CONFLICTED,COMMITS_AHEAD,COMMITS_BEHIND}_MAX_NUM=-1
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_COLOR=76
+  typeset -g POWERLEVEL9K_VCS_LOADING_VISUAL_IDENTIFIER_COLOR=244
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_EXPANSION=
+  typeset -g POWERLEVEL9K_VCS_BACKENDS=(git)
+  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND=76
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=76
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=178
+
 }
 
 
