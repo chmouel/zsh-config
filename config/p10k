@@ -30,14 +30,13 @@ myconfig(){
   )
 
   typeset -g POWERLEVEL9K_DIRENV_VISUAL_IDENTIFIER_EXPANSION=''
-  typeset -g POWERLEVEL9K_DIR_WORK_VISUAL_IDENTIFIER_EXPANSION='⛑️ '
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON=''
   typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='tkn|tkn-pac|kcs|ocla|oclaf|kubectl|helm|kubens|kubectx|oc|ko'
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_VISUAL_IDENTIFIER_EXPANSION=''
-  local cname=
-  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='%F{13}${${${:-$KCS_PROFILE}:-$P9K_KUBECONTEXT_CLUSTER}}%f'
-  POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION+='/%F{3}${${:-$P9K_KUBECONTEXT_NAMESPACE}:-default}%f'
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='%F{226}${${${:-$KCS_PROFILE:u}:-$P9K_KUBECONTEXT_CLUSTER}}%f'
+  POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION+='::%F{007}${${:-$P9K_KUBECONTEXT_NAMESPACE}:-default}%f'
+  typeset -g POWERLEVEL9K_VPN_IP_FOREGROUND=009
 }
 
 
@@ -112,10 +111,10 @@ myconfig(){
     vim_shell               # vim shell indicator (:sh)
     midnight_commander      # midnight commander shell (https://midnight-commander.org/)
     nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
-    # vpn_ip                # virtual private network indicator
+    vpn_ip                # virtual private network indicator
     # load                  # CPU load
     # disk_usage            # disk usage
-    # ram                   # free RAM
+    #ram                     # free RAM
     # swap                  # used swap
     todo                    # todo items (https://github.com/todotxt/todo.txt-cli)
     timewarrior             # timewarrior tracking status (https://timewarrior.net/)
