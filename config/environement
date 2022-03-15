@@ -32,6 +32,8 @@ export EDITOR LESS
     export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
     zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} && unset _dircolors
 
+[[ -d $HOME/.cargo/bin ]] && path+=${HOME}/.cargo/bin
+
 # plugins setting
 ZSH_PLUGINS=(
     agkozak/zsh-z
