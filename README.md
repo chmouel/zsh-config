@@ -29,28 +29,16 @@ exit_time_ms=231.670
 zshbench
 
 ```
-==> benchmarking login shell of user chmouel ...
 creates_tty=0
 has_compsys=1
 has_syntax_highlighting=0
 has_autosuggestions=1
-has_git_prompt=1
-first_prompt_lag_ms=364.082
-first_command_lag_ms=380.892
-command_lag_ms=165.164
-input_lag_ms=4.558
-exit_time_ms=178.200
-```
-
-still a long way from bash tho which is not customized at all : 
-
-```bash
-% for i ({1..5}) time bash -i -c 'exit'
-bash -i -c 'exit'  0.01s user 0.00s system 92% cpu 0.013 total
-bash -i -c 'exit'  0.00s user 0.01s system 90% cpu 0.013 total
-bash -i -c 'exit'  0.02s user 0.00s system 96% cpu 0.020 total
-bash -i -c 'exit'  0.01s user 0.00s system 93% cpu 0.015 total
-bash -i -c 'exit'  0.02s user 0.00s system 96% cpu 0.020 total
+has_git_prompt=0
+first_prompt_lag_ms=227.512
+first_command_lag_ms=243.312
+command_lag_ms=61.501
+input_lag_ms=4.515
+exit_time_ms=185.375
 ```
 
 ## Plugin support
