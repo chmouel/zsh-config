@@ -15,17 +15,27 @@ fi
 # We need that first
 setopt nonomatch
 
-#Local functions we want to autoload
-typeset -U fpath
-user_fun_path=(${ZDOTDIR}/functions ${ZDOTDIR}/functions/hosts/${basehost});
-fpath=($user_fun_path $fpath); autoload -U compinit
-for func ($user_fun_path) autoload -U $func/*(x:t)
-
 # get environement and alias
 source ${ZDOTDIR}/config/environement
 
 # pre local config
 [[ -e ${ZDOTDIR}/hosts/$basehost.sh ]] && source ${ZDOTDIR}/hosts/$basehost.sh
+
+if [[ -z ${CUSTOM_PROMPT} ]];then
+    if [[ -n ${powerlevel_prompt} && -f "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]];then
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    else
+        autoload -U promptinit
+        promptinit
+        prompt chmou ${userColor}
+    fi
+fi
+
+#Local functions we want to autoload
+typeset -U fpath
+user_fun_path=(${ZDOTDIR}/functions ${ZDOTDIR}/functions/hosts/${basehost});
+fpath=($user_fun_path $fpath); autoload -U compinit
+for func ($user_fun_path) autoload -U $func/*(x:t)
 
 # aliases
 source ${ZDOTDIR}/config/alias
@@ -37,17 +47,6 @@ fi
 
 #Compinit
 [[ -z $reload ]] && compinit -i -d ${cachedir}/zcompdump
-
-#PS1
-if [[ -z ${CUSTOM_PROMPT} ]];then
-    if [[ -n ${powerlevel_prompt} && -f "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]];then
-        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-    else
-        autoload -U promptinit
-        promptinit
-        prompt chmou ${userColor}
-    fi
-fi
 
 #Considers only alphanumeric as work like in bash
 autoload -U select-word-style

@@ -11,6 +11,7 @@
 # )
 #
 # use -u to update the repos
+# use -l to list your plugins
 
 _vtplug() {
     local p update
@@ -18,6 +19,10 @@ _vtplug() {
     local base_url=https://github.com
     local cachedir=${cachedir:-$HOME/.cache/zsh}
     cachedir=${cachedir}/repos
+    [[ ${1-""} == "-l" ]] && {
+        print -rC1 -- ${ZSH_PLUGINS[@]}
+        return 0
+    }
     for p in ${ZSH_PLUGINS[@]};do
         local fname=""
         [[ ${p} == *::* ]] && {

@@ -5,85 +5,26 @@ pretty slow but sped things up quite a bit :
 
 ## Benchmarks
 
-On fast Linux Laptop (arch/ssd btrfs/encrypted) :
+### On fast Linux Laptop (arch/ssd btrfs/encrypted) with p10k prompt :
 
-```bash
-% for i ({1..5}) time zsh -i -c 'exit'
-zsh -i -c 'exit'  0.06s user 0.04s system 103% cpu 0.102 total
-zsh -i -c 'exit'  0.06s user 0.05s system 102% cpu 0.108 total
-zsh -i -c 'exit'  0.08s user 0.04s system 102% cpu 0.118 total
-zsh -i -c 'exit'  0.08s user 0.04s system 103% cpu 0.118 total
-zsh -i -c 'exit'  0.06s user 0.05s system 103% cpu 0.107 total
 ```
-
-p10k prompt - zshbench
-```
-==> benchmarking login shell of user chmouel ...
 creates_tty=0
 has_compsys=1
 has_syntax_highlighting=0
 has_autosuggestions=1
 has_git_prompt=1
-first_prompt_lag_ms=116.530
-first_command_lag_ms=250.208
-command_lag_ms=30.609
-input_lag_ms=3.368
-exit_time_ms=256.197
+first_prompt_lag_ms=20.689
+first_command_lag_ms=154.556
+command_lag_ms=21.533
+input_lag_ms=2.067
+exit_time_ms=231.670
 ```
 
-Macbook M1:
+### Macbook M1:
 
-```bash
-% for i ({1..5}) time zsh -i -c 'exit'
-zsh -i -c 'exit'  0.06s user 0.03s system 94% cpu 0.093 total
-zsh -i -c 'exit'  0.03s user 0.02s system 91% cpu 0.053 total
-zsh -i -c 'exit'  0.03s user 0.02s system 94% cpu 0.050 total
-zsh -i -c 'exit'  0.03s user 0.02s system 95% cpu 0.049 total
-zsh -i -c 'exit'  0.03s user 0.02s system 95% cpu 0.049 total
-```
 
-zshbench
 
-```
-==> benchmarking login shell of user chmouel ...
-creates_tty=0
-has_compsys=1
-has_syntax_highlighting=0
-has_autosuggestions=1
-has_git_prompt=1
-first_prompt_lag_ms=159.133
-first_command_lag_ms=161.448
-command_lag_ms=77.540
-input_lag_ms=1.369
-exit_time_ms=202.910
-```
-
-zshbench p10k
-
-```
-==> benchmarking login shell of user chmouel ...
-creates_tty=0
-has_compsys=1
-has_syntax_highlighting=0
-has_autosuggestions=1
-has_git_prompt=1
-first_prompt_lag_ms=131.359
-first_command_lag_ms=136.320
-command_lag_ms=16.826
-input_lag_ms=3.083
-exit_time_ms=210.400
-```
-
-on slow RPI SD card : 
-
-```bash
-% for i ({1..5}) time zsh -i -c 'exit'
-zsh -i -c 'exit'  0.15s user 0.11s system 99% cpu 0.266 total
-zsh -i -c 'exit'  0.13s user 0.09s system 99% cpu 0.224 total
-zsh -i -c 'exit'  0.11s user 0.12s system 99% cpu 0.224 total
-zsh -i -c 'exit'  0.07s user 0.15s system 99% cpu 0.223 total
-zsh -i -c 'exit'  0.09s user 0.13s system 99% cpu 0.224 total
-```
+### RPI SD card : 
 
 zshbench
 
