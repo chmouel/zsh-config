@@ -5,6 +5,8 @@ pretty slow but sped things up quite a bit :
 
 ## Benchmarks
 
+Using [`zshbench`](https://github.com/romkatv/zsh-bench)
+
 ### On fast Linux Laptop (arch/ssd btrfs/encrypted) with p10k prompt :
 
 ```
@@ -38,8 +40,6 @@ exit_time_ms=237.649
 
 
 ### RPI SD card : 
-
-zshbench
 
 ```
 creates_tty=0
