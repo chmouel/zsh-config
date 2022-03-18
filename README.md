@@ -22,6 +22,19 @@ exit_time_ms=231.670
 
 ### Macbook M1:
 
+```
+creates_tty=0
+has_compsys=1
+has_syntax_highlighting=0
+has_autosuggestions=1
+has_git_prompt=1
+first_prompt_lag_ms=22.427
+first_command_lag_ms=159.541
+command_lag_ms=14.546
+input_lag_ms=2.657
+exit_time_ms=237.649
+```
+
 
 
 ### RPI SD card : 
