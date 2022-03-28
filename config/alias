@@ -94,6 +94,7 @@ function gcm() {
     alias inst="brew install"
     alias remove="brew remove"
     alias search="brew search"
+    alias dist-upgrade="brew upgrade"
 }
 
 (( $+commands[xdg-open] )) && alias open=xdg-open
