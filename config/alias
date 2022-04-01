@@ -65,7 +65,7 @@ function gcm() {
 }
 (( $+commands[tailf] )) || alias tailf="tail -F"
 (( $+commands[rg] )) && {
-    alias g=rg
+    alias g="rg -g '!.git/*' --hidden"
 }
 
 (( $+commands[pacman] )) && {
