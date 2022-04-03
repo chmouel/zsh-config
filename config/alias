@@ -122,7 +122,9 @@ alias -g L="|& less"
 
 # LS
 (( $+commands[exa] )) && {
-    alias el="exa --icons --git --colour-scale -arlh";
+    alias ll="exa --icons --git --colour-scale -arlh";
+    alias d="exa --icons"
+    alias lt="ll --sort=oldest"
     export EXA_COLORS='in=37:ur=1;36:uw=1;33:ux=1;32:gr=36:gw=33:gx=32:tr=36:tw=33:tx=32:sn=32:sb=1;32:lc=37:uu=35:gu=35:un=1;31:gn=1;31:da=36';
 }
 
