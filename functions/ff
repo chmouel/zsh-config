@@ -20,8 +20,9 @@ _ff() {
     ${fd} --color=always -H ${=fdopts} \
         -E ".git/" \
         ${=ignores} ${=sort_n} | \
-        fzf --height=80% \
+        fzf \
           --ansi \
+          --border=rounded \
           --preview="(test -d {} && tree -ahpCL 3 -I '.git' -I '*.py[co]' -I '__pycache__' {} || bat --color=always {})|head -n 100" \
           --history=/tmp/h \
           -0 -1 -m ${=fzfopts}
