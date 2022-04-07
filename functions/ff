@@ -5,7 +5,7 @@ _ff() {
     zparseopts -D -K -F - {h,-help}=help {s,-sort-new}=sort_n n=opt_noignore d=opt_dir || exit 1
     end_opts=$@[(i)(--|-)]
     set -- "${@[0,end_opts-1]}" "${@[end_opts+1,-1]}"
-    local i ignores="--ignore-vcs" fd=fd fzfopts="--bind ctrl-n:down,ctrl-p:up" fdopts
+    local i ignores="--ignore-vcs" fd=fd fzfopts="--bind ctrl-j:preview-down,ctrl-k:preview-up,ctrl-n:down,ctrl-p:up" fdopts
     (( $+commands[fdfind] )) && fd=fdfind
     for i (.gitignore .ignore) [[ -e ${i} ]] && ignores+=" --ignore-file=${i}"
     [[ -n ${opt_dir} ]] && fdopts+=" --type=d" || fdopts+=" --type=f"
@@ -18,6 +18,7 @@ _ff() {
 
     [[ -n $@ ]] && fzfopts+=" -q $@";
     ${fd} --color=always -H ${=fdopts} \
+        --strip-cwd-prefix \
         -E ".git/" \
         ${=ignores} ${=sort_n} | \
         fzf \
