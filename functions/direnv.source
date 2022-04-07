@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/direnv/direnv.plugin.zsh
 # Don't continue if direnv is not found
 command -v direnv &>/dev/null || return
 
