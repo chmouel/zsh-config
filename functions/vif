@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+function _vif() {
+    local loop
+    zmodload zsh/zutil
+    zparseopts -D -E -F - l=loop  n=no_ignore || exit 1
+    end_opts=$@[(i)(--|-)]
+    set -- "${@[0,end_opts-1]}" "${@[end_opts+1,-1]}"
+    while true;do
+        local f=($(ff ${no_ignore} ${@}))
+        (( ${#f})) && ${EDITOR} ${=f} || break
+        [[ -z ${loop} ]] && break
+    done
+}
+_vif $@

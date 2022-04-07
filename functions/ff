@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+_ff() {
+    zmodload zsh/zutil
+    zparseopts -D -K -F - {h,-help}=help {s,-sort-new}=sort_n n=opt_noignore d=opt_dir || exit 1
+    end_opts=$@[(i)(--|-)]
+    set -- "${@[0,end_opts-1]}" "${@[end_opts+1,-1]}"
+    local i ignores="--ignore-vcs" fd=fd fzfopts="--bind ctrl-n:down,ctrl-p:up" fdopts
+    (( $+commands[fdfind] )) && fd=fdfind
+    for i (.gitignore .ignore) [[ -e ${i} ]] && ignores+=" --ignore-file=${i}"
+    [[ -n ${opt_dir} ]] && fdopts+=" --type=d" || fdopts+=" --type=f"
+    [[ -n ${opt_noignore} ]] && ignores=-I
+    [[ -n ${sort_n} ]] && sort_n="--exec-batch ls --color -1dt"
+    [[ -n ${help} ]] && {
+        echo "-n noignore -d only directory -s sort by newer"
+        return
+    }
+
+    [[ -n $@ ]] && fzfopts+=" -q $@";
+    ${fd} --color=always -H ${=fdopts} \
+        -E ".git/" \
+        ${=ignores} ${=sort_n} | \
+        fzf --height=80% \
+          --ansi \
+          --preview="(test -d {} && tree -ahpCL 3 -I '.git' -I '*.py[co]' -I '__pycache__' {} || bat --color=always {})|head -n 100" \
+          --history=/tmp/h \
+          -0 -1 -m ${=fzfopts}
+}
+
+_ff $@

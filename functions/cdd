@@ -1,12 +1,8 @@
 #!/usr/bin/env zsh
 
 function _cdd() {
-    local fd=fd
-    local args dir
-    (( $+commands[fdfind] )) && fd=fdfind
-    [[ -n $@ ]] && args="-q $@"; 
-    dir=$(${fd} --type d|fzf -1 ${~args});
-    [[ -n ${dir} ]] && cd ${dir}
+   local f=($(ff -d ${@}))
+   (( ${#f})) && ${editor} ${=f} || break
 }
 
 _cdd $@
