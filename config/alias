@@ -121,7 +121,7 @@ alias -g L="|& less"
 
 
 # LS
-(( $+commands[exa] )) && {
+(( $+commands[exa] )) && (( ! $+INSIDE_EMACS )) && {
     alias ll="exa --icons --git --colour-scale -arlh";
     alias d="exa --icons"
     alias lt="ll --sort=oldest"
