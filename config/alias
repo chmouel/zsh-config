@@ -29,13 +29,24 @@ test -d $HOME/.local/share/rc && alias jrc="cd $HOME/.local/share/rc"
 
 # Direnv
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+(( ${+commands[emacsclient]} )) && {
+    function ef() {
+        local ff=$(ff ${1});
+        (( ${+ff} )) && \
+         env TERM=xterm-256color emacsclient -nw ${ff};
+    }
+}
 
 (( $+commands[bat] )) && alias less=bat
 (( $+commands[nvim] )) && alias vip='nvim -c ":Telescope project"'
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
-alias vih="vi ${ZDOTDIR}/hosts/${HOST%%.*}.sh"
-alias vihp="vi ${ZDOTDIR}/hosts/${HOST%%.*}-post.sh"
+# vi configuration -> 
+alias vich="vi ${ZDOTDIR}/hosts/${HOST%%.*}.sh"
+alias vica="vi ${ZDOTDIR}/config/alias"
+alias vice="vi ${ZDOTDIR}/config/environement"
+alias vicz="vi ${ZDOTDIR}/config/zshrc"
+alias vihp="vi ${ZDOTDIR}/hostsg/${HOST%%.*}-post.sh"
 if [[ -d ${HOME}/.config/yadm ]];then
     alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
 elif [[ -d ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]];then
@@ -117,7 +128,7 @@ alias -g L="|& less"
 	 alias -g JS="-o json|jq "
 	 alias -g YJ="-o yaml|yjq"
 }
-(( $+commands[fzf] )) && alias -g F="| fzf"
+(( $+commands[fzf] )) && alias -g F="| fzf --ansi"
 
 
 # LS
