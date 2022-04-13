@@ -7,7 +7,7 @@ _ff() {
     set -- "${@[0,end_opts-1]}" "${@[end_opts+1,-1]}"
     local i ignores="--ignore-vcs"
     local fd=fd
-    local fzfopts="--bind alt-n:next-history,alt-p:previous-history,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-n:down,ctrl-p:up"
+    local fzfopts="--exact --bind alt-n:next-history,alt-p:previous-history,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-n:down,ctrl-p:up"
     local fdopts
     (( $+commands[fdfind] )) && fd=fdfind
     #for i (.gitignore .ignore) [[ -e ${i} ]] && ignores+=" --ignore-file=${i}"
