@@ -45,6 +45,9 @@ if (( $+commands[upower] ));then
     setopt no_inc_append_history || setopt inc_append_history
 fi
 
+# Start getting the presteps of vtplugs for fpath completion
+[[ -z ${reload} && (( $+functions[vtplug] )) ]] && vtplug -p
+
 #Compinit
 [[ -z $reload ]] && compinit -i -d ${cachedir}/zcompdump
 
