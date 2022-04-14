@@ -100,6 +100,7 @@ function gcm() {
     alias inst="sudo apt -y install"  [1/2]
     alias remove="sudo apt -y remove"
     alias search="apt search"
+    alias dist-upgrade="sudo apt dist-upgrade"
 }
 
 (( $+commands[brew] )) && [[ $(uname -o) == "Darwin" ]] && {
