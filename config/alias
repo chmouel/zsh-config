@@ -150,7 +150,8 @@ alias -g L="|& less"
 (( $+commands[lesspipe.sh] )) && export LESSOPEN="| =lesspipe.sh %s"
 
 alias gg="git grep"
-alias ggd="git diff --ignore-space-at-eol -b -w --ignore-blank-lines"
+(( $+commands[delta] )) && \
+    alias gd="env GIT_PAGER=\"delta --navigate\" git diff --no-ext-diff"
 alias gb="git checkout -b"
 alias gl="git log"
 alias pr="git pr"
