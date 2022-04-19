@@ -40,7 +40,7 @@ export EDITOR LESS
 
 [[ -d $HOME/.cargo/bin ]] && path+=${HOME}/.cargo/bin
 
-# plugins setting
+# plugins setting from vtplug
 ZSH_PLUGINS=(
     agkozak/zsh-z
     zsh-users/zsh-autosuggestions
@@ -48,6 +48,7 @@ ZSH_PLUGINS=(
     chmouel/kubectl-config-switcher
     b4b4r07/emoji-cli::emoji-cli.zsh
     joshskidmore/zsh-fzf-history-search
+    zsh-users/zsh-syntax-highlighting
 )
 
 # kitty does this builtin
@@ -57,6 +58,9 @@ ZSH_PLUGINS=(
     ZSH_TAB_TITLE_DEFAULT_DISABLE_PREFIX=true
 }
 ZSHZ_DATA=${cachedir}/zsh-cache-z
+ZSHZ_TILDE=1
+ZSHZ_CASE=smart
+
 EMOJI_CLI_USE_EMOJI=true
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#9400d3"
 ZSH_FZF_HISTORY_SEARCH_BIND="^S"

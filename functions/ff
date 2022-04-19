@@ -2,11 +2,11 @@
 
 _ff() {
     zmodload zsh/zutil
-    zparseopts -D -K -F - {h,-help}=help {s,-sort-new}=sort_n n=opt_noignore d=opt_dir || exit 1
+    zparseopts -D -E -F - {h,-help}=help {s,-sort-new}=sort_n p=opt_project n=opt_noignore d=opt_dir || exit 1
     end_opts=$@[(i)(--|-)]
     set -- "${@[0,end_opts-1]}" "${@[end_opts+1,-1]}"
     local i ignores="--ignore-vcs"
-    local fd=fd
+    local fd=fd toplevel=
     local fzfopts="--exact --bind alt-n:next-history,alt-p:previous-history,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-n:down,ctrl-p:up"
     local fdopts
     (( $+commands[fdfind] )) && fd=fdfind
@@ -19,9 +19,20 @@ _ff() {
         return
     }
 
+    [[ -n ${opt_project} ]] && {
+        toplevel=$(git rev-parse --show-toplevel)
+        [[ -z ${toplevel} ]] && return 1
+        toplevel="--base-directory ${toplevel}"
+    }
+
     [[ -n $@ ]] && fzfopts+=" -q $@";
     mkdir -p $HOME/.cache/zsh/fh
-    ${fd} --color=always -H -E '.git/*' ${=fdopts} \
+
+    # echo ${fd} ${=toplevel} --color=always -H -E '.git/*' ${=fdopts} \
+    #     --strip-cwd-prefix \
+    #     -E ".git/" \
+    #     ${=ignores} ${=sort_n}
+    ${fd} ${=toplevel} --color=always -H -E '.git/*' ${=fdopts} \
         --strip-cwd-prefix \
         -E ".git/" \
         ${=ignores} ${=sort_n} | \
