@@ -29,7 +29,10 @@ alias o='popd'
 test -d $HOME/.local/share/rc && alias jrc="cd $HOME/.local/share/rc"
 
 # Direnv
-(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+(( ${+commands[direnv]} )) && {
+    alias de="direnv edit"
+    emulate zsh -c "$(direnv export zsh)"
+}
 (( ${+commands[emacsclient]} )) && {
     function ef() {
         local ff=$(ff ${1});
