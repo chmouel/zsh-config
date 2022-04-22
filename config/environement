@@ -66,6 +66,18 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#9400d3"
 ZSH_FZF_HISTORY_SEARCH_BIND="^S"
 EMOJI_CLI_KEYBIND="^X^S"
 
+# Chmoujump aliases to quickly switch to
+declare -A CHMOUJUMP_ALIASES=(
+    [sm]=$GOPATH/src/github.com/chmouel/scratchmyback
+    [zsh]=$HOME/.config/zsh
+    [rc]=$HOME/.local/share/rc
+    [sp]=$GOPATH/src/github.com/chmouel/scratchmyback
+    [p]=$GOPATH/src/github.com/openshift-pipelines/pipelines-as-code
+    [pipeline]=$GOPATH/src/github.com/tektoncd/pipeline
+    [cli]=$GOPATH/src/github.com/tektoncd/cli
+    [catalog]=$GOPATH/src/github.com/tektoncd/catalog
+)
+
 #History Settings
 HISTFILE=${cachedir}/zsh_history
 HISTSIZE=5000000
