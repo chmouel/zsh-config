@@ -55,6 +55,7 @@ if [[ -d ${HOME}/.config/yadm ]];then
 elif [[ -d ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]];then
     alias cdf="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 fi
+alias cdff="cd ${ZDOTDIR}/functions"
 
 (( $+commands[fin] )) && alias fina="fin -a"
 

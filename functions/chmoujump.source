@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Chmoujump aliases to quickly switch to
+declare -A CHMOUJUMP_ALIASES=(
+    [sm]=$GOPATH/src/github.com/chmouel/scratchmyback
+    [zsh]=$HOME/.config/zsh
+    [rc]=$HOME/.local/share/rc
+    [sp]=$GOPATH/src/github.com/chmouel/scratchmyback
+    [p]=$GOPATH/src/github.com/openshift-pipelines/pipelines-as-code
+    [pipeline]=$GOPATH/src/github.com/tektoncd/pipeline
+    [cli]=$GOPATH/src/github.com/tektoncd/cli
+    [catalog]=$GOPATH/src/github.com/tektoncd/catalog
+)
