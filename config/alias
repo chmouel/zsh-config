@@ -61,7 +61,6 @@ fi
 # from plugins
 alias j=chmoujump
 alias jn="j -n"
-alias z=zshz
 
 (( $+commands[upower] )) && \
     alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|percentage"'
@@ -134,7 +133,6 @@ alias -g L="|& less"
 }
 (( $+commands[fzf] )) && alias -g F="| fzf --ansi"
 
-
 # LS
 (( $+commands[exa] )) && (( ! $+INSIDE_EMACS )) && {
     alias ll="exa --icons --git --colour-scale -arlh";
@@ -161,6 +159,7 @@ alias pr="git pr"
 alias gs="git switch -"
 alias gc="git checkout"
 alias gcb="git checkout -b"
+alias groot='git rev-parse --show-toplevel'
 # to copy easily the gopath
 alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 
@@ -177,6 +176,5 @@ alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 alias -g EEL=' 2>&1 | less'
 alias -g GB='`git rev-parse --abbrev-ref HEAD`'
 alias -g GR='`git config branch.$(git rev-parse --abbrev-ref HEAD).remote`'
-alias -g GROOT='`git rev-parse --show-toplevel`'
 
 # vim: ft=zsh
