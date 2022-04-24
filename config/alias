@@ -62,6 +62,7 @@ alias cdff="cd ${ZDOTDIR}/functions"
 # from plugins
 alias j=chmoujump
 alias jn="j -n"
+alias ja="j -a"
 
 (( $+commands[upower] )) && \
     alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|percentage"'
