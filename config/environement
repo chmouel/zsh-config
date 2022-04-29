@@ -38,7 +38,13 @@ export EDITOR LESS
     export LS_COLOR="${LS_COLORS}:*.pyc=01;30" && \
     zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} && unset _dircolors
 
-[[ -d $HOME/.cargo/bin ]] && path+=${HOME}/.cargo/bin
+[[ -d $HOME/.cargo/bin ]] && {
+    path+=${HOME}/.cargo/bin
+    (( $+commands[rustc] )) &&  {
+        [[ -d $(rustc --print sysroot)/share/zsh/site-functions ]] && \
+            fpath+=$(rustc --print sysroot)/share/zsh/site-functions
+    }
+}
 
 # plugins setting from vtplug
 ZSH_PLUGINS=(
