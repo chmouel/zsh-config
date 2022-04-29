@@ -26,12 +26,6 @@ export EDITOR LESS
     }
 }
 
-(( $+commands[sugarjazy] )) && {
-    alias -g SJJ="| sugarjazy"
-    alias -g SJ="| sugarjazy -s"
-    alias skp="kail --since=1h|sugarjazy -s --kail --kail-no-prefix"
-}
-
 (( $+commands[dircolors] )) && _dircolors=dircolors
 (( $+commands[gdircolors] )) && _dircolors=gdircolors
 [[ -n ${_dircolors} && -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
