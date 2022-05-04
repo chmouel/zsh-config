@@ -49,14 +49,13 @@ alias vice="vi ${ZDOTDIR}/config/environement"
 alias vicz="vi ${ZDOTDIR}/config/zshrc"
 alias vihp="vi ${ZDOTDIR}/hosts/${HOST%%.*}-post.sh"
 
-[[ -d ${HOME}/.config/yadm ]] && alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
-alias cdff="cd ${ZDOTDIR}/functions"
-[[ -d ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]] && alias cdfff="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 if [[ -d ${HOME}/.config/yadm ]];then
     alias cdf="cd ${HOME}/.config/yadm/hosts/${HOST%%.*}"
 elif [[ -d ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]];then
     alias cdf="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 fi
+alias cdff="cd ${ZDOTDIR}/functions"
+[[ -d ${ZDOTDIR}/functions/hosts/${HOST%%.*} ]] && alias cdfff="cd ${ZDOTDIR}/functions/hosts/${HOST%%.*}"
 
 (( $+commands[fin] )) && alias fina="fin -a"
 
