@@ -137,6 +137,8 @@ for funp ($user_fun_path)
     for func (${funp}/* )
         [[ ${func} == *.source ]] && source ${func}
 
+source ${ZDOTDIR}/config/environement-post
+
 # last config at the end
 [[ -f ${ZDOTDIR}/hosts/${basehost}-post.sh ]] && source ${ZDOTDIR}/hosts/${basehost}-post.sh
 
