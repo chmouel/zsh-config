@@ -1,15 +1,19 @@
-Been using zsh since around 98' and kept my config updated along with it.
+# Chmou's ZSH Config
 
-It has some features but mostly stuff i need and i am happy with. It used to be
-pretty slow but sped things up quite a bit :
+My own config, maybe someone else would be interested.
+
+I have been using zsh since around the 90s and kept my config updated along
+with it.
+
+It used to be pretty slow but sped things up quite a bit.
 
 ## Benchmarks
 
 Using [`zshbench`](https://github.com/romkatv/zsh-bench)
 
-### On fast Linux Laptop (arch/ssd btrfs/encrypted) with p10k prompt :
+### On fast Linux Laptop (arch/ssd btrfs/encrypted) with p10k prompt
 
-```
+```text
 creates_tty=0
 has_compsys=1
 has_syntax_highlighting=0
@@ -22,9 +26,9 @@ input_lag_ms=2.067
 exit_time_ms=231.670
 ```
 
-### Macbook M1:
+### Macbook M1
 
-```
+```text
 creates_tty=0
 has_compsys=1
 has_syntax_highlighting=0
@@ -37,11 +41,9 @@ input_lag_ms=2.657
 exit_time_ms=237.649
 ```
 
+### RPI SD card
 
-
-### RPI SD card : 
-
-```
+```text
 creates_tty=0
 has_compsys=1
 has_syntax_highlighting=0
@@ -72,21 +74,22 @@ vtplug
 
 and it would grab the repo put in your cahce dir and source the plugin file.
 
-By default it loads the standard `$plugin_name.plugin.zsh` but if you want some other file just add a colon after :
+By default, it loads the standard `$plugin_name.plugin.zsh` but if you want
+some other file just add a colon after :
 
 ```shell
 ZSH_PLUGINS+=repo/plugin:another.file.to.source
 ```
 
-support just github
+support just GitHub
 
 if you want to update the repo you just add a `-u`
+maybe I can add more features if needed but at the moment it fill up my "niche"
+use case.
 
-maybe will add more features if needed but this fill up my "niche" use case.
+## Enabling powerlevel10k prompt
 
-## Enabling powerlevel10k prompt 
-
-if you have the package just install it. If you want to install you can do this with vtplug, edit your local file with vih and add :
+If you have the package just install it. If you want to install you can do this with vtplug, edit your local file with vih and add :
 
 ```
 ZSH_PLUGINS+=romkatv/powerlevel10k
