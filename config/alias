@@ -42,6 +42,10 @@ alias o='popd'
 (( $+commands[bat] )) && alias less=bat
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
+(( $+commands[cargo] )) && {
+    alias cr="cargo run -q"
+}
+
 # vi configuration ->
 alias vich="vi ${ZDOTDIR}/hosts/${HOST%%.*}.sh"
 alias vica="vi ${ZDOTDIR}/config/alias"
