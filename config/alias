@@ -43,7 +43,7 @@ alias o='popd'
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
 (( $+commands[cargo] )) && {
-    alias cr="cargo run -q"
+    alias cv="cargo run -q"
 }
 
 # vi configuration ->
@@ -155,6 +155,7 @@ alias -g L="|& less"
 (( $+commands[bat] )) && {
     alias -g BY="| bat -l yaml"
     alias -g BJ="| jq -C |bat"
+    alias cat=bat
 }
 
 # Source code highlight
