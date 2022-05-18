@@ -164,7 +164,6 @@ alias -g L="|& less"
 alias gg="git grep"
 (( $+commands[delta] )) && {
     alias -g D="| delta"
-    alias gd="env GIT_PAGER=\"delta --navigate\" git diff --no-ext-diff"
 }
 alias gb="git checkout -b"
 alias gl="git log"
