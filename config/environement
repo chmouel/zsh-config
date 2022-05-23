@@ -26,7 +26,10 @@ export EDITOR LESS
     }
 }
 
-(( $+commands[snazy] )) && export SNAZY_LEVEL_SYMBOLS=true
+(( $+commands[snazy] )) && {
+    export SNAZY_LEVEL_SYMBOLS=true
+    export SNAZY_KAIL_PREFIX_FORMAT="{pod}"
+}
 (( $+commands[dircolors] )) && _dircolors=dircolors
 (( $+commands[gdircolors] )) && _dircolors=gdircolors
 [[ -n ${_dircolors} && -z $LS_COLORS ]] && eval $(${_dircolors} -b) && \
