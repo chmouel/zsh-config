@@ -182,7 +182,10 @@ alias gpath='pwd -P|sed "s,$GOPATH/src/github.com/,,"'
 }
 (( $+functions[ghpr] )) && alias ghprf="ghpr -f"
 
-(( $+commands[rc] )) && alias rcu="rc -U"
+(( $+commands[rc] )) && {
+    alias rcu="rc -U"
+    alias rcy="rc -y"
+}
 
 (( $+commands[aria2c] )) && \
     alias adl='aria2c --bt-force-encryption=true --bt-min-crypto-level=arc4 --seed-ratio=0.1 --seed-time=0 --file-allocation=none --continue=true --max-connection-per-server=4 --max-connection-per-server=4 --min-split-size=10M'
