@@ -43,7 +43,8 @@ alias o='popd'
 (( $+commands[tmux] )) && alias ta='TERM=xterm-256color tmux new-session -A -s main'
 
 (( $+commands[cargo] )) && {
-    alias cv="cargo run -q"
+    alias cv="cargo run"
+    alias cq="cargo run -q"
 }
 
 # vi configuration ->
