@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-function _cdd() {
-   local f=($(ff -d ${@}))
-   (( ${#f})) && ${editor} ${=f} || break
-}
-
-_cdd $@
