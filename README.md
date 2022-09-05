@@ -1,1 +1,1 @@
-# Moved to https://gitlab.org/chmouel/zsh-config
+# Moved to https://gitlab.com/chmouel/zsh-config
